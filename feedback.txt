@@ -1,0 +1,524 @@
+blan5568 $ /y/shared/Engineering/cs-drbc/submit445 w01 -e
+Welcome blan5568
+Attempting to submit your code directory
+/y/shared/Engineering/cs-drbc/cs445/bC_1 w01.bC
+#DRBC <decl.h>
+3           | PRECOMPILER
+#DRBCRUN run
+2 precomList: precomList PRECOMPILER
+26 typeSpec: INT
+23          | ID '[' NUMCONST ']'
+19 varDeclInit: varDeclId
+17            | varDeclInit
+10 varDecl: typeSpec varDeclList ';'
+7 decl: varDecl
+6         | decl
+28         | CHAR
+SYNTAX ERROR(8): unexpected '*', expecting identifier.
+31        | typeSpec error
+8     | funDecl
+5 declList: declList decl
+22 varDeclId: ID
+19 varDeclInit: varDeclId
+17            | varDeclInit
+18            | error
+18            | error
+18            | error
+18            | error
+16            | varDeclList ',' error
+18            | error
+18            | error
+18            | error
+18            | error
+18            | error
+11        | error varDeclList ';'
+7 decl: varDecl
+5 declList: declList decl
+26 typeSpec: INT
+36      | %empty
+81           | %empty
+26 typeSpec: INT
+22 varDeclId: ID
+155 constant: NUMCONST
+146          | constant
+140 factor: immutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+20            | varDeclId ':' simpleExp
+17            | varDeclInit
+22 varDeclId: ID
+155 constant: NUMCONST
+146          | constant
+140 factor: immutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+20            | varDeclId ':' simpleExp
+15 varDeclList: varDeclList ',' varDeclInit
+22 varDeclId: ID
+155 constant: NUMCONST
+146          | constant
+140 factor: immutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+20            | varDeclId ':' simpleExp
+15 varDeclList: varDeclList ',' varDeclInit
+14              | typeSpec varDeclList ';'
+80 localDecls: localDecls scopedVarDecl
+28         | CHAR
+22 varDeclId: ID
+19 varDeclInit: varDeclId
+17            | varDeclInit
+SYNTAX ERROR(13): unexpected '=', expecting ',' or ';'.
+18            | error
+18            | error
+18            | error
+14              | typeSpec varDeclList ';'
+80 localDecls: localDecls scopedVarDecl
+27         | BOOL
+SYNTAX ERROR(14): unexpected Boolean constant "false", expecting identifier.
+18            | error
+18            | error
+14              | typeSpec varDeclList ';'
+80 localDecls: localDecls scopedVarDecl
+83         | %empty
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+114      | '<'
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+110 relExp: minmaxExp relop minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+115      | '>'
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+110 relExp: minmaxExp relop minmaxExp
+108            | relExp
+105       | unaryRelExp
+101 simpleExp: simpleExp OR andExp
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+118      | NEQ
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+110 relExp: minmaxExp relop minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+91    | simpleExp
+76 expStmt: exp ';'
+61        | expStmt
+49 stmt: matched
+70 unmatched: IF simpleExp THEN stmt
+50     | unmatched
+82 stmtList: stmtList stmt
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+81           | %empty
+83         | %empty
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+117      | EQ
+155 constant: NUMCONST
+146          | constant
+140 factor: immutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+110 relExp: minmaxExp relop minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+155 constant: NUMCONST
+146          | constant
+140 factor: immutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+91    | simpleExp
+143        | ID '[' exp ']'
+96 assignop: '='
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+126 sumop: '+'
+155 constant: NUMCONST
+146          | constant
+140 factor: immutable
+135         | factor
+130       | unaryExp
+123 sumExp: sumExp sumop mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+91    | simpleExp
+144 immutable: '(' exp ')'
+140 factor: immutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+91    | simpleExp
+88 exp: mutable assignop exp
+76 expStmt: exp ';'
+61        | expStmt
+49 stmt: matched
+70 unmatched: IF simpleExp THEN stmt
+50     | unmatched
+82 stmtList: stmtList stmt
+155 constant: NUMCONST
+146          | constant
+140 factor: immutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+91    | simpleExp
+143        | ID '[' exp ']'
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+115      | '>'
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+110 relExp: minmaxExp relop minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+91    | simpleExp
+153        | exp
+150 args: argList
+148 call: ID '(' args ')'
+145          | call
+140 factor: immutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+91    | simpleExp
+SYNTAX ERROR(21): unexpected "then", expecting ';'.
+96 assignop: '='
+142 mutable: ID
+141       | mutable
+135         | factor
+130       | unaryExp
+133      | '%'
+155 constant: NUMCONST
+146          | constant
+140 factor: immutable
+135         | factor
+128 mulExp: mulExp mulop unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+91    | simpleExp
+92    | error assignop exp
+76 expStmt: exp ';'
+61        | expStmt
+49 stmt: matched
+82 stmtList: stmtList stmt
+SYNTAX ERROR(22): unexpected "else".
+77        | error ';'
+61        | expStmt
+49 stmt: matched
+82 stmtList: stmtList stmt
+87 breakStmt: BREAK ';'
+64        | breakStmt
+49 stmt: matched
+82 stmtList: stmtList stmt
+79 compoundStmt: '{' localDecls stmtList '}'
+62        | compoundStmt
+52        | WHILE simpleExp DO matched
+49 stmt: matched
+82 stmtList: stmtList stmt
+SYNTAX ERROR(25): unexpected "static".
+77        | error ';'
+61        | expStmt
+49 stmt: matched
+82 stmtList: stmtList stmt
+155 constant: NUMCONST
+146          | constant
+140 factor: immutable
+135         | factor
+130       | unaryExp
+124       | mulExp
+120          | sumExp
+111       | minmaxExp
+108            | relExp
+105       | unaryRelExp
+102          | andExp
+91    | simpleExp
+85           | RETURN exp ';'
+63        | returnStmt
+49 stmt: matched
+82 stmtList: stmtList stmt
+79 compoundStmt: '{' localDecls stmtList '}'
+62        | compoundStmt
+49 stmt: matched
+29 funDecl: typeSpec ID '(' parms ')' stmt
+8     | funDecl
+5 declList: declList decl
+1 program: precomList declList
+Found:
+  0 $accept: program $end
+  1 program: precomList declList
+  2 precomList: precomList PRECOMPILER
+  3           | PRECOMPILER
+  4           | %empty
+  5 declList: declList decl
+  6         | decl
+  7 decl: varDecl
+  8     | funDecl
+  10 varDecl: typeSpec varDeclList ';'
+  11        | error varDeclList ';'
+  14              | typeSpec varDeclList ';'
+  15 varDeclList: varDeclList ',' varDeclInit
+  16            | varDeclList ',' error
+  17            | varDeclInit
+  18            | error
+  19 varDeclInit: varDeclId
+  20            | varDeclId ':' simpleExp
+  22 varDeclId: ID
+  23          | ID '[' NUMCONST ']'
+  26 typeSpec: INT
+  27         | BOOL
+  28         | CHAR
+  29 funDecl: typeSpec ID '(' parms ')' stmt
+  31        | typeSpec error
+  36      | %empty
+  49 stmt: matched
+  50     | unmatched
+  52        | WHILE simpleExp DO matched
+  61        | expStmt
+  62        | compoundStmt
+  63        | returnStmt
+  64        | breakStmt
+  70 unmatched: IF simpleExp THEN stmt
+  76 expStmt: exp ';'
+  77        | error ';'
+  79 compoundStmt: '{' localDecls stmtList '}'
+  80 localDecls: localDecls scopedVarDecl
+  81           | %empty
+  82 stmtList: stmtList stmt
+  83         | %empty
+  85           | RETURN exp ';'
+  87 breakStmt: BREAK ';'
+  88 exp: mutable assignop exp
+  91    | simpleExp
+  92    | error assignop exp
+  96 assignop: '='
+  101 simpleExp: simpleExp OR andExp
+  102          | andExp
+  105       | unaryRelExp
+  108            | relExp
+  110 relExp: minmaxExp relop minmaxExp
+  111       | minmaxExp
+  114      | '<'
+  115      | '>'
+  117      | EQ
+  118      | NEQ
+  120          | sumExp
+  123 sumExp: sumExp sumop mulExp
+  124       | mulExp
+  126 sumop: '+'
+  128 mulExp: mulExp mulop unaryExp
+  130       | unaryExp
+  133      | '%'
+  135         | factor
+  140 factor: immutable
+  141       | mutable
+  142 mutable: ID
+  143        | ID '[' exp ']'
+  144 immutable: '(' exp ')'
+  145          | call
+  146          | constant
+  148 call: ID '(' args ')'
+  150 args: argList
+  153        | exp
+  155 constant: NUMCONST
+70 Found
+
+Missing:
+  13 scopedVarDecl: STATIC typeSpec varDeclList ';'
+  30        | ID '(' parms ')' stmt
+  35 parms: parmList
+  37 parmList: parmList ';' parmTypeList
+  38         | parmTypeList
+  41 parmTypeList: typeSpec parmIdList
+  43 parmIdList: parmIdList ',' parmId
+  45           | parmId
+  47 parmId: ID
+  48       | ID '[' ']'
+  51 matched: IF simpleExp THEN matched ELSE matched
+  53        | FOR ID '=' iterRange DO matched
+  65 iterRange: simpleExp TO simpleExp
+  66          | simpleExp TO simpleExp BY simpleExp
+  71          | IF simpleExp THEN matched ELSE unmatched
+  72          | WHILE simpleExp DO unmatched
+  73          | FOR ID '=' iterRange DO unmatched
+  78        | ';'
+  84 returnStmt: RETURN ';'
+  89    | mutable INC
+  90    | mutable DEC
+  97         | ADDASS
+  98         | SUBASS
+  99         | MULASS
+  100         | DIVASS
+  104 andExp: andExp AND unaryRelExp
+  107 unaryRelExp: NOT unaryRelExp
+  113 relop: LEQ
+  116      | GEQ
+  119 minmaxExp: minmaxExp minmaxop sumExp
+  121 minmaxop: MAX
+  122         | MIN
+  127      | '-'
+  131 mulop: '*'
+  132      | '/'
+  134 unaryExp: unaryop unaryExp
+  137 unaryop: '-'
+  138        | '*'
+  139        | '?'
+  151     | %empty
+  152 argList: argList ',' exp
+  156         | CHARCONST
+  157         | STRINGCONST
+70 Found. 43 Missing. 39 Skipped(OK). 6 Errors (Needs fixing).
+That gives you 56%
+56
+Saving: w01_blan5568_28_772551503.bC
+cp w01.bC w01_blan5568_28_772551503.bC
+
+Your current directory is /home/blan5568,
+Enter file name to check in: Course to check file in for (e.g., cs150): Submission of /home/blan5568/w01_blan5568_28_772551503.bC completed on Wed Jan 10 18:47:47 2024
+Names of files you have checked in:
+        Date                            Size    Name
+        Wed Jan 10 18:01:12 2024        29      blan5568.w01_blan5568_2_772550227.bC
+        Wed Jan 10 16:54:44 2024        40      blan5568.w01_blan5568_12_772548429.bC
+        Wed Jan 10 18:46:58 2024        404     blan5568.w01_blan5568_27_772551474.bC
+        Wed Jan 10 17:57:45 2024        116     blan5568.w01_blan5568_16_772550140.bC
+        Wed Jan 10 17:54:57 2024        196     blan5568.w01_blan5568_15_772550053.bC
+        Wed Jan 10 18:42:40 2024        393     blan5568.w01_blan5568_26_772551358.bC
+        Wed Jan 10 18:10:11 2024        95      blan5568.w01_blan5568_16_772550488.bC
+        Wed Jan 10 17:02:03 2024        115     blan5568.w01_blan5568_14_772548632.bC
+        Wed Jan 10 18:41:45 2024        426     blan5568.w01_blan5568_26_772551329.bC
+        Wed Jan 10 18:13:57 2024        156     blan5568.w01_blan5568_21_772550575.bC
+        Wed Jan 10 18:45:20 2024        399     blan5568.w01_blan5568_28_772551445.bC
+        Wed Jan 10 17:04:19 2024        126     blan5568.w01_blan5568_14_772548690.bC
+        Wed Jan 10 18:47:47 2024        420     blan5568.w01_blan5568_28_772551503.bC
+        Wed Jan 10 17:37:49 2024        106     blan5568.w01_blan5568_16_772549589.bC
+        Wed Jan 10 18:39:03 2024        406     blan5568.w01_blan5568_27_772551271.bC
+        Wed Jan 10 18:32:32 2024        342     blan5568.w01_blan5568_27_772551097.bC.bak
+        Wed Jan 10 18:13:34 2024        181     blan5568.w01_blan5568_20_772550575.bC
+        Wed Jan 10 18:12:05 2024        141     blan5568.w01_blan5568_20_772550517.bC
+        Wed Jan 10 17:59:12 2024        39      blan5568.w01_blan5568_2_772550169.bC
+        Wed Jan 10 17:40:47 2024        144     blan5568.w01_blan5568_17_772549676.bC
+        Wed Jan 10 16:59:21 2024        116     blan5568.w01_blan5568_14_772548545.bC
+        Wed Jan 10 18:10:00 2024        95      blan5568.w01_blan5568_16_772550459.bC
+        Wed Jan 10 18:04:30 2024        58      blan5568.w01_blan5568_12_772550314.bC
+        Wed Jan 10 17:55:56 2024        196     blan5568.w01_blan5568_15_772550082.bC
+        Wed Jan 10 17:36:24 2024        85      blan5568.w01_blan5568_15_772549560.bC
+        Wed Jan 10 17:54:03 2024        177     blan5568.w01_blan5568_14_772550024.bC
+        Wed Jan 10 16:50:21 2024        9       blan5568.w01_blan5568_1_772548313.bC
+        Wed Jan 10 16:56:19 2024        103     blan5568.w01_blan5568_12_772548458.bC
+        Wed Jan 10 16:52:43 2024        46      blan5568.w01_blan5568_5_772548371.bC
+        Wed Jan 10 18:40:18 2024        425     blan5568.w01_blan5568_26_772551300.bC
+        Wed Jan 10 17:00:49 2024        115     blan5568.w01_blan5568_14_772548603.bC
+        Wed Jan 10 18:32:57 2024        342     blan5568.w01_blan5568_27_772551097.bC
+        Wed Jan 10 18:37:57 2024        386     blan5568.w01_blan5568_28_772551242.bC
+        Wed Jan 10 18:16:36 2024        254     blan5568.w01_blan5568_23_772550662.bC
+        Wed Jan 10 18:07:22 2024        60      blan5568.w01_blan5568_12_772550401.bC
+        Wed Jan 10 18:36:43 2024        338     blan5568.w01_blan5568_27_772551184.bC
+End of list
+rm w01_blan5568_28_772551503.bC
+make: *** No targets specified and no makefile found.  Stop.
+That gives you 28 marks.
+You can get 22 more marks through this process.
+*** Submission successful! ***

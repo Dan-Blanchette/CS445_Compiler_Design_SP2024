@@ -1,0 +1,29 @@
+// Up to 29 marks now 3 errors.
+
+#DRBC <decl.h>
+#DRBCRUN run
+
+// 
+
+int list[222];
+
+
+
+int main()
+{
+   int d : 10, e : 11, i : 0;
+   char letter = 'A';
+   bool false;
+
+   if d < e or e > d then d != e;
+
+   while d do
+   {
+      if e == 11 then list[22] = (e + 1);
+      elsif (list[22] >  e) then list[i] = d % 10;
+      else continue;
+      break;
+   }
+   static int newVar; // scoped new variable
+   return 0;
+}
