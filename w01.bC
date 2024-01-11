@@ -1,9 +1,7 @@
-// Up to 29 marks now 3 errors.
+#DRBC Assign 1 // Rule 1
+#DRBCRUN All Production Rules // Rule 2
 
-#DRBC <decl.h>
-#DRBCRUN run
-
-// 
+int myGames(int num, char firstLetter, bool good)
 
 int list[222];
 
@@ -14,16 +12,28 @@ int main()
    int d : 10, e : 11, i : 0;
    char letter = 'A';
    bool false;
-
-   if d < e or e > d then d != e;
-
-   while d do
-   {
-      if e == 11 then list[22] = (e + 1);
-      elsif (list[22] >  e) then list[i] = d % 10;
-      else continue;
-      break;
+   
+// rule 18 (51 & 52)
+   while (d == 10) do {
+      if(d > 9) then {
+         d -=1;
+      }
+      else {
+         d +=1;
+      }
    }
+
+// Rules 19 & 20 (66, 72, & 73)
+
+   for m=0 to 6 do{
+      for n=0 to 100 by 2 do {
+        if (true == true) then {happy += 20;}
+        else  
+           while (true == false) do 
+           if (false != false) then {happy -= 100};
+      }
+   }
+
    static int newVar; // scoped new variable
    return 0;
 }
