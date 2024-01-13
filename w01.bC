@@ -3,7 +3,7 @@
  
 
 char gameTitle[200];
-bool goodGame;
+bool goodGame, uselessLoop;
 
 videoGamesGrader(char gradesList[], gradeType[]; int avgGradeTotal);
 
@@ -45,8 +45,23 @@ int main()
          if (grade == 'A') then
          {
             rating = 1;
+            return ;
          }
       }
+   }
+   
+   uselessLoop = true;
+   while (uselessLoop == true) do
+   {
+     int simpleMath :0;
+     simpleMath = simpleMath + 1;
+     simpleMath = simpleMath * 1;
+     simpleMath = simpleMath / 1;
+     simpleMath = simpleMath - 1;
+     if (simpleMath < 1 ) then
+     {
+        break;
+     } 
    }
 
    while (goodGame == false) do
