@@ -1,39 +1,58 @@
-#DRBC Assign 1 // Rule 1
-#DRBCRUN All Production Rules // Rule 2
+#DRBC Assign1 //rule 1
+#DRBC AllProductionRules // rule2 
+ 
 
-int myGames(int num, char firstLetter, bool good)
+char gameTitle[200];
+bool goodGame;
 
-int list[222];
-
+videoGamesGrader(char gradesList[], gradeType[]; int avgGradeTotal);
 
 
 int main()
 {
-   int d : 10, e : 11, i : 0;
-   char letter = 'A';
-   bool false;
+   static int size;
+   char gradeTypes[6], grade;
+   int iterator : 0, rating :0;
+   int numGames[100];
+   while (max(numGames) == 100 and iterator !=100) do
+   {
+      iterator += 1;
+      if (iterator % 10) then
+      {
+         goodGame = false;
+      }
+      
+   }
+
+   if (goodGame == true) then 
+   {
+     grade = 'A';
+     videoGamesGrader(grade);
+     goodGame = true;
+   }
+   else
+   {
+     grade = 'F';
+     videoGamesGrader(grade);
+     goodGame = false;
+   }
+
    
-// rule 18 (51 & 52)
-   while (d == 10) do {
-      if(d > 9) then {
-         d -=1;
-      }
-      else {
-         d +=1;
-      }
-   }
-
-// Rules 19 & 20 (66, 72, & 73)
-
-   for m=0 to 6 do{
-      for n=0 to 100 by 2 do {
-        if (true == true) then {happy += 20;}
-        else  
-           while (true == false) do 
-           if (false != false) then {happy -= 100};
+   for j=0 to 6 do
+   {
+      for k=0 to 100 by 2 do
+      {     
+         if (grade == 'A') then
+         {
+            rating = 1;
+         }
       }
    }
 
-   static int newVar; // scoped new variable
+   while (goodGame == false) do
+   {
+      if ( goodGame != true) then {rating = 0;}
+   }
+
    return 0;
 }
