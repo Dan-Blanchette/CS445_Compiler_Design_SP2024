@@ -3,7 +3,7 @@
 
 
 char gameTitle[200];
-bool goodGame, uselessLoop;
+bool goodGame, foreverLoop, badGame;
 
 videoGamesGrader(char gradesList[], gradeType[]; int avgGradeTotal);
 
@@ -14,6 +14,12 @@ int main()
    char gradeTypes[6], grade;
    int iterator : 0, rating :0;
    int numGames[100];
+   int posScore : 100;
+   int videoGameRNG : ?10;
+   int negScore : -100;
+   int multScore : *100;
+   
+
    while (max(numGames) == 100 and iterator !=100) do
    {
       iterator += 1;
@@ -37,35 +43,40 @@ int main()
      goodGame = false;
    }
 
-
 // in class rule 19 and 20
     for i=0 to 10 do {
         for j=0 to 10 by 2 do
             if(goodGame == true) then grade += 10;
-            else while(goodGame == false) do
+            else while(badGame == true) do
                     if(goodGame != true) then grade -= 10;
         break;
     }
 
     // matched
-    while(haveCat == true) do {
-        if(havedog == true) then {
-            happy += 100;
+    while(goodGame == true) do {
+        if(badGame == false) then {
+            grade += 100;
+            grade *= 1;
+            grade /= 1;
         }
     }
 
-   uselessLoop = true;
-   while (uselessLoop == true) do
+   foreverLoop = true;
+
+   if (foreverLoop == true or foreverLoop == false) then {return true;}
+   while (foreverLoop == true) do
    {
-      int simpleMath : 0;
-      simpleMath = simpleMath + 1;
-      simpleMath = simpleMath * 1;
-      simpleMath = simpleMath / 1;
-      simpleMath = simpleMath - 1;
+      int simpleGradeMath : 0;
+      simpleGradeMath + 1;
+      simpleGradeMath * 1;
+      simpleGradeMath / 1;
+      simpleGradeMath - 1;
       y = 1 :<: 10;
       if (simpleMath < 1 ) then
       {
          x = 10 :>: 1;
+         x--;
+         x++;
          break;
       }
    }
@@ -75,6 +86,11 @@ int main()
       int z : 1;
       if ( goodGame != true) then {rating = 0;}
       z = not (10 :>: 1);
+      if (z <= 1) then goodGame = false;
+      if (z >= 10) then badGame = false;
+      if (z > 10) then goodGame = false;
+
+      return ;
    }
 
    return 0;
