@@ -2,23 +2,31 @@
 #DRBC AllProductionRules // rule2
 
 
+// Rule 3, 4
 char gameTitle[200];
 bool goodGame, foreverLoop, badGame;
 
+
+
+// Rule 4, 11 - 16
 videoGamesGrader(char gradesList[], gradeType[]; int avgGradeTotal);
 
-
+// Rule 4
 int main()
 {
+   // Rules 6 - 10, 23
    static int size;
    char gradeTypes[6], grade;
+   char gameTitle[100];
    int iterator : 0, rating :0;
    int numGames[100];
+
    int posScore : 100;
    int videoGameRNG : ?10;
    int negScore : -100;
    int multScore : *100;
-   
+
+   gameTitle[1] = 'Z';
 
    while (max(numGames) == 100 and iterator !=100) do
    {
@@ -29,7 +37,7 @@ int main()
       }
 
    }
-
+   // rule 18
    if (goodGame == true) then
    {
      grade = 'A';
@@ -39,10 +47,10 @@ int main()
    else
    {
      grade = 'F';
-     videoGamesGrader(grade);
+     videoGamesGrader(grade[1]);
      goodGame = false;
    }
-
+   
 // in class rule 19 and 20
     for i=0 to 10 do {
         for j=0 to 10 by 2 do
@@ -55,6 +63,7 @@ int main()
     // matched
     while(goodGame == true) do {
         if(badGame == false) then {
+            // rule 28
             grade += 100;
             grade *= 1;
             grade /= 1;
@@ -67,29 +76,35 @@ int main()
    while (foreverLoop == true) do
    {
       int simpleGradeMath : 0;
+      // Rule 38
       simpleGradeMath + 1;
       simpleGradeMath * 1;
       simpleGradeMath / 1;
       simpleGradeMath - 1;
+      // Rule 35 & 36
       y = 1 :<: 10;
       if (simpleMath < 1 ) then
       {
+         // Rule 35 & 36
          x = 10 :>: 1;
+         // Rule 27
          x--;
          x++;
          break;
       }
    }
-
+   // Rule 18
    while (goodGame == false) do
    {
       int z : 1;
       if ( goodGame != true) then {rating = 0;}
+      // Rule 35 & 36
       z = not (10 :>: 1);
+      // Rule 33
       if (z <= 1) then goodGame = false;
       if (z >= 10) then badGame = false;
       if (z > 10) then goodGame = false;
-
+      // Rule 
       return ;
    }
 
