@@ -21,12 +21,22 @@ int main()
    int iterator : 0, rating :0;
    int numGames[100];
 
+   
+
    int posScore : 100;
    int videoGameRNG : ?10;
    int negScore : -100;
    int multScore : *100;
+   
+   char titles[100];
+
+   titles = "ZELDA";
 
    gameTitle[1] = 'Z';
+   
+   grading  = gradeFunct();
+
+   videoGameGrader(grade, rating); 
 
    while (max(numGames) == 100 and iterator !=100) do
    {
