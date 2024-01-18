@@ -49,11 +49,14 @@ limitters   [\;\,\(\)\{\}\[\]]
 op    [\-\+\*\/\%]
 whitespace  [\ \t]
 %%
-[\(\)]         { return setValue(line, OP, yytext); } // single char tokens
+[\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]         { return setValue(line, OP, yytext); } // single char tokens
 
 "!="           { return setValue(line, NEQ, yytext); }
 
+":<:'          {return setValue(line, MIN, yytext);  } // add to parser.y
+
 "and"          { return setValue(line, AND, yytext); }
+
 
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext); }
 

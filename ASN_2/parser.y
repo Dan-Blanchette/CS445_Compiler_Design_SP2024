@@ -30,6 +30,7 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  OP
 %token   <tinfo>  NEQ
 %token   <tinfo>  AND
+%token   <tinfo>  MIN
 %token   <tinfo>  PRECOMPILER
 %token   <tinfo>  NUMCONST
 %token   <tinfo>  ERROR 
@@ -41,6 +42,7 @@ program  :  program term
 term  : 
       OP {printToken(yylval.tinfo, "OP");}
    |  NEQ {printToken(yylval.tinfo, "NEQ");}
+   |  MIN {printToken(yyval.tinfo, "MIN");}
    |  AND {printToken(yylval.tinfo, "AND");}
    |  PRECOMPILER {printToken(yylval.tinfo, "PRECOMPILER");}
    |  NUMCONST {printToken(yylval.tinfo, "NUMCONST");}
