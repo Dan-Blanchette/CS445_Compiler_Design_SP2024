@@ -59,7 +59,7 @@ whitespace  [\ \t]
 
 "and"          { return setValue(line, AND, yytext);}
 
-"or"           { return setValue(line, OR, yytext):}
+"or"           { return setValue(line, OR, yytext);}
 
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext); }
 
