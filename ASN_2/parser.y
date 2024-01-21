@@ -30,7 +30,9 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  OP
 %token   <tinfo>  NEQ
 %token   <tinfo>  AND
+%token   <tinfo>  OR
 %token   <tinfo>  MIN
+%token   <tinfo>  MAX
 %token   <tinfo>  PRECOMPILER
 %token   <tinfo>  NUMCONST
 %token   <tinfo>  ERROR 
@@ -43,7 +45,9 @@ term  :
       OP {printToken(yylval.tinfo, "OP");}
    |  NEQ {printToken(yylval.tinfo, "NEQ");}
    |  MIN {printToken(yyval.tinfo, "MIN");}
+   |  MAX {printToken(yyval.tinfo, "MAX");}
    |  AND {printToken(yylval.tinfo, "AND");}
+   |  OR  {printToken(yylval.tinfo, "OR);}
    |  PRECOMPILER {printToken(yylval.tinfo, "PRECOMPILER");}
    |  NUMCONST {printToken(yylval.tinfo, "NUMCONST");}
    |  ERROR    {cout << "ERROR(SCANNER Line " << yylval.tinfo.linenum << "): Invalid input character " << yylval.tinfo.tokenstr << endl; }

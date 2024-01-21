@@ -40,7 +40,7 @@ int setValue(int linenum, int tokenClass, char *svalue) {
 
 %option noyywrap
 
-letter      [a-zA-Z]
+letter   [a-zA-Z]
 digit    [0-9]
 quote    [\']
 underbar [_]
@@ -51,12 +51,15 @@ whitespace  [\ \t]
 %%
 [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]         { return setValue(line, OP, yytext); } // single char tokens
 
-"!="           { return setValue(line, NEQ, yytext); }
+"!="           { return setValue(line, NEQ, yytext);}
 
-":<:'          {return setValue(line, MIN, yytext);  } // add to parser.y
+":<:"          {return setValue(line, MIN, yytext);} // add to parser.y
 
-"and"          { return setValue(line, AND, yytext); }
+":>:"          {return setValue(line, MAX, yytext);}
 
+"and"          { return setValue(line, AND, yytext);}
+
+"or"           { return setValue(line, OR, yytext):}
 
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext); }
 
