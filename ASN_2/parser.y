@@ -47,7 +47,7 @@ term  :
    |  MIN {printToken(yyval.tinfo, "MIN");}
    |  MAX {printToken(yyval.tinfo, "MAX");}
    |  AND {printToken(yylval.tinfo, "AND");}
-   |  OR  {printToken(yylval.tinfo, "OR);}
+   |  OR  {printToken(yylval.tinfo, "OR");}
    |  PRECOMPILER {printToken(yylval.tinfo, "PRECOMPILER");}
    |  NUMCONST {printToken(yylval.tinfo, "NUMCONST");}
    |  ERROR    {cout << "ERROR(SCANNER Line " << yylval.tinfo.linenum << "): Invalid input character " << yylval.tinfo.tokenstr << endl; }
