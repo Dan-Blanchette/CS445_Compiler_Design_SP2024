@@ -35,7 +35,10 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  ADDASS
 %token   <tinfo>  SUBASS
 %token   <tinfo>  MULASS
-%token   <tinfo>  DIVASS 
+%token   <tinfo>  DIVASS
+%token   <tinfo>  MIN
+%token   <tinfo>  MAX 
+%token   <tinfo>  INT
 %token   <tinfo>  AND
 %token   <tinfo>  OR
 %token   <tinfo>  FOR
@@ -45,8 +48,9 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  IF
 %token   <tinfo>  THEN
 %token   <tinfo>  ELSE
-%token   <tinfo>  MIN
-%token   <tinfo>  MAX
+%token   <tinfo>  STATIC
+%token   <tinfo>  RETURN
+%token   <tinfo>  BREAK
 %token   <tinfo>  PRECOMPILER
 %token   <tinfo>  NUMCONST
 %token   <tinfo>  BOOLCONST
@@ -68,6 +72,7 @@ term  :
    |  DIVASS {printToken(yylval.tinfo, "DIVASS");}
    |  MIN {printToken(yyval.tinfo, "MIN");}
    |  MAX {printToken(yyval.tinfo, "MAX");}
+   |  INT {printToken(yyval.tinfo, "INT");}
    |  AND {printToken(yylval.tinfo, "AND");}
    |  OR  {printToken(yylval.tinfo, "OR");}
    |  FOR  {printToken(yylval.tinfo, "FOR");}
@@ -77,6 +82,9 @@ term  :
    |  IF {printToken(yylval.tinfo, "IF");}
    |  THEN {printToken(yylval.tinfo, "THEN");}
    |  ELSE {printToken(yylval.tinfo, "ELSE");}
+   |  STATIC {printToken(yylval.tinfo, STATIC);}
+   |  RETURN {printToken(yylval.tinfo, RETURN);}
+   |  BREAK  {printToken(yylval.tinfo, BREAK);}
    |  PRECOMPILER {printToken(yylval.tinfo, "PRECOMPILER");}
    |  NUMCONST {printToken(yylval.tinfo, "NUMCONST");}
    |  BOOLCONST{printToken(yyval.tinfo, "BOOLCONST");}

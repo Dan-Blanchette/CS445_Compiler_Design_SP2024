@@ -67,6 +67,7 @@ comment \/\/.*
 "/="           { return setValue(line, DIVASS, yytext);}
 ":<:"          { return setValue(line, MIN, yytext);} // add to parser.y
 ":>:"          { return setValue(line, MAX, yytext);}
+"int"          { return setValue(line, INT, yytext);}
 "and"          { return setValue(line, AND, yytext);}
 "or"           { return setValue(line, OR, yytext);}
 "for"          { return setValue(line, FOR, yytext);}
@@ -76,9 +77,14 @@ comment \/\/.*
 "if"           { return setValue(line, IF, yytext);}
 "then"         { return setValue(line, THEN, yytext);}
 "else"         { return setValue(line, ELSE, yytext);}
-^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext); }
+"static"       { return setValue(line, STATIC, yytext);}
+"return"       { return setValue(line, RETURN, yytext);}
+"break"        { return setValue(line, BREAK, yytext);}
+^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext);}
+^"#DRBCRUN ".* { return setValue(line, PRECOMPILER, yytext);}
+{digit}+       { return setValue(line, NUMCONST, yytext); }
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
-[0-9]+         { return setValue(line, NUMCONST, yytext); }
+{comment}      ;
 \n             {  line++; }
 {whitespace}+  ;
 .              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]);}
