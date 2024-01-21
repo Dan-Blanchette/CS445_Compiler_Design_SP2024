@@ -29,8 +29,17 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 }
 %token   <tinfo>  OP
 %token   <tinfo>  NEQ
+%token   <tinfo>  INC
+%token   <tinfo>  DEC
+%token   <tinfo>  EQ
+%token   <tinfo>  ADDASS
+%token   <tinfo>  SUBASS
+%token   <tinfo>  MULASS
+%token   <tinfo>  DIVASS 
 %token   <tinfo>  AND
 %token   <tinfo>  OR
+%token   <tinfo>  FOR
+%token   <tinfo>  WHILE
 %token   <tinfo>  MIN
 %token   <tinfo>  MAX
 %token   <tinfo>  PRECOMPILER
@@ -44,10 +53,19 @@ program  :  program term
 term  : 
       OP {printToken(yylval.tinfo, "OP");}
    |  NEQ {printToken(yylval.tinfo, "NEQ");}
+   |  INC {printToken(yylval.tinfo, "INC");}
+   |  DEC {printToken(yylval.tinfo, "DEC");}
+   |  EQ  {printToken(yylval.tinfo, "EQ");}
+   |  ADDASS {printToken(yylval.tinfo, "ADDASS");}
+   |  SUBASS {printToken(yylval.tinfo, "SUBASS");}
+   |  MULASS {printToken(yylval.tinfo, "MULASS");}
+   |  DIVASS {printToken(yylval.tinfo, "DIVASS");}
    |  MIN {printToken(yyval.tinfo, "MIN");}
    |  MAX {printToken(yyval.tinfo, "MAX");}
    |  AND {printToken(yylval.tinfo, "AND");}
    |  OR  {printToken(yylval.tinfo, "OR");}
+   |  FOR  {printToken(yylval.tinfo, "FOR");}
+   |  WHILE  {printToken(yylval.tinfo, "WHILE");}
    |  PRECOMPILER {printToken(yylval.tinfo, "PRECOMPILER");}
    |  NUMCONST {printToken(yylval.tinfo, "NUMCONST");}
    |  ERROR    {cout << "ERROR(SCANNER Line " << yylval.tinfo.linenum << "): Invalid input character " << yylval.tinfo.tokenstr << endl; }

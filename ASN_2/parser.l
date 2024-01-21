@@ -11,6 +11,7 @@ int line=1;
 char *lastToken=(char *)"";
 //extern int numErrors;
 
+// used as a means to communicate between .l and .y files
 int setValue(int linenum, int tokenClass, char *svalue) {
     yylval.tinfo.tokenclass = tokenClass;
     yylval.tinfo.linenum = linenum;
@@ -26,9 +27,14 @@ int setValue(int linenum, int tokenClass, char *svalue) {
     case NUMCONST:
          // yylval.tinfo.nvalue = hmmmm ..... I don't need this yet, but
          break;
-
+    case BOOLCONST:
+         // yyval.tinfo.nvalue = something to think about.. probably set to 0 or 1?
+         break;
     case OP:
          // yylval.tinfo.cvalue = hmmm..... What should I set it to?
+         break;
+     case CHARCONST:
+         // yyval.tinfo.cvalue = not sure what this should be set to yet.
          break;
     }
 
@@ -48,18 +54,37 @@ letdig      {digit}|{letter}|{underbar}
 limitters   [\;\,\(\)\{\}\[\]]
 op    [\-\+\*\/\%]
 whitespace  [\ \t]
+comment \/\/.*
 %%
 [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]         { return setValue(line, OP, yytext); } // single char tokens
 
 "!="           { return setValue(line, NEQ, yytext);}
 
-":<:"          {return setValue(line, MIN, yytext);} // add to parser.y
+"++"           { return setValue(line, INC, yytext);}
 
-":>:"          {return setValue(line, MAX, yytext);}
+"--"           { return setValue(line, DEC, yytext);}
+
+"=="           { return setValue(line, EQ, yytext);}
+
+"+="           { return setValue(line, ADDASS, yytext);}
+
+"-="           { return setValue(line, SUBASS, yytext);}
+
+"*="           { return setValue(line, MULASS, yytext);}
+
+"/="           { return setValue(line, DIVASS, yytext);}
+
+":<:"          { return setValue(line, MIN, yytext);} // add to parser.y
+
+":>:"          { return setValue(line, MAX, yytext);}
 
 "and"          { return setValue(line, AND, yytext);}
 
 "or"           { return setValue(line, OR, yytext);}
+
+"for"          { return setValue(line, FOR, yytext);}
+
+"while"        { return setValue(line, WHILE, yytext);}
 
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext); }
 
