@@ -57,39 +57,27 @@ whitespace  [\ \t]
 comment \/\/.*
 %%
 [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]         { return setValue(line, OP, yytext); } // single char tokens
-
 "!="           { return setValue(line, NEQ, yytext);}
-
 "++"           { return setValue(line, INC, yytext);}
-
 "--"           { return setValue(line, DEC, yytext);}
-
 "=="           { return setValue(line, EQ, yytext);}
-
 "+="           { return setValue(line, ADDASS, yytext);}
-
 "-="           { return setValue(line, SUBASS, yytext);}
-
 "*="           { return setValue(line, MULASS, yytext);}
-
 "/="           { return setValue(line, DIVASS, yytext);}
-
 ":<:"          { return setValue(line, MIN, yytext);} // add to parser.y
-
 ":>:"          { return setValue(line, MAX, yytext);}
-
 "and"          { return setValue(line, AND, yytext);}
-
 "or"           { return setValue(line, OR, yytext);}
-
 "for"          { return setValue(line, FOR, yytext);}
-
+"to"           { return setValue(line, TO, yytext);}
+"by"           { return setValue(line, BY, yytext);}
 "while"        { return setValue(line, WHILE, yytext);}
-
+"if"           { return setValue(line, IF, yytext);}
+"then"         { return setValue(line, THEN, yytext);}
+"else"         { return setValue(line, ELSE, yytext);}
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext); }
-
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
-
 [0-9]+         { return setValue(line, NUMCONST, yytext); }
 \n             {  line++; }
 {whitespace}+  ;

@@ -39,7 +39,12 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  AND
 %token   <tinfo>  OR
 %token   <tinfo>  FOR
+%token   <tinfo>  TO
+%token   <tinfo>  BY
 %token   <tinfo>  WHILE
+%token   <tinfo>  IF
+%token   <tinfo>  THEN
+%token   <tinfo>  ELSE
 %token   <tinfo>  MIN
 %token   <tinfo>  MAX
 %token   <tinfo>  PRECOMPILER
@@ -66,7 +71,12 @@ term  :
    |  AND {printToken(yylval.tinfo, "AND");}
    |  OR  {printToken(yylval.tinfo, "OR");}
    |  FOR  {printToken(yylval.tinfo, "FOR");}
+   |  TO {printToken(yylval.tinfo, "TO");}
+   |  BY {printToken(yylval.tinfo, "BY");}
    |  WHILE  {printToken(yylval.tinfo, "WHILE");}
+   |  IF {printToken(yylval.tinfo, "IF");}
+   |  THEN {printToken(yylval.tinfo, "THEN");}
+   |  ELSE {printToken(yylval.tinfo, "ELSE");}
    |  PRECOMPILER {printToken(yylval.tinfo, "PRECOMPILER");}
    |  NUMCONST {printToken(yylval.tinfo, "NUMCONST");}
    |  BOOLCONST{printToken(yyval.tinfo, "BOOLCONST");}
