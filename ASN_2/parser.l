@@ -88,6 +88,8 @@ comment \/\/.*
 
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext); }
 
+"true"|"false" {return setValue(line, BOOLCONST, yytext);}
+
 [0-9]+         { return setValue(line, NUMCONST, yytext); }
 \n             {  line++; }
 {whitespace}+  ;
