@@ -52,7 +52,6 @@ quote    [\']
 underbar [_]
 letdig      {digit}|{letter}|{underbar}
 limitters   [\;\,\(\)\{\}\[\]]
-// op    [\-\+\*\/\%]
 whitespace  [\ \t]
 comment \/\/.*
 %%
