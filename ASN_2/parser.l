@@ -93,7 +93,7 @@ char   {quote}.{quote} | {quote}[\\\n]{quote}
 {comment}      ;
 {id}           {return setValue(line, ID, yytext);}
 {char}         {return setValue(line, CHARCONST, yytext);}
-[\"].[\"] | [\"\\\n]*[\"]      {return setValue(line, STRINGCONST, yytext);}
+// [\"].[\"] | [\"\\\n]*[\"]      {return setValue(line, STRINGCONST, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
 .              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]);}
