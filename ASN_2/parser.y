@@ -82,9 +82,9 @@ term  :
    |  IF {printToken(yylval.tinfo, "IF");}
    |  THEN {printToken(yylval.tinfo, "THEN");}
    |  ELSE {printToken(yylval.tinfo, "ELSE");}
-   |  STATIC {printToken(yylval.tinfo, STATIC);}
-   |  RETURN {printToken(yylval.tinfo, RETURN);}
-   |  BREAK  {printToken(yylval.tinfo, BREAK);}
+   |  STATIC {printToken(yylval.tinfo, "STATIC");}
+   |  RETURN {printToken(yylval.tinfo, "RETURN");}
+   |  BREAK  {printToken(yylval.tinfo, "BREAK");}
    |  PRECOMPILER {printToken(yylval.tinfo, "PRECOMPILER");}
    |  NUMCONST {printToken(yylval.tinfo, "NUMCONST");}
    |  BOOLCONST{printToken(yyval.tinfo, "BOOLCONST");}
