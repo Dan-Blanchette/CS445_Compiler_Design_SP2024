@@ -35,7 +35,7 @@ int setValue(int linenum, int tokenClass, char *svalue) {
          break;
     // case CHARCONST:
          // yyval.tinfo.cvalue = not sure what this should be set to yet.
-    //    break;
+        //  break;
     }
 
 
