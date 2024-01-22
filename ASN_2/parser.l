@@ -53,9 +53,11 @@ underbar [_]
 letdig      {digit}|{letter}|{underbar}
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
+op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
 comment \/\/.*
+// string \"\
 %%
-[\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]         { return setValue(line, OP, yytext); } // single char tokens
+{op}           { return setValue(line, OP, yytext);} // single char tokens
 "!="           { return setValue(line, NEQ, yytext);}
 "<="           { return setValue(line, LEQ, yytext);}
 ">="           { return setValue(line, GEQ, yytext);}
