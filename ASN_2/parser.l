@@ -50,7 +50,7 @@ letter   [a-zA-Z]
 digit    [0-9]
 quote    [\']
 underbar [_]
-bool     '^t' | '^f'
+bool     "true" | "false"
 letdig      {digit}|{letter}|{underbar}
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
