@@ -58,7 +58,6 @@ id [a-zA-Z][a-zA-Z0-9]*
 op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
 comment \/\/.*
 char   {quote}.{quote} | {quote}[\\\n]{quote}
-string [\"].[\"] | [\"\\\n]*[\"]
 %%
 {op}           { return setValue(line, OP, yytext);} // single char tokens
 "!="           { return setValue(line, NEQ, yytext);}
@@ -95,7 +94,7 @@ string [\"].[\"] | [\"\\\n]*[\"]
 {comment}      ;
 {id}           {return setValue(line, ID, yytext);}
 {char}         {return setValue(line, CHARCONST, yytext);}
-{string}       {return setValue(line, STRINGCONST, yytext);}
+[\"].[\"] | [\"\\\n]*[\"]      {return setValue(line, STRINGCONST, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
 .              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]);}
