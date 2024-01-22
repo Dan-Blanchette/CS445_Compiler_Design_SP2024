@@ -68,6 +68,8 @@ comment \/\/.*
 ":<:"          { return setValue(line, MIN, yytext);} // add to parser.y
 ":>:"          { return setValue(line, MAX, yytext);}
 "int"          { return setValue(line, INT, yytext);}
+"char"         { return setValue(line, CHAR, yytext);}
+"bool"         { return setValue(line, BOOL, yytext);}
 "and"          { return setValue(line, AND, yytext);}
 "or"           { return setValue(line, OR, yytext);}
 "for"          { return setValue(line, FOR, yytext);}

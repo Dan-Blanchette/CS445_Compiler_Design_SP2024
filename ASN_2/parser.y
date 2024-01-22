@@ -39,6 +39,8 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  MIN
 %token   <tinfo>  MAX 
 %token   <tinfo>  INT
+%token   <tinfo>  CHAR
+%token   <tinfo>  BOOL
 %token   <tinfo>  AND
 %token   <tinfo>  OR
 %token   <tinfo>  FOR
@@ -70,9 +72,11 @@ term  :
    |  SUBASS {printToken(yylval.tinfo, "SUBASS");}
    |  MULASS {printToken(yylval.tinfo, "MULASS");}
    |  DIVASS {printToken(yylval.tinfo, "DIVASS");}
-   |  MIN {printToken(yyval.tinfo, "MIN");}
-   |  MAX {printToken(yyval.tinfo, "MAX");}
-   |  INT {printToken(yyval.tinfo, "INT");}
+   |  MIN {printToken(yylval.tinfo, "MIN");}
+   |  MAX {printToken(yylval.tinfo, "MAX");}
+   |  INT {printToken(yylval.tinfo, "INT");}
+   |  CHAR{printToken(yylval.tinfo, "CHAR");}
+   |  BOOL{printToken(yylval.tinfo, "BOOL");}
    |  AND {printToken(yylval.tinfo, "AND");}
    |  OR  {printToken(yylval.tinfo, "OR");}
    |  FOR  {printToken(yylval.tinfo, "FOR");}
