@@ -58,6 +58,8 @@ comment \/\/.*
 %%
 [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]         { return setValue(line, OP, yytext); } // single char tokens
 "!="           { return setValue(line, NEQ, yytext);}
+"<="           { return setValue(line, LEQ, yytext);}
+">="           { return setValue(line, GEQ, yytext);}
 "++"           { return setValue(line, INC, yytext);}
 "--"           { return setValue(line, DEC, yytext);}
 "=="           { return setValue(line, EQ, yytext);}

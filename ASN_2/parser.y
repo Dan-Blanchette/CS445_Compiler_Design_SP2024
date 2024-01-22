@@ -29,6 +29,8 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 }
 %token   <tinfo>  OP
 %token   <tinfo>  NEQ
+%token   <tinfo>  LEQ
+%token   <tinfo>  GEQ
 %token   <tinfo>  INC
 %token   <tinfo>  DEC
 %token   <tinfo>  EQ
@@ -65,6 +67,8 @@ program  :  program term
 term  : 
       OP {printToken(yylval.tinfo, "OP");}
    |  NEQ {printToken(yylval.tinfo, "NEQ");}
+   |  LEQ {printToken(yylval.tinfo, "LEQ");}
+   |  GEQ {printToken(yylval.tinfo, "GEQ");}
    |  INC {printToken(yylval.tinfo, "INC");}
    |  DEC {printToken(yylval.tinfo, "DEC");}
    |  EQ  {printToken(yylval.tinfo, "EQ");}
