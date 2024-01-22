@@ -50,7 +50,6 @@ letter   [a-zA-Z]
 digit    [0-9]
 quote    [\']
 underbar [_]
-bool     "true" | "false"
 letdig      {digit}|{letter}|{underbar}
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
@@ -90,7 +89,7 @@ char   {quote}.{quote} | {quote}[\\\n]{quote}
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext);}
 ^"#DRBCRUN ".* { return setValue(line, PRECOMPILER, yytext);}
 {digit}+       { return setValue(line, NUMCONST, yytext); }
-{bool}         {return setValue(line, BOOLCONST, yytext);}
+"^t"|"^f"      {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
 {id}           {return setValue(line, ID, yytext);}
 {char}         {return setValue(line, CHARCONST, yytext);}
