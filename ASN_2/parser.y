@@ -56,6 +56,7 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  RETURN
 %token   <tinfo>  BREAK
 %token   <tinfo>  PRECOMPILER
+%token   <tinfo>  ID
 %token   <tinfo>  NUMCONST
 %token   <tinfo>  BOOLCONST
 %token   <tinfo>  ERROR 
@@ -88,6 +89,7 @@ term  :
    |  BY {printToken(yylval.tinfo, "BY");}
    |  WHILE  {printToken(yylval.tinfo, "WHILE");}
    |  IF {printToken(yylval.tinfo, "IF");}
+   |  ID {printToken(yylval.tinfo, "ID");}
    |  THEN {printToken(yylval.tinfo, "THEN");}
    |  ELSE {printToken(yylval.tinfo, "ELSE");}
    |  STATIC {printToken(yylval.tinfo, "STATIC");}

@@ -50,6 +50,7 @@ letter   [a-zA-Z]
 digit    [0-9]
 quote    [\']
 underbar [_]
+id {letter}{letter}{digit}
 letdig      {digit}|{letter}|{underbar}
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
@@ -88,6 +89,8 @@ comment \/\/.*
 {digit}+       { return setValue(line, NUMCONST, yytext); }
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
+{id}           {return setValue(line, ID, yytext);}
+{}*  {return setValue(line, ID, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
 .              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]);}
