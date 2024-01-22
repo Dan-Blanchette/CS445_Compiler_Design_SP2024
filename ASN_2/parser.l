@@ -50,12 +50,15 @@ letter   [a-zA-Z]
 digit    [0-9]
 quote    [\']
 underbar [_]
+bool     '^t' | '^f'
 letdig      {digit}|{letter}|{underbar}
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
+id [a-zA-Z][a-zA-Z0-9]*
 op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
 comment \/\/.*
-// string \"\
+char   {quote}.{quote} | {quote}[\\\n]{quote}
+string [\"].[\"] | [\"\\\n]*[\"]
 %%
 {op}           { return setValue(line, OP, yytext);} // single char tokens
 "!="           { return setValue(line, NEQ, yytext);}
@@ -88,9 +91,11 @@ comment \/\/.*
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext);}
 ^"#DRBCRUN ".* { return setValue(line, PRECOMPILER, yytext);}
 {digit}+       { return setValue(line, NUMCONST, yytext); }
-"true"|"false" {return setValue(line, BOOLCONST, yytext);}
+{bool}         {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
-[a-zA-Z][a-zA-Z0-9]*  {return setValue(line, ID, yytext);}
+{id}           {return setValue(line, ID, yytext);}
+{char}         {return setValue(line, CHARCONST, yytext);}
+{string}       {return setValue(line, STRINGCONST, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
 .              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]);}

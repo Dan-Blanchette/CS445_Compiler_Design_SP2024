@@ -59,6 +59,8 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  ID
 %token   <tinfo>  NUMCONST
 %token   <tinfo>  BOOLCONST
+%token   <tinfo>  CHARCONST
+%token   <tinfo>  STRINGCONST
 %token   <tinfo>  ERROR 
 %type <tinfo>  term program
 %%
@@ -97,7 +99,9 @@ term  :
    |  BREAK  {printToken(yylval.tinfo, "BREAK");}
    |  PRECOMPILER {printToken(yylval.tinfo, "PRECOMPILER");}
    |  NUMCONST {printToken(yylval.tinfo, "NUMCONST");}
-   |  BOOLCONST{printToken(yyval.tinfo, "BOOLCONST");}
+   |  BOOLCONST {printToken(yyval.tinfo, "BOOLCONST");}
+   |  CHARCONST {printToken(yylval.tinfo, "CHARCONST");}
+   |  STRINGCONST {printToken(yylval.tinfo, "STRINGCONST");}
    |  ERROR    {cout << "ERROR(SCANNER Line " << yylval.tinfo.linenum << "): Invalid input character " << yylval.tinfo.tokenstr << endl; }
    ;
 %%
