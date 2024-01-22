@@ -55,8 +55,7 @@ limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
 id [a-zA-Z][a-zA-Z0-9]*
 op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
-comment \/\/.*
-char   {quote}.{quote} | {quote}[\\\n]{quote}
+comment \/\/.*   
 %%
 {op}           { return setValue(line, OP, yytext);} // single char tokens
 "!="           { return setValue(line, NEQ, yytext);}
@@ -92,8 +91,7 @@ char   {quote}.{quote} | {quote}[\\\n]{quote}
 "^t"|"^f"      {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
 {id}           {return setValue(line, ID, yytext);}
-{char}         {return setValue(line, CHARCONST, yytext);}
-// [\"].[\"] | [\"\\\n]*[\"]      {return setValue(line, STRINGCONST, yytext);}
+{quote}.{quote} | {quote}[\\\n]{quote}  {return setValue(line, CHARCONST, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
 .              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]);}
