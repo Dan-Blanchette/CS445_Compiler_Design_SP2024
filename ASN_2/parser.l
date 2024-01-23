@@ -50,6 +50,7 @@ letter   [a-zA-Z]
 digit    [0-9]
 quote    [\']
 underbar [_]
+dubquote [\"]
 letdig      {digit}|{letter}|{underbar}
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
@@ -91,6 +92,7 @@ comment \/\/.*
 {digit}+       { return setValue(line, NUMCONST, yytext); }
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
+{dubquote}.{dubquote}* | {dubquote}[\\\n]*{dubquote}* {return setValue(line, STRINGCONST, yytext);}
 {letter}{letdig}*    {return setValue(line, ID, yytext);}
 {quote}.{quote} | {quote}[\\\n]{quote}  {return setValue(line, CHARCONST, yytext);}
 \n             {  line++; }
