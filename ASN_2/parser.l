@@ -52,6 +52,7 @@ quote    [\']
 underbar [_]
 dubquote [\"]
 letdig      {digit}|{letter}|{underbar}
+string      {letdig}+|{op}+|{whitespace}+|limitters
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
 op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
@@ -94,7 +95,7 @@ comment \/\/.*
 {comment}      ;
 {quote}\\?.{quote} {return setValue(line, CHARCONST, yytext);}
 {quote}(\\[^\n]|[^\'\\\n]*){quote}  {return setValue(line, CHARCONST, yytext);}
-[\"]{letdig}+[\"]* {return setValue(line, STRINGCONST, yytext);} 
+[\"]{string}+[\"]+* {return setValue(line, STRINGCONST, yytext);} 
 {letter}{letdig}*  {return setValue(line, ID, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
