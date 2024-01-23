@@ -53,7 +53,6 @@ underbar [_]
 letdig      {digit}|{letter}|{underbar}
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
-id [a-zA-Z][a-zA-Z0-9]*
 op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
 comment \/\/.*   
 %%
@@ -90,7 +89,7 @@ comment \/\/.*
 {digit}+       { return setValue(line, NUMCONST, yytext); }
 "^true"|"^false"      {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
-{id}           {return setValue(line, ID, yytext);}
+{letter}{letdig}*    {return setValue(line, ID, yytext);}
 {quote}.{quote} | {quote}[\\\n]{quote}  {return setValue(line, CHARCONST, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
