@@ -92,7 +92,7 @@ comment \/\/.*
 {digit}+       { return setValue(line, NUMCONST, yytext); }
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
-{quote}+{letter}*{quote}+ | {quote}+{digit}*{quote}+     {return setValue(line, CHARCONST, yytext);}
+{quote}[a-zA-Z]{quote}+     {return setValue(line, CHARCONST, yytext);}
 {letter}[a-zA-Z0-9]*    {return setValue(line, ID, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
