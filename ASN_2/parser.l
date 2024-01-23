@@ -93,7 +93,7 @@ comment \/\/.*
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
 {letter}{letdig}*    {return setValue(line, ID, yytext);}
-[\'].[\'] | [\'][^\\0\n][\\][a-lm-zA-LM-Z][\']    {return setValue(line, CHARCONST, yytext);}
+[\'].[\']     {return setValue(line, CHARCONST, yytext);}
 // {dubquote}.{dubquote}* | {dubquote}[\\\n]*{dubquote}* {return setValue(line, STRINGCONST, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
