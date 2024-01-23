@@ -51,7 +51,6 @@ digit    [0-9]
 quote    [\'] 
 underbar [_]
 period   [.]
-dubquote [\"]
 letdig      {digit}|{letter}|{underbar}
 string      {letdig}+|{op}+|{whitespace}+|{limitters}+|{period}+
 limitters   [\;\,\(\)\{\}\[\]]
@@ -95,11 +94,9 @@ comment \/\/.*
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
 {quote}\\?.{quote} {return setValue(line, CHARCONST, yytext);}
-{quote}(\\[^\n]|[^\'\\\n]*){quote}  {return setValue(line, CHARCONST, yytext);}
-[\"]{string}+\"+* {return setValue(line, STRINGCONST, yytext);} 
+{quote}(\\[^\n]|[^\'\\\n])*{quote}  {return setValue(line, CHARCONST, yytext);}
+[“](\\[^\n]|[^\”\\\n])*[“] {return setValue(line, STRINGCONST, yytext);} 
 {letter}{letdig}*  {return setValue(line, ID, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
 .              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]);}
-
-
