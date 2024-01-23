@@ -93,8 +93,7 @@ comment \/\/.*
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
 {letter}{letdig}*    {return setValue(line, ID, yytext);}
-[\'].[\']     {return setValue(line, CHARCONST, yytext);}
-// {dubquote}.{dubquote}* | {dubquote}[\\\n]*{dubquote}* {return setValue(line, STRINGCONST, yytext);}
+{quote}.{quote}     {return setValue(line, CHARCONST, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
 .              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]);}
