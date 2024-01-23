@@ -48,6 +48,7 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  FOR
 %token   <tinfo>  TO
 %token   <tinfo>  DO
+%token   <tinfo>  NOT
 %token   <tinfo>  BY
 %token   <tinfo>  WHILE
 %token   <tinfo>  IF
