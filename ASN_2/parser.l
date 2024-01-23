@@ -48,8 +48,7 @@ int setValue(int linenum, int tokenClass, char *svalue) {
 
 letter   [a-zA-Z]
 digit    [0-9]
-quote    [\']
-charconst [\'].[\'] | [\'][^\\0\n][\\][a-lm-zA-LM-Z][\']
+quote    [\'] 
 underbar [_]
 dubquote [\"]
 letdig      {digit}|{letter}|{underbar}
@@ -94,7 +93,7 @@ comment \/\/.*
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
 {letter}{letdig}*    {return setValue(line, ID, yytext);}
-{charconst}    {return setValue(line, CHARCONST, yytext);}
+[\'].[\'] | [\'][^\\0\n][\\][a-lm-zA-LM-Z][\']    {return setValue(line, CHARCONST, yytext);}
 // {dubquote}.{dubquote}* | {dubquote}[\\\n]*{dubquote}* {return setValue(line, STRINGCONST, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
