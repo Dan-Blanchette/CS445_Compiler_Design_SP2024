@@ -47,6 +47,7 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %token   <tinfo>  OR
 %token   <tinfo>  FOR
 %token   <tinfo>  TO
+%token   <tinfo>  DO
 %token   <tinfo>  BY
 %token   <tinfo>  WHILE
 %token   <tinfo>  IF
@@ -88,6 +89,8 @@ term  :
    |  OR  {printToken(yylval.tinfo, "OR");}
    |  FOR  {printToken(yylval.tinfo, "FOR");}
    |  TO {printToken(yylval.tinfo, "TO");}
+   |  DO {printToken(yylval.tinfo, "DO");}
+   |  NOT {printToken(yylval.tinfo, "NOT");}
    |  BY {printToken(yylval.tinfo, "BY");}
    |  WHILE  {printToken(yylval.tinfo, "WHILE");}
    |  IF {printToken(yylval.tinfo, "IF");}
