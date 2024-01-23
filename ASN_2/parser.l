@@ -50,9 +50,10 @@ letter   [a-zA-Z]
 digit    [0-9]
 quote    [\'] 
 underbar [_]
+period   [.]
 dubquote [\"]
 letdig      {digit}|{letter}|{underbar}
-string      {letdig}+|{op}+|{whitespace}+|limitters
+string      {letdig}+|{op}+|{whitespace}+|{limitters}+|{period}+
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
 op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
