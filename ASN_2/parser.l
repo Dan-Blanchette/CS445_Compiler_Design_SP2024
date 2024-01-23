@@ -88,7 +88,7 @@ comment \/\/.*
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext);}
 ^"#DRBCRUN ".* { return setValue(line, PRECOMPILER, yytext);}
 {digit}+       { return setValue(line, NUMCONST, yytext); }
-"^t"|"^f"      {return setValue(line, BOOLCONST, yytext);}
+"^true"|"^false"      {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;
 {id}           {return setValue(line, ID, yytext);}
 {quote}.{quote} | {quote}[\\\n]{quote}  {return setValue(line, CHARCONST, yytext);}
