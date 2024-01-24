@@ -3,7 +3,10 @@
 #include "parser.tab.h" // This has to be the last include
 
 using namespace std;
-
+// Dan Blanchette
+// ASN_2
+// CS-445 Compiler Design
+// Doctor BC
 #define YY_DECL extern "C" int yylex()
 #define YYSTYPE int
 
