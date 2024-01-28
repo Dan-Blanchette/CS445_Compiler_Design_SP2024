@@ -60,7 +60,8 @@ string      {letdig}+|{op}+|{whitespace}+|{limitters}+|{period}+
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
 op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
-comment \/\/.*   
+comment \/\/.*  
+ 
 %%
 {op}           { return setValue(line, OP, yytext);} // single char tokens
 "!="           { return setValue(line, NEQ, yytext);}

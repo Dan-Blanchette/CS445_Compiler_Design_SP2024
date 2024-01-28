@@ -1,13 +1,47 @@
 %{
 #include <cstdio>
 #include <iostream>
+#include <stdlib.h>
 #include <unistd.h>
+#include "treeUtils.h"
 #include "scanType.h"
+#include "dot.h"
 using namespace std;
+
+
 
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
+
+int numErrors = 0;
+int numWarnings = 0;
+extern int line;
+extern int yylex();
+
+TreeNode *addSibling(TreeNode *t, TreeNode *s)
+{
+   // make sure s is not the null value. If it is empty, major error, exit program!
+   // make sure t is not the null value. If it is, return s;
+   // look at t's sibling list until you finish with sibbling = null (the end of the list) and add s there.
+   return s;
+}
+
+// pass the static type attribute to the sibling list
+void setType(TreeNode *t, ExpType type, bool isStatic)
+{
+   while(t)
+   {
+      // set t->type and t->isStatic
+      t->type = type;
+      t->isStatic = isStatic;
+      t = t->sibling;
+   }
+   return t;
+}
+
+// the syntax tree goes here
+TreeNode *syntaxTree;
 
 void yyerror(const char *msg);
 
@@ -25,46 +59,39 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 %}
 %union
 {
-   struct   TokenData tinfo ;
+   TokenData *tokenData;
+   TreeNode *tree;
+   ExpType type; // for passing type spec up the tree
 }
-%token   <tinfo>  OP
-%token   <tinfo>  NEQ
-%token   <tinfo>  LEQ
-%token   <tinfo>  GEQ
-%token   <tinfo>  INC
-%token   <tinfo>  DEC
-%token   <tinfo>  EQ
-%token   <tinfo>  ADDASS
-%token   <tinfo>  SUBASS
-%token   <tinfo>  MULASS
-%token   <tinfo>  DIVASS
-%token   <tinfo>  MIN
-%token   <tinfo>  MAX 
-%token   <tinfo>  INT
-%token   <tinfo>  CHAR
-%token   <tinfo>  BOOL
-%token   <tinfo>  AND
-%token   <tinfo>  OR
-%token   <tinfo>  FOR
-%token   <tinfo>  TO
-%token   <tinfo>  DO
-%token   <tinfo>  NOT
-%token   <tinfo>  BY
-%token   <tinfo>  WHILE
-%token   <tinfo>  IF
-%token   <tinfo>  THEN
-%token   <tinfo>  ELSE
-%token   <tinfo>  STATIC
-%token   <tinfo>  RETURN
-%token   <tinfo>  BREAK
-%token   <tinfo>  PRECOMPILER
-%token   <tinfo>  ID
-%token   <tinfo>  NUMCONST
-%token   <tinfo>  BOOLCONST
-%token   <tinfo>  CHARCONST
-%token   <tinfo>  STRINGCONST
-%token   <tinfo>  ERROR 
-%type <tinfo>  term program
+
+%type <tokenData> sumop mulop unaryop
+%type <tokenData> assignop relop minmaxop
+
+%type <tree> program
+%type <tree> precompList
+%type <tree> decList decl 
+%type <tree> varDecl varDecList funDecl
+%type <tree> typeSpec 
+
+%type <type> typeSpec
+
+%token <tokenData> FIRSTOP
+%token <tokenData> ADDASS DIVASS MULASS SUBASS
+%token <tokenData> AND OR NOT
+%token <tokenData> EQ GEQ LEQ NEQ
+%token <tokenData> MIN MAX INC DEC
+%token <tokenData> '*' '-' '/' '+' '<' '>' '=' '%' '?'
+%token <tokenData> PRECOMPILER
+%token <tokenData> LASTOP
+
+%token <tokenData> IF ELSE FOR DO INT RETURN STATIC THEN TO WHILE BOOL BREAK CHAR BY
+%token <tokenData> ID 
+%token <tokenData> BOOLCONST CHARCONST STRINGCONST NUMCONST
+%token <tokenData> ':' '[' ']' '(' ')' '{' '}' ';' ','
+%token <tokenData> LASTTERM
+
+
+
 %%
 program  :  program term
    |  term  {$$=$1;}
@@ -117,7 +144,11 @@ int main(int argc, char **argv) {
    yylval.tinfo.linenum = 1;
    int option, index;
    char *file = NULL;
+   bool dotAST = false;
    extern FILE *yyin;
+
+   int ch;
+   
    while ((option = getopt (argc, argv, "")) != -1)
       switch (option)
       {
