@@ -16,28 +16,28 @@ char *lastToken=(char *)"";
 
 // used as a means to communicate between .l and .y files
 int setValue(int linenum, int tokenClass, char *svalue) {
-    yylval.tinfo.tokenclass = tokenClass;
-    yylval.tinfo.linenum = linenum;
-    yylval.tinfo.tokenstr = strdup(svalue);
-    yylval.tinfo.cvalue = '@';
-    yylval.tinfo.nvalue = 777;
-    yylval.tinfo.svalue = NULL;
+    yylval.tinfo->tokenclass = tokenClass;
+    yylval.tinfo->linenum = linenum;
+    yylval.tinfo->tokenstr = strdup(svalue);
+    yylval.tinfo->cvalue = '@';
+    yylval.tinfo->nvalue = 777;
+    yylval.tinfo->svalue = NULL;
 
-    yylval.tinfo.tokenstr = lastToken = strdup(svalue);
+    yylval.tinfo->tokenstr = lastToken = strdup(svalue);
 
     switch (tokenClass) {
 
     case NUMCONST:
-         // yylval.tinfo.nvalue = hmmmm ..... I don't need this yet, but
+         // yylval.tinfo->nvalue = hmmmm ..... I don't need this yet, but
          break;
     case BOOLCONST:
-         // yyval.tinfo.nvalue = something to think about.. probably set to 0 or 1?
+         // yyval.tinfo->nvalue = something to think about.. probably set to 0 or 1?
          break;
-    case OP:
-         // yylval.tinfo.cvalue = hmmm..... What should I set it to?
-         break;
+    //case OP:
+         // yylval.tinfo->cvalue = hmmm..... What should I set it to?
+        // break;
     // case CHARCONST:
-         // yyval.tinfo.cvalue = not sure what this should be set to yet.
+         // yyval.tinfo->cvalue = not sure what this should be set to yet.
         //  break;
     }
 
@@ -62,7 +62,7 @@ whitespace  [\ \t]
 op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
 comment \/\/.*   
 %%
-{op}           { return setValue(line, OP, yytext);} // single char tokens
+{op}           { return setValue(line, yytext[0], yytext);} // single char tokens
 "!="           { return setValue(line, NEQ, yytext);}
 "<="           { return setValue(line, LEQ, yytext);}
 ">="           { return setValue(line, GEQ, yytext);}
