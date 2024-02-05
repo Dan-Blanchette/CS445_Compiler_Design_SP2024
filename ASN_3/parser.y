@@ -146,14 +146,14 @@ typeSpec : INT {$$ = ExpType::Integer;}
    ;
 
 // rule 11
-funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FunK, $1, $2, $4, $6); cout <<"funDecl : typeSpec ID '(' parms ')' stmt"
+funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, $1, $2, $4, $6); cout <<"funDecl : typeSpec ID '(' parms ')' stmt"
  <<  endl;}
    | ID '(' parms ')' stmt {$$ = NULL;}
    ;
 
 // rule 12
 parms : parmList {$$ = NULL;}
-   | /*empty*/ {$$ = NULL}
+   | /*empty*/ {$$ = NULL;}
    ;
 
 // rule 13
