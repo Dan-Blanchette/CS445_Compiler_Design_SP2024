@@ -106,252 +106,252 @@ precompList : precompList PRECOMPILER {$$ = NULL;}
    ;
 
 // rule 3
-declList : declList decl {}
-   | decl {}
+declList : declList decl {$$ = NULL;}
+   | decl {$$ = NULL;}
    ;
 
 // rule 4
-decl : varDecl {}
-   | funDecl {}
+decl : varDecl {$$ = NULL;}
+   | funDecl {$$ = NULL;}
    ;
 
 //rule 5
-varDecl : typeSpec varDeclList  ';' {}
+varDecl : typeSpec varDeclList  ';' {$$ = NULL;}
    ;
 
 // rule 6
-scopedVarDecl : STATIC typeSpec varDeclList ';' {}
-   | typeSpec varDeclList ';' {}
+scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = NULL;}
+   | typeSpec varDeclList ';' {$$ = NULL;}
    ;
 
 // rule 7
-varDeclList : varDeclList ',' varDeclInit {}
-   | varDeclInit {}
+varDeclList : varDeclList ',' varDeclInit {$$ = NULL;}
+   | varDeclInit {$$ = NULL;}
    ;
 
 // rule 8
-varDeclInit : varDeclId {}
-   | varDeclId ':' simpleExp {}
+varDeclInit : varDeclId {$$ = NULL;}
+   | varDeclId ':' simpleExp {$$ = NULL;}
    ;
 
 // rule 9
-varDeclId : ID {}
-   | ID '[' NUMCONST ']' {}
+varDeclId : ID {$$ = NULL;}
+   | ID '[' NUMCONST ']' {$$ = NULL;}
    ;
 
 // rule 10
-typeSpec : INT {}
-   | BOOL {}
-   | CHAR {}
+typeSpec : INT {$$ = NULL;}
+   | BOOL {$$ = NULL;}
+   | CHAR {$$ = NULL;}
    ;
 
 // rule 11
-funDecl : typeSpec ID '(' parms ')' stmt {}
-   | ID '(' parms ')' stmt {}
+funDecl : typeSpec ID '(' parms ')' stmt {$$ = NULL;}
+   | ID '(' parms ')' stmt {$$ = NULL;}
    ;
 
 // rule 12
-parms : parmList {}
+parms : parmList {$$ = NULL;}
    | /*empty*/
    ;
 
 // rule 13
-parmList : parmList ',' parmId {}
-   | parmId {}
+parmList : parmList ',' parmId {$$ = NULL;}
+   | parmId {$$ = NULL;}
    ;
 
 // rule 14
-parmTypeList : typeSpec parmIdList {}
-   | parmId {}
+parmTypeList : typeSpec parmIdList {$$ = NULL;}
+   | parmId {$$ = NULL;}
    ;
 
 // rule 15
-parmIdList : parmIdList ',' parmId  {}
-   | parmId  {}
+parmIdList : parmIdList ',' parmId  {$$ = NULL;}
+   | parmId  {$$ = NULL;}
    ;
 
 // rule 16
-parmId : ID {}
-   | ID '['']' {}
+parmId : ID {$$ = NULL;}
+   | ID '['']' {$$ = NULL;}
    ;
 
 // rule 17
-stmt : matched {}
-   | unmatched {}
+stmt : matched {$$ = NULL;}
+   | unmatched {$$ = NULL;}
    ;
 
 // rule 18
-matched : IF simpleExp THEN matched ELSE matched {}
-   | WHILE simpleExp DO matched {}
-   | FOR ID '=' iterRange DO matched {}
-   | expstmt {}
-   | compoundstmt {}
-   | returnstmt {}
-   | breakstmt {}
+matched : IF simpleExp THEN matched ELSE matched {$$ = NULL;}
+   | WHILE simpleExp DO matched {$$ = NULL;}
+   | FOR ID '=' iterRange DO matched {$$ = NULL;}
+   | expstmt {$$ = NULL;}
+   | compoundstmt {$$ = NULL;}
+   | returnstmt {$$ = NULL;}
+   | breakstmt {$$ = NULL;}
    ;
 
 // rule 19
-iterRange : simpleExp TO simpleExp {}
-   | simpleExp TO simpleExp BY simpleExp {}
+iterRange : simpleExp TO simpleExp {$$ = NULL;}
+   | simpleExp TO simpleExp BY simpleExp {$$ = NULL;}
    ;
 
 // rule 20
-unmatched : IF simpleExp THEN stmt {}
-   | IF simpleExp THEN matched ELSE unmatched {}
-   | WHILE simpleExp DO unmatched {}
-   | FOR ID '=' iterRange DO unmatched {}
+unmatched : IF simpleExp THEN stmt {$$ = NULL;}
+   | IF simpleExp THEN matched ELSE unmatched {$$ = NULL;}
+   | WHILE simpleExp DO unmatched {$$ = NULL;}
+   | FOR ID '=' iterRange DO unmatched {$$ = NULL;}
    ;
 
 // rule 21
-expstmt : exp ';' {}
+expstmt : exp ';' {$$ = NULL;}
    | ';'
    ;
 
 // rule 22
-compoundstmt : '{' localDecls stmtList '}' {}
+compoundstmt : '{' localDecls stmtList '}' {$$ = NULL;}
    ;
 
 // rule 23
-localDecls : localDecls scopedVarDecl {}
+localDecls : localDecls scopedVarDecl {$$ = NULL;}
    | /*empty*/ {$$ = NULL;}
    ;
 
 // rule 24
-stmtList : stmtList stmt {}
+stmtList : stmtList stmt {$$ = NULL;}
    | /*empty*/ {$$ = NULL;}
    ;
 
 // rule 25
-returnstmt : RETURN ';' {}
-   | RETURN exp ';' {}
+returnstmt : RETURN ';' {$$ = NULL;}
+   | RETURN exp ';' {$$ = NULL;}
    ;
 
 //rule 26
-breakstmt : BREAK ';' {}
+breakstmt : BREAK ';' {$$ = NULL;}
    ;
 
 // rule 27
-exp : mutable assignop exp {}
-   | mutable INC {}
-   | mutable DEC {}
-   | simpleExp {}
-   | mutable assignop error {} 
+exp : mutable assignop exp {$$ = NULL;}
+   | mutable INC {$$ = NULL;}
+   | mutable DEC {$$ = NULL;}
+   | simpleExp {$$ = NULL;}
+   | mutable assignop error {$$ = NULL;} 
    ;
 
 // rule 28
-assignop : '=' {}
-   | ADDASS {}
-   | SUBASS {}
-   | MULASS {}
-   | DIVASS {}
+assignop : '=' {$$ = NULL;}
+   | ADDASS {$$ = NULL;}
+   | SUBASS {$$ = NULL;}
+   | MULASS {$$ = NULL;}
+   | DIVASS {$$ = NULL;}
    ;
 
 // rule 29
-simpleExp : simpleExp OR andExp {}
-   | andExp {}
+simpleExp : simpleExp OR andExp {$$ = NULL;}
+   | andExp {$$ = NULL;}
    ;
 
 // rule 30
-andExp : andExp AND unaryRelExp {}
-   | unaryRelExp {}
+andExp : andExp AND unaryRelExp {$$ = NULL;}
+   | unaryRelExp {$$ = NULL;}
    ;
 
 // rule 31
-unaryRelExp : NOT unaryRelExp {}
-   | relExp {}
+unaryRelExp : NOT unaryRelExp {$$ = NULL;}
+   | relExp {$$ = NULL;}
    ;
 
 // rule 32
-relExp : minmaxExp relop minmaxExp {}
-   | minmaxExp {}
+relExp : minmaxExp relop minmaxExp {$$ = NULL;}
+   | minmaxExp {$$ = NULL;}
    ;
 
 // rule 33
-relop : LEQ {}
-   | '<' {}
-   | '>' {}
-   | GEQ {}
-   | EQ  {}
-   | NEQ {}
+relop : LEQ {$$ = NULL;}
+   | '<' {$$ = NULL;}
+   | '>' {$$ = NULL;}
+   | GEQ {$$ = NULL;}
+   | EQ  {$$ = NULL;}
+   | NEQ {$$ = NULL;}
    ;
 
 // rule 34
-minmaxExp : minmaxExp minmaxop sumExp {}
-   | sumExp {}
+minmaxExp : minmaxExp minmaxop sumExp {$$ = NULL;}
+   | sumExp {$$ = NULL;}
    ;
 
 // rule 35
-minmaxop : MAX {}
-   | MIN {}
+minmaxop : MAX {$$ = NULL;}
+   | MIN {$$ = NULL;}
    ;
 
 // rule 36
-sumExp : sumExp sumop mulExp {}
-   | mulExp {}
+sumExp : sumExp sumop mulExp {$$ = NULL;}
+   | mulExp {$$ = NULL;}
    ;
 
 // rule 37
-sumop : '+' {}
+sumop : '+' {$$ = NULL;}
    | '-'
    ;
 
 // rule 38
-mulExp : mulExp mulop unaryExp {}
-   | unaryExp {}
+mulExp : mulExp mulop unaryExp {$$ = NULL;}
+   | unaryExp {$$ = NULL;}
    ;
 
 // rule 39
-mulop : '*' {}
+mulop : '*' {$$ = NULL;}
    | '/'
    | '%'
    ;
 
 // rule 40
-unaryExp : unaryop unaryExp {}
-   | factor {}
+unaryExp : unaryop unaryExp {$$ = NULL;}
+   | factor {$$ = NULL;}
    ;
 
 // rule 41
-unaryop : unaryop '-' {}
-   | '*' {}
-   | '?' {}
+unaryop : unaryop '-' {$$ = NULL;}
+   | '*' {$$ = NULL;}
+   | '?' {$$ = NULL;}
    ;
 
 // rule 42
-factor : immutable {}
-   | mutable {}
+factor : immutable {$$ = NULL;}
+   | mutable {$$ = NULL;}
    ;
 
 // rule 43
-mutable : ID {}
-   | ID '[' exp ']' {}
+mutable : ID {$$ = NULL;}
+   | ID '[' exp ']' {$$ = NULL;}
    ;
 
 // rule 44
-immutable : '(' exp ')' {}
-   | call {}
-   | constant {}
+immutable : '(' exp ')' {$$ = NULL;}
+   | call {$$ = NULL;}
+   | constant {$$ = NULL;}
    ;
 
 // rule 45
-call : ID '(' args ')' {}
+call : ID '(' args ')' {$$ = NULL;}
    ;
 
 // rule 46
-args : argList {}
+args : argList {$$ = NULL;}
    | /* empty */ {$$ = NULL;}
    ;
 
 // rule 47
-argList : argList ',' exp {}
-   | exp {}
+argList : argList ',' exp {$$ = NULL;}
+   | exp {$$ = NULL;}
    ;
 
 // rule 48
-constant : NUMCONST {}
-   | CHARCONST {}
-   | STRINGCONST {} 
-   | BOOLCONST {}
+constant : NUMCONST {$$ = NULL;}
+   | CHARCONST {$$ = NULL;}
+   | STRINGCONST {$$ = NULL;} 
+   | BOOLCONST {$$ = NULL;}
    ;
 
 %%
