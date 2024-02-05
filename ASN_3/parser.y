@@ -107,12 +107,12 @@ precompList : precompList PRECOMPILER {$$ = NULL;}
 
 // rule 3
 declList : declList decl {$$ = NULL;}
-   | decl {$$ = NULL;}
+   | decl {$$ = $1; cout << "| funDecl" << endl;}
    ;
 
 // rule 4
 decl : varDecl {$$ = NULL;}
-   | funDecl {$$ = NULL;}
+   | funDecl {$$ = $1; cout << "| funDecl" << endl;}
    ;
 
 //rule 5
@@ -140,19 +140,20 @@ varDeclId : ID {$$ = NULL;}
    ;
 
 // rule 10
-typeSpec : INT {$$ = NULL;}
+typeSpec : INT {$$ = ExpType::Integer;}
    | BOOL {$$ = NULL;}
    | CHAR {$$ = NULL;}
    ;
 
 // rule 11
-funDecl : typeSpec ID '(' parms ')' stmt {$$ = NULL;}
+funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FunK, $1, $2, $4, $6); cout <<"funDecl : typeSpec ID '(' parms ')' stmt"
+ <<  endl;}
    | ID '(' parms ')' stmt {$$ = NULL;}
    ;
 
 // rule 12
 parms : parmList {$$ = NULL;}
-   | /*empty*/
+   | /*empty*/ {$$ = NULL}
    ;
 
 // rule 13
@@ -176,8 +177,8 @@ parmId : ID {$$ = NULL;}
    ;
 
 // rule 17
-stmt : matched {$$ = NULL;}
-   | unmatched {$$ = NULL;}
+stmt : matched {$$ = $1; cout << "stmt : matched" << endl;}
+   | unmatched {$$ = $1; cout << "| unmatched" << endl;}
    ;
 
 // rule 18
@@ -208,7 +209,8 @@ expstmt : exp ';' {$$ = NULL;}
    ;
 
 // rule 22
-compoundstmt : '{' localDecls stmtList '}' {$$ = NULL;}
+compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3); cout << 
+"compoundstmt : '{' localDecls stmtList '}'" << endl;}
    ;
 
 // rule 23
