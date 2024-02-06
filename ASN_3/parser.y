@@ -1,7 +1,7 @@
 %{
 #include <cstdio>
 #include <iostream>
-#include "TreeNodes.h"
+#include "treeNodes.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include "treeUtils.h"
