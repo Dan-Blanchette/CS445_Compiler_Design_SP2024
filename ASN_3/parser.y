@@ -1,11 +1,12 @@
 %{
 #include <cstdio>
 #include <iostream>
+#include "TreeNodes.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include "treeUtils.h"
 #include "scanType.h"
-#include "dot.h"
+// #include "dot.h"
 using namespace std;
 
 
