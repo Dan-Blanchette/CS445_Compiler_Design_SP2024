@@ -373,9 +373,9 @@ void yyerror (const char *msg)
 }
 int main(int argc, char **argv) {
    // these lines allow us to read information from the parser.l file
-   yyval.tinfo = (TokenData*)malloc(sizeof(TokenData));
+   yyval.tokenData = (TokenData*)malloc(sizeof(TokenData));
    yyval.tree = (TreeNode*)malloc(sizeof(TreeNode));
-   yylval.tinfo->linenum = 1;
+   yylval.tokenData->linenum = 1;
    int option, index;
    char *file = NULL;
    bool dotAST = false;
