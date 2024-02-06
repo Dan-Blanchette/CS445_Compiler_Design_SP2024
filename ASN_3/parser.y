@@ -47,7 +47,6 @@ void setType(TreeNode *t, ExpType type, bool isStatic)
       t->isStatic = isStatic;
       t = t->sibling;
    }
-   return t;
 }
 
 // the syntax tree goes here
