@@ -22,7 +22,17 @@ extern int yylex();
 TreeNode *addSibling(TreeNode *t, TreeNode *s)
 {
    // make sure s is not the null value. If it is empty, major error, exit program!
+   if(s == NULL)
+   {
+      printf("ERROR: Sibling is equal to 0.")
+      exit(1);
+   }
+
    // make sure t is not the null value. If it is, return s;
+   if (t == NULL)
+   {
+      return s;
+   }
    // look at t's sibling list until you finish with sibbling = null (the end of the list) and add s there.
    return s;
 }

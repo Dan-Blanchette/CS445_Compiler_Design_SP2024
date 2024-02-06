@@ -4,7 +4,7 @@
 
 using namespace std;
 // Dan Blanchette
-// ASN_2
+// ASN_3
 // CS-445 Compiler Design
 // Doctor BC
 #define YY_DECL extern "C" int yylex()
@@ -16,28 +16,31 @@ char *lastToken=(char *)"";
 
 // used as a means to communicate between .l and .y files
 int setValue(int linenum, int tokenClass, char *svalue) {
-    yylval.tinfo->tokenclass = tokenClass;
-    yylval.tinfo->linenum = linenum;
-    yylval.tinfo->tokenstr = strdup(svalue);
-    yylval.tinfo->cvalue = '@';
-    yylval.tinfo->nvalue = 777;
-    yylval.tinfo->svalue = NULL;
+    yylval.token_data = new TokenData;
 
-    yylval.tinfo->tokenstr = lastToken = strdup(svalue);
+
+    yylval.token_data->tokenclass = tokenClass;
+    yylval.token_data->linenum = linenum;
+    yylval.token_data->tokenstr = strdup(svalue);
+    yylval.token_data->cvalue = '@';
+    yylval.token_data->nvalue = 777;
+    yylval.token_data->svalue = NULL;
+
+    yylval.token_data->tokenstr = lastToken = strdup(svalue);
 
     switch (tokenClass) {
 
     case NUMCONST:
-         // yylval.tinfo->nvalue = hmmmm ..... I don't need this yet, but
+         // yylval.token_data->nvalue = hmmmm ..... I don't need this yet, but
          break;
     case BOOLCONST:
-         // yyval.tinfo->nvalue = something to think about.. probably set to 0 or 1?
+         // yyval.token_data->nvalue = something to think about.. probably set to 0 or 1?
          break;
     //case OP:
-         // yylval.tinfo->cvalue = hmmm..... What should I set it to?
+         // yylval.token_data->cvalue = hmmm..... What should I set it to?
         // break;
     // case CHARCONST:
-         // yyval.tinfo->cvalue = not sure what this should be set to yet.
+         // yyval.token_data->cvalue = not sure what this should be set to yet.
         //  break;
     }
 

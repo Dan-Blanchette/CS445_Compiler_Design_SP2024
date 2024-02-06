@@ -75,14 +75,14 @@ int depth, int siblingCount = 1)
    // Draw enough . . . for this node
    printTreeNode(out, syntaxTree, showExpType, showAllocation);
    fprintf(out, "\n");
-   /*for loop here for the depth 0 is the root node*/
+   /*for loop to check for max children. If the depth = 0, then it is the root node*/
    for (int q = 0; q < MAXCHILDREN; q++)
    {
       // draw .  .  . for depth
       if(syntaxTree->child[q] != NULL)
       {
          // two spaces at the end
-         fprintf(out, "Child: %d  ",q);
+         fprintf(out, "Child: %d  ", q);
          printTreeRecurive(out, syntaxTree->child[q], showExpType, showAllocation, depth +  1);
       }
    }
