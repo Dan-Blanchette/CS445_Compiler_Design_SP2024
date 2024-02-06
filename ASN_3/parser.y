@@ -151,8 +151,8 @@ varDeclId : ID {$$ = NULL;}
 
 // rule 10
 typeSpec : INT {$$ = ExpType::Integer;}
-   | BOOL {$$ = ExpType::Integer;}
-   | CHAR {$$ = ExpType::Character;}
+   | BOOL {$$ = ExpType::Boolean;}
+   | CHAR {$$ = ExpType::Char;}
    ;
 
 // rule 11
