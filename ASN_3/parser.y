@@ -111,7 +111,7 @@ program : precompList declList {syntaxTree = $2; cout << "program : precompList 
 
 // rule 2
 precompList : precompList PRECOMPILER {$$ = NULL;}
-   | PRECOMPILER {$$ = NULL; printf("%s\n", yyval.tinfo->tokenstr);}
+   | PRECOMPILER {$$ = NULL; printf("%s\n", yyval.token_data->tokenstr);}
    | /*empty*/ {$$ = NULL;}
    ;
 
