@@ -177,8 +177,8 @@ parmTypeList : typeSpec parmIdList {$$ = NULL;}
    ;
 
 // rule 15
-parmIdList : parmIdList ',' parmId  {$$ = NULL;}
-   | parmId  {$$ = NULL;}
+parmIdList : parmIdList ',' parmId  {$$ = $1;}
+   | parmId  {$$ = $1;}
    ;
 
 // rule 16
