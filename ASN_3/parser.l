@@ -16,31 +16,31 @@ char *lastToken=(char *)"";
 
 // used as a means to communicate between .l and .y files
 int setValue(int linenum, int tokenClass, char *svalue) {
-    yylval.token_data = new TokenData;
+    yylval.tokenData = new TokenData;
 
 
-    yylval.token_data->tokenclass = tokenClass;
-    yylval.token_data->linenum = linenum;
-    yylval.token_data->tokenstr = strdup(svalue);
-    yylval.token_data->cvalue = '@';
-    yylval.token_data->nvalue = 777;
-    yylval.token_data->svalue = NULL;
+    yylval.tokenData->tokenclass = tokenClass;
+    yylval.tokenData->linenum = linenum;
+    yylval.tokenData->tokenstr = strdup(svalue);
+    yylval.tokenData->cvalue = '@';
+    yylval.tokenData->nvalue = 777;
+    yylval.tokenData->svalue = NULL;
 
-    yylval.token_data->tokenstr = lastToken = strdup(svalue);
+    yylval.tokenData->tokenstr = lastToken = strdup(svalue);
 
     switch (tokenClass) {
 
     case NUMCONST:
-         // yylval.token_data->nvalue = hmmmm ..... I don't need this yet, but
+         // yylval.tokenData->nvalue = hmmmm ..... I don't need this yet, but
          break;
     case BOOLCONST:
-         // yyval.token_data->nvalue = something to think about.. probably set to 0 or 1?
+         // yyval.tokenData->nvalue = something to think about.. probably set to 0 or 1?
          break;
     //case OP:
-         // yylval.token_data->cvalue = hmmm..... What should I set it to?
+         // yylval.tokenData->cvalue = hmmm..... What should I set it to?
         // break;
     // case CHARCONST:
-         // yyval.token_data->cvalue = not sure what this should be set to yet.
+         // yyval.tokenData->cvalue = not sure what this should be set to yet.
         //  break;
     }
 
