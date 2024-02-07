@@ -1,6 +1,8 @@
 %{
 #include "scanType.h"
 #include "parser.tab.h" // This has to be the last include
+#include "treeNodes.h"
+#include "treeUtils.h"
 
 using namespace std;
 // Dan Blanchette
