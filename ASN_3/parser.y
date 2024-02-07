@@ -360,8 +360,9 @@ argList : argList ',' exp {$$ = NULL;}
    ;
 
 // rule 48
-constant : NUMCONST {$$ = NULL;}
-   | CHARCONST {$$ = NULL;}
+constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Integer;}
+   | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
+                $$-> = ExpType::Char;}
    | STRINGCONST {$$ = NULL;} 
    | BOOLCONST {$$ = NULL;}
    ;

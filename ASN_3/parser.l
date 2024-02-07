@@ -29,23 +29,36 @@ int setValue(int linenum, int tokenClass, char *svalue) {
     yylval.tokenData->svalue = NULL;
 
     yylval.tokenData->tokenstr = lastToken = strdup(svalue);
+    // yylval.tokenData->cvalue = 
 
     switch (tokenClass) {
 
     case NUMCONST:
+       yylval.tokenData->nvalue = stoi(svalue);
          // yylval.tokenData->nvalue = hmmmm ..... I don't need this yet, but
-         break;
+       break;
     case BOOLCONST:
-         // yyval.tokenData->nvalue = something to think about.. probably set to 0 or 1?
+       if(svalue[0] == 't') {
+          yyval.tokenData->nvalue = 1;
+       }
+       else yylval.tokenData->nvalue =0;
+       break;
+         // yyval.tokenData->nvalue = something to think about.. probably set to 0 or 1? 't' or 'f'?
          break;
     //case OP:
          // yylval.tokenData->cvalue = hmmm..... What should I set it to?
-        // break;
+       break;
     // case CHARCONST:
+       if(svalue[1] == '\\'){
+          if(svalue[2] == 'n')
+             yyval.tokenData->cvalue = '\n';
+          else if(svalue[2] == '0') {
+               yyval.tokenData->cvalue = '\0';
+          }
+       }
          // yyval.tokenData->cvalue = not sure what this should be set to yet.
         //  break;
     }
-
 
     return tokenClass;
 }
