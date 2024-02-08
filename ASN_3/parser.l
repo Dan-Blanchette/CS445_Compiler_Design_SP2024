@@ -3,6 +3,7 @@
 #include "parser.tab.h" // This has to be the last include
 #include "treeNodes.h"
 #include "treeUtils.h"
+#include <string>
 
 using namespace std;
 // Dan Blanchette
@@ -39,11 +40,11 @@ int setValue(int linenum, int tokenClass, char *svalue) {
        break;
     case BOOLCONST:
        if(svalue[0] == 't') {
-          yyval.tokenData->nvalue = 1;
+          yylval.tokenData->nvalue = 1;
        }
        else yylval.tokenData->nvalue =0;
        break;
-         // yyval.tokenData->nvalue = something to think about.. probably set to 0 or 1? 't' or 'f'?
+         // yylval.tokenData->nvalue = something to think about.. probably set to 0 or 1? 't' or 'f'?
          break;
     //case OP:
          // yylval.tokenData->cvalue = hmmm..... What should I set it to?
@@ -51,12 +52,13 @@ int setValue(int linenum, int tokenClass, char *svalue) {
     // case CHARCONST:
        if(svalue[1] == '\\'){
           if(svalue[2] == 'n')
-             yyval.tokenData->cvalue = '\n';
+             yylval.tokenData->cvalue = '\n';
           else if(svalue[2] == '0') {
-               yyval.tokenData->cvalue = '\0';
+               yylval.tokenData->cvalue = '\0';
           }
        }
-         // yyval.tokenData->cvalue = not sure what this should be set to yet.
+       // test
+         // yylval.tokenData->cvalue = not sure what this should be set to yet.
         //  break;
     }
 
