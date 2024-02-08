@@ -130,18 +130,18 @@ varDecl : typeSpec varDeclList  ';' {$$ = $2;}
    ;
 
 // rule 6
-scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = NULL;}
-   | typeSpec varDeclList ';' {$$ = NULL;}
+scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3;}
+   | typeSpec varDeclList ';' {$$ = $2;}
    ;
 
 // rule 7
-varDeclList : varDeclList ',' varDeclInit {$$ = NULL;}
-   | varDeclInit {$$ = NULL;}
+varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3);}
+   | varDeclInit {$$ = $1;}
    ;
 
 // rule 8
-varDeclInit : varDeclId {$$ = NULL;}
-   | varDeclId ':' simpleExp {$$ = NULL;}
+varDeclInit : varDeclId {$$ = $1;}
+   | varDeclId ':' simpleExp {$$ = $1;}
    ;
 
 // rule 9
@@ -162,22 +162,22 @@ funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, $1, 
    ;
 
 // rule 12
-parms : parmList {$$ = NULL;}
+parms : parmList {$$ = $1;}
    | /*empty*/ {$$ = NULL;}
    ;
 
 // rule 13
-parmList : parmList ',' parmTypeList {$$ = NULL;}
-   | parmTypeList {$$ = NULL;}
+parmList : parmList ',' parmTypeList {$$ = addSibling($1, $3);}
+   | parmTypeList {$$ = $1;}
    ;
 
 // rule 14
-parmTypeList : typeSpec parmIdList {$$ = NULL;}
-   | parmId {$$ = NULL;}
+parmTypeList : typeSpec parmIdList {$$ = $2;}
+   | parmId {$$ = $1;}
    ;
 
 // rule 15
-parmIdList : parmIdList ',' parmId  {$$ = $1;}
+parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3);}
    | parmId  {$$ = $1;}
    ;
 
@@ -214,7 +214,7 @@ unmatched : IF simpleExp THEN stmt {$$ = NULL;}
    ;
 
 // rule 21
-expstmt : exp ';' {$$ = NULL;}
+expstmt : exp ';' {$$ = $1;}
    | ';' {$$ = NULL;}
    ;
 
@@ -224,147 +224,155 @@ compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK
    ;
 
 // rule 23
-localDecls : localDecls scopedVarDecl {$$ = NULL;}
+localDecls : localDecls scopedVarDecl {$$ = addSibling($1, $2);}
    | /*empty*/ {$$ = NULL;}
    ;
 
 // rule 24
-stmtList : stmtList stmt {$$ = NULL;}
+stmtList : stmtList stmt {$$ = addSibling($1, $2);}
    | /*empty*/ {$$ = NULL;}
    ;
 
 // rule 25
-returnstmt : RETURN ';' {$$ = NULL;}
-   | RETURN exp ';' {$$ = NULL;}
+returnstmt : RETURN ';' {$$ = newStmtNode(StmtKind::ReturnK, $1);}
+   | RETURN exp ';' {$$ = newStmtNode(StmtKind::ReturnK, $1, $2);}
    ;
 
 //rule 26
-breakstmt : BREAK ';' {$$ = NULL;}
+breakstmt : BREAK ';' {$$ = newStmtNode(StmtKind::BreakK, $1);}
    ;
 
 // rule 27
-exp : mutable assignop exp {$$ = NULL;}
-   | mutable INC {$$ = NULL;}
-   | mutable DEC {$$ = NULL;}
-   | simpleExp {$$ = NULL;}
-   | mutable assignop error {$$ = NULL;} 
+exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3);}
+   | mutable INC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
+   | mutable DEC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
+   | simpleExp {$$ = $1;}
+   | mutable assignop error {$$ = newExpNode(ExpKind::AssignK, $2, $1, NULL);} 
    ;
 
 // rule 28
-assignop : '=' {$$ = NULL;}
-   | ADDASS {$$ = NULL;}
-   | SUBASS {$$ = NULL;}
-   | MULASS {$$ = NULL;}
-   | DIVASS {$$ = NULL;}
+assignop : '=' {$$ = $1;}
+   | ADDASS {$$ = $1;}
+   | SUBASS {$$ = $1;}
+   | MULASS {$$ = $1;}
+   | DIVASS {$$ = $1;}
    ;
 
 // rule 29
-simpleExp : simpleExp OR andExp {$$ = NULL;}
-   | andExp {$$ = NULL;}
+simpleExp : simpleExp OR andExp {$$ = newExpNode(OpK, $2, $1, $3);}
+   | andExp {$$ = $1;}
    ;
 
 // rule 30
-andExp : andExp AND unaryRelExp {$$ = NULL;}
-   | unaryRelExp {$$ = NULL;}
+andExp : andExp AND unaryRelExp {$$ = newExpNode(OpK, $2, $1, $3);}
+   | unaryRelExp {$$ = $1;}
    ;
 
 // rule 31
-unaryRelExp : NOT unaryRelExp {$$ = NULL;}
-   | relExp {$$ = NULL;}
+unaryRelExp : NOT unaryRelExp {$$ = newExpNode(OpK, $1, $2);}
+   | relExp {$$ = $1;}
    ;
 
 // rule 32
-relExp : minmaxExp relop minmaxExp {$$ = NULL;}
-   | minmaxExp {$$ = NULL;}
+relExp : minmaxExp relop minmaxExp {$$ = newExpNode(OpK, $2, $1, $3);}
+   | minmaxExp {$$ = $1;}
    ;
 
 // rule 33
-relop : LEQ {$$ = NULL;}
-   | '<' {$$ = NULL;}
-   | '>' {$$ = NULL;}
-   | GEQ {$$ = NULL;}
-   | EQ  {$$ = NULL;}
-   | NEQ {$$ = NULL;}
+relop : LEQ {$$ = $1;}
+   | '<' {$$ = $1;}
+   | '>' {$$ = $1;}
+   | GEQ {$$ = $1;}
+   | EQ  {$$ = $1;}
+   | NEQ {$$ = $1;}
    ;
 
 // rule 34
 minmaxExp : minmaxExp minmaxop sumExp {$$ = NULL;}
-   | sumExp {$$ = NULL;}
+   | sumExp {$$ = $1;}
    ;
 
 // rule 35
-minmaxop : MAX {$$ = NULL;}
-   | MIN {$$ = NULL;}
+minmaxop : MAX {$$ = $1;}
+   | MIN {$$ = $1;}
    ;
 
 // rule 36
-sumExp : sumExp sumop mulExp {$$ = NULL;}
-   | mulExp {$$ = NULL;}
+sumExp : sumExp sumop mulExp {$$ = newExpNode(OpK, $2, $1, $3);}
+   | mulExp {$$ = $1;}
    ;
 
 // rule 37
-sumop : '+' {$$ = NULL;}
-   | '-'
+sumop : '+' {$$ = $1;}
+   | '-' {$$ = $1;}
    ;
 
 // rule 38
-mulExp : mulExp mulop unaryExp {$$ = NULL;}
-   | unaryExp {$$ = NULL;}
+mulExp : mulExp mulop unaryExp {$$ = newExpNode(OpK, $2, $1, $3);}
+   | unaryExp {$$ = $1;}
    ;
 
 // rule 39
 mulop : '*' {$$ = NULL;}
-   | '/'
-   | '%'
+   | '/' {$$ = $1;}
+   | '%' {$$ = $1;}
    ;
 
 // rule 40
-unaryExp : unaryop unaryExp {$$ = NULL;}
-   | factor {$$ = NULL;}
+unaryExp : unaryop unaryExp {$$ = newExpNode(OpK,$1, $2);}
+   | factor {$$ = $1;}
    ;
 
 // rule 41
-unaryop : unaryop '-' {$$ = NULL;}
-   | '*' {$$ = NULL;}
-   | '?' {$$ = NULL;}
+unaryop : '-' {$$ = $1;}
+   | '*' {$$ = $1;}
+   | '?' {$$ = $1;}
    ;
 
 // rule 42
-factor : immutable {$$ = NULL;}
-   | mutable {$$ = NULL;}
+factor : immutable {$$ = $1;}
+   | mutable {$$ = $1;}
    ;
 
 // rule 43
-mutable : ID {$$ = NULL;}
-   | ID '[' exp ']' {$$ = NULL;}
+// not sure about part 2 on this one
+mutable : ID {$$ = newExpNode(ExpKind::IdK, $1);}
+   | ID '[' exp ']' {$$ = NULL;} 
    ;
 
 // rule 44
-immutable : '(' exp ')' {$$ = NULL;}
-   | call {$$ = NULL;}
-   | constant {$$ = NULL;}
+immutable : '(' exp ')' {$$ = $2;}
+   | call {$$ = $1;}
+   | constant {$$ = $1;}
    ;
 
 // rule 45
-call : ID '(' args ')' {$$ = NULL;}
+// Here we want the ID as the root and args as the children
+// We must also store the string name of the ID in the ExpKind struct
+// for the new node.
+call : ID '(' args ')' {$$ = newExpNode(ExpKind::CallK, $1, $3);
+   $$->attr.name = $1->svalue;}
    ;
 
 // rule 46
-args : argList {$$ = NULL;}
+args : argList {$$ = $1;}
    | /* empty */ {$$ = NULL;}
    ;
 
-// rule 47
-argList : argList ',' exp {$$ = NULL;}
-   | exp {$$ = NULL;}
+// rule 47  in this rule, production 1 arglist repeats the definition on the 
+// production side so a sibling relationship is required here.
+// we use $1 because arglist is a treeType and also the 3rd entry exp is as well
+// ',' is not and we will not need to make a new node for it.
+argList : argList ',' exp {$$ = addSibling($1, $3);}
+   | exp {$$ = $1;}
    ;
 
 // rule 48
 constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Integer;}
    | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
                 $$->type = ExpType::Char;}
-   | STRINGCONST {$$ = NULL;} 
-   | BOOLCONST {$$ = NULL;}
+   | STRINGCONST {$$ = newExpNode(ExpKind::ConstantK, $1);} 
+   | BOOLCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Boolean;}
    ;
 
 %%
