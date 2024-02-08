@@ -4,7 +4,7 @@
 //  SCANNER TOKENDATA
 //
 
-struct TokenData
+struct Token_Data
 {
     int  tokenclass;        // token class
     int  linenum;           // line where found
