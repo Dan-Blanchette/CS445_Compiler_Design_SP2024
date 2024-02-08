@@ -3,13 +3,13 @@
 #include "scanType.h"
 #include <stdlib.h>
 
-// lots of these save the TokenData block so line number and yytext are saved
+// lots of these save the Token_Data block so line number and yytext are saved
 // TreeNode *cloneNode(TreeNode *currnode)
 // {
 
 // }
 
-TreeNode *newDeclNode(DeclKind kind,ExpType type,TokenData *token,
+TreeNode *newDeclNode(DeclKind kind,ExpType type,Token_Data *token,
                   TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
    TreeNode *newNode = (TreeNode*)malloc(sizeof(TreeNode));
@@ -20,9 +20,9 @@ TreeNode *newDeclNode(DeclKind kind,ExpType type,TokenData *token,
    newNode->child[2] = c2;
 
    return newNode;
-}  // save TokenData block!!
+}  // save Token_Data block!!
 
-TreeNode *newStmtNode(StmtKind kind, TokenData *token, TreeNode *c0, 
+TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, 
                   TreeNode *c1, TreeNode *c2)
 {
    TreeNode *newNode = (TreeNode*)malloc(sizeof(TreeNode));
@@ -35,7 +35,7 @@ TreeNode *newStmtNode(StmtKind kind, TokenData *token, TreeNode *c0,
    return newNode;
 }
 
-TreeNode *newExpNode(ExpKind kind, TokenData *token,
+TreeNode *newExpNode(ExpKind kind, Token_Data *token,
                   TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
    TreeNode *newNode = (TreeNode*)malloc(sizeof(TreeNode));
