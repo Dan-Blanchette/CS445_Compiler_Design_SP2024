@@ -19,46 +19,46 @@ char *lastToken=(char *)"";
 
 // used as a means to communicate between .l and .y files
 int setValue(int linenum, int tokenClass, char *svalue) {
-    yylval.tokenData = new TokenData;
+    yylval.Token_Data = new Token_Data;
 
 
-    yylval.tokenData->tokenclass = tokenClass;
-    yylval.tokenData->linenum = linenum;
-    yylval.tokenData->tokenstr = strdup(svalue);
-    yylval.tokenData->cvalue = '@';
-    yylval.tokenData->nvalue = 777;
-    yylval.tokenData->svalue = NULL;
+    yylval.Token_Data->tokenclass = tokenClass;
+    yylval.Token_Data->linenum = linenum;
+    yylval.Token_Data->tokenstr = strdup(svalue);
+    yylval.Token_Data->cvalue = '@';
+    yylval.Token_Data->nvalue = 777;
+    yylval.Token_Data->svalue = NULL;
 
-    yylval.tokenData->tokenstr = lastToken = strdup(svalue);
-    // yylval.tokenData->cvalue = 
+    yylval.Token_Data->tokenstr = lastToken = strdup(svalue);
+    // yylval.Token_Data->cvalue = 
 
     switch (tokenClass) {
 
     case NUMCONST:
-       yylval.tokenData->nvalue = stoi(svalue);
-         // yylval.tokenData->nvalue = hmmmm ..... I don't need this yet, but
+       yylval.Token_Data->nvalue = stoi(svalue);
+         // yylval.Token_Data->nvalue = hmmmm ..... I don't need this yet, but
        break;
     case BOOLCONST:
        if(svalue[0] == 't') {
-          yylval.tokenData->nvalue = 1;
+          yylval.Token_Data->nvalue = 1;
        }
-       else yylval.tokenData->nvalue =0;
+       else yylval.Token_Data->nvalue =0;
        break;
-         // yylval.tokenData->nvalue = something to think about.. probably set to 0 or 1? 't' or 'f'?
+         // yylval.Token_Data->nvalue = something to think about.. probably set to 0 or 1? 't' or 'f'?
          break;
     //case OP:
-         // yylval.tokenData->cvalue = hmmm..... What should I set it to?
+         // yylval.Token_Data->cvalue = hmmm..... What should I set it to?
        break;
     // case CHARCONST:
        if(svalue[1] == '\\'){
           if(svalue[2] == 'n')
-             yylval.tokenData->cvalue = '\n';
+             yylval.Token_Data->cvalue = '\n';
           else if(svalue[2] == '0') {
-               yylval.tokenData->cvalue = '\0';
+               yylval.Token_Data->cvalue = '\0';
           }
        }
        // test
-         // yylval.tokenData->cvalue = not sure what this should be set to yet.
+         // yylval.Token_Data->cvalue = not sure what this should be set to yet.
         //  break;
     }
 

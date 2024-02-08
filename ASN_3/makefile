@@ -25,7 +25,7 @@ treeUtils.o\
 LIBS = -lm 
 
 $(PARSE): $(OBJS)
-	$(CC) $(CPPFLAGS) $(OBJS) dot.o $(LIBS) -o bC
+	$(CC) $(CPPFLAGS) $(OBJS) $(LIBS) -o bC
 
 $(PARSE).tab.h $(PARSE).tab.c: $(PARSE).y scanType.h treeUtils.h
 	bison -v -t -d $(PARSE).y  

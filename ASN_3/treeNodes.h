@@ -70,7 +70,7 @@ struct TreeNode
       char *name;                        // used when IdK as name of variable
       char *string;                      // used when ConstantK: string
     } attr;                                 
-    ExpType type;		           // used when ExpK for type checking
+    ExpType type;		                       // used when ExpK for type checking
     bool isStatic;                         // is staticly allocated?
     bool isArray;                          // is this an array?
     bool isConst;                          // can be computed at compile time?

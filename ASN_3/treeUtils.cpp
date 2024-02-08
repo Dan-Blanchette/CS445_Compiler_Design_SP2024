@@ -4,21 +4,17 @@
 #include <stdlib.h>
 
 // lots of these save the TokenData block so line number and yytext are saved
-TreeNode *cloneNode(TreeNode *currnode)
-{
+// TreeNode *cloneNode(TreeNode *currnode)
+// {
 
-}
+// }
 
-TreeNode *newDeclNode(DeclKind kind,
-                      ExpType type,
-                      TokenData *token=NULL,
-                      TreeNode *c0=NULL,
-                      TreeNode *c1=NULL,
-                      TreeNode *c2=NULL)
+TreeNode *newDeclNode(DeclKind kind,ExpType type,TokenData *token,
+                  TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
    TreeNode *newNode = (TreeNode*)malloc(sizeof(TreeNode));
    newNode->nodekind = NodeKind::DeclK;
-   newNode->kind.stmt = kind;
+   newNode->kind.decl = kind;
    newNode->child[0] = c0;
    newNode->child[1] = c1;
    newNode->child[2] = c2;
@@ -26,8 +22,8 @@ TreeNode *newDeclNode(DeclKind kind,
    return newNode;
 }  // save TokenData block!!
 
-TreeNode *newStmtNode(StmtKind kind, TokenData *token, TreeNode *c0=NULL, 
-   TreeNode *c1=NULL, TreeNode *c2=NULL)
+TreeNode *newStmtNode(StmtKind kind, TokenData *token, TreeNode *c0, 
+                  TreeNode *c1, TreeNode *c2)
 {
    TreeNode *newNode = (TreeNode*)malloc(sizeof(TreeNode));
    newNode->nodekind = NodeKind::StmtK;
@@ -39,24 +35,28 @@ TreeNode *newStmtNode(StmtKind kind, TokenData *token, TreeNode *c0=NULL,
    return newNode;
 }
 
-TreeNode *newExpNode(ExpKind kind,
-                     TokenData *token,
-                     TreeNode *c0=NULL,
-                     TreeNode *c1=NULL,
-                     TreeNode *c2=NULL)
+TreeNode *newExpNode(ExpKind kind, TokenData *token,
+                  TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
+   TreeNode *newNode = (TreeNode*)malloc(sizeof(TreeNode));
+   newNode->nodekind = NodeKind::ExpK;
+   newNode->kind.exp = kind;
+   newNode->child[0] = c0;
+   newNode->child[1] = c1;
+   newNode->child[2] = c2;
 
+   return newNode;
 }
 
-char *tokenToStr(int type)
-{
+// char *tokenToStr(int type)
+// {
 
-}
+// }
 
-char *expTypeToStr(ExpType type, bool isArray=false, bool isStatic=false)
-{
-
-}
+// char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
+// {
+   
+// }
 
 void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
 {
@@ -83,7 +83,7 @@ int depth, int siblingCount = 1)
       {
          // two spaces at the end
          fprintf(out, "Child: %d  ", q);
-         printTreeRecurive(out, syntaxTree->child[q], showExpType, showAllocation, depth +  1);
+         printTreeRecursive(out, syntaxTree->child[q], showExpType, showAllocation, depth +  1);
       }
    }
 
@@ -105,7 +105,7 @@ void printTree(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAlloc
       fprintf(out, "NULL\n");
       return;
    }
-   printTreeRecusive(out, sytnaxTree, showExpType, showAllocaion, 0);
+   printTreeRecursive(out, syntaxTree, showExpType, showAllocation, 0);
 
    TreeNode *sibling = syntaxTree->sibling;
 }

@@ -54,7 +54,7 @@ TreeNode *syntaxTree;
 
 void yyerror(const char *msg);
 
-void printToken(TokenData myData, string tokenName, int type = 0) {
+void printToken(Token_Data myData, string tokenName, int type = 0) {
    cout << "Line: " << myData.linenum << " Type: " << tokenName;
    if(type==0)
      cout << " Token: " << myData.tokenstr;
@@ -69,13 +69,13 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 
 %union
 {
-   struct TokenData *tokenData;
+   struct Token_Data *Token_Data;
    struct TreeNode *tree;
    ExpType type; // for passing type spec up the tree
 }
 
-%type <tokenData> sumop mulop unaryop
-%type <tokenData> assignop relop minmaxop
+%type <Token_Data> sumop mulop unaryop
+%type <Token_Data> assignop relop minmaxop
 
 %type <tree> program precompList compoundstmt
 %type <tree> parmList parmId parms parmTypeList parmIdList args argList
@@ -88,20 +88,20 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 
 %type <type> typeSpec
 
-%token <tokenData> FIRSTOP
-%token <tokenData> ADDASS DIVASS MULASS SUBASS
-%token <tokenData> AND OR NOT
-%token <tokenData> EQ GEQ LEQ NEQ
-%token <tokenData> MIN MAX INC DEC
-%token <tokenData> '*' '-' '/' '+' '<' '>' '=' '%' '?'
-%token <tokenData> PRECOMPILER
-%token <tokenData> LASTOP
+%token <Token_Data> FIRSTOP
+%token <Token_Data> ADDASS DIVASS MULASS SUBASS
+%token <Token_Data> AND OR NOT
+%token <Token_Data> EQ GEQ LEQ NEQ
+%token <Token_Data> MIN MAX INC DEC
+%token <Token_Data> '*' '-' '/' '+' '<' '>' '=' '%' '?'
+%token <Token_Data> PRECOMPILER
+%token <Token_Data> LASTOP
 
-%token <tokenData> IF BOOL THEN ELSE FOR INT BY TO RETURN STATIC DO WHILE BREAK CHAR 
-%token <tokenData> ID 
-%token <tokenData> BOOLCONST NUMCONST CHARCONST STRINGCONST
-%token <tokenData> ':' '[' ']' '(' ')' '{' '}' ';' ','
-%token <tokenData> LASTTERM
+%token <Token_Data> IF BOOL THEN ELSE FOR INT BY TO RETURN STATIC DO WHILE BREAK CHAR 
+%token <Token_Data> ID 
+%token <Token_Data> BOOLCONST NUMCONST CHARCONST STRINGCONST
+%token <Token_Data> ':' '[' ']' '(' ')' '{' '}' ';' ','
+%token <Token_Data> LASTTERM
 
 
 %%
@@ -111,22 +111,22 @@ program : precompList declList {syntaxTree = $2; cout << "program : precompList 
 
 // rule 2
 precompList : precompList PRECOMPILER {$$ = NULL;}
-   | PRECOMPILER {$$ = NULL; printf("%s\n", yylval.tokenData->tokenstr);}
+   | PRECOMPILER {$$ = NULL; printf("%s\n", yylval.Token_Data->tokenstr);}
    | /*empty*/ {$$ = NULL;}
    ;
 
 // rule 3
-declList : declList decl {$$ = NULL;}
+declList : declList decl {$$ = addSibling($1, $2);}
    | decl {$$ = $1; cout << "| funDecl" << endl;}
    ;
 
 // rule 4
-decl : varDecl {$$ = NULL;}
+decl : varDecl {$$ = $1; cout << "varDecl" << endl;}
    | funDecl {$$ = $1; cout << "| funDecl" << endl;}
    ;
 
 //rule 5
-varDecl : typeSpec varDeclList  ';' {$$ = NULL;}
+varDecl : typeSpec varDeclList  ';' {$$ = $2;}
    ;
 
 // rule 6
@@ -167,8 +167,8 @@ parms : parmList {$$ = NULL;}
    ;
 
 // rule 13
-parmList : parmList ',' parmId {$$ = NULL;}
-   | parmId {$$ = NULL;}
+parmList : parmList ',' parmTypeList {$$ = NULL;}
+   | parmTypeList {$$ = NULL;}
    ;
 
 // rule 14
@@ -215,7 +215,7 @@ unmatched : IF simpleExp THEN stmt {$$ = NULL;}
 
 // rule 21
 expstmt : exp ';' {$$ = NULL;}
-   | ';'
+   | ';' {$$ = NULL;}
    ;
 
 // rule 22
@@ -374,9 +374,9 @@ void yyerror (const char *msg)
 }
 int main(int argc, char **argv) {
    // these lines allow us to read information from the parser.l file
-   yylval.tokenData = (TokenData*)malloc(sizeof(TokenData));
+   yylval.Token_Data = (Token_Data*)malloc(sizeof(Token_Data));
    yylval.tree = (TreeNode*)malloc(sizeof(TreeNode));
-   yylval.tokenData->linenum = 1;
+   yylval.Token_Data->linenum = 1;
    int option, index;
    char *file = NULL;
    bool dotAST = false;
