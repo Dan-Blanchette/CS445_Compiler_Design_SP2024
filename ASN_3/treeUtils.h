@@ -3,6 +3,7 @@
 #include "treeNodes.h"
 #include "scanType.h"
 #include <string.h>
+#include <iostream>
 
 // lots of these save the TokenData block so line number and yytext are saved
 TreeNode *cloneNode(TreeNode *currnode);
