@@ -6,10 +6,9 @@
 #include <unistd.h>
 #include "treeUtils.h"
 #include "scanType.h"
-// #include "dot.h"
 using namespace std;
 
-
+//for pushing
 
 extern "C" int yylex();
 extern "C" int yyparse();
@@ -67,11 +66,12 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 }
 
 %}
+
 %union
 {
    struct TokenData *tokenData;
    struct TreeNode *tree;
-   ExpType type; // for passing type spec up the tree
+   // ExpType type; // for passing type spec up the tree
 }
 
 %type <tokenData> sumop mulop unaryop
@@ -111,7 +111,7 @@ program : precompList declList {syntaxTree = $2; cout << "program : precompList 
 
 // rule 2
 precompList : precompList PRECOMPILER {$$ = NULL;}
-   | PRECOMPILER {$$ = NULL; printf("%s\n", yyval.tokenData->tokenstr);}
+   | PRECOMPILER {$$ = NULL; printf("%s\n", yylval.tokenData->tokenstr);}
    | /*empty*/ {$$ = NULL;}
    ;
 
@@ -362,7 +362,7 @@ argList : argList ',' exp {$$ = NULL;}
 // rule 48
 constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Integer;}
    | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
-                $$-> = ExpType::Char;}
+                $$->type = ExpType::Char;}
    | STRINGCONST {$$ = NULL;} 
    | BOOLCONST {$$ = NULL;}
    ;
