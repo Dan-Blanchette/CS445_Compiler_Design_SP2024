@@ -71,7 +71,7 @@ void printToken(TokenData myData, string tokenName, int type = 0) {
 {
    struct TokenData *tokenData;
    struct TreeNode *tree;
-   // ExpType type; // for passing type spec up the tree
+   ExpType type; // for passing type spec up the tree
 }
 
 %type <tokenData> sumop mulop unaryop
