@@ -156,9 +156,9 @@ typeSpec : INT {$$ = ExpType::Integer;}
    ;
 
 // rule 11
-funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, $1, $2, $4, $6); cout <<"funDecl : typeSpec ID '(' parms ')' stmt"
- <<  endl;}
-   | ID '(' parms ')' stmt {$$ = NULL;}
+// second production is not making sense to me
+funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, $1, $2, $4, $6);}
+   | ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, ExpType::Void, $1, $3, $5);}
    ;
 
 // rule 12
@@ -177,13 +177,19 @@ parmTypeList : typeSpec parmIdList {$$ = $2;}
    ;
 
 // rule 15
+// if the start token matches the first production, add a sibling.
+// in this case, parmList : parmIdList indicates this relationship.
+// So $$ = $1(parmIdList) is a child node
+// we don't want the ',' to become a node so $2 aka ',' is of no use to us.
+// and $3 parmId is a sibling to $1 parmIdList.
+
 parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3);}
    | parmId  {$$ = $1;}
    ;
 
 // rule 16
-parmId : ID {$$ = NULL;}
-   | ID '['']' {$$ = NULL;}
+parmId : ID {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); $$->isArray = false;}
+   | ID '['']' {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); $$->isArray = true;}
    ;
 
 // rule 17
@@ -192,21 +198,28 @@ stmt : matched {$$ = $1; cout << "stmt : matched" << endl;}
    ;
 
 // rule 18
-matched : IF simpleExp THEN matched ELSE matched {$$ = NULL;}
-   | WHILE simpleExp DO matched {$$ = NULL;}
-   | FOR ID '=' iterRange DO matched {$$ = NULL;}
-   | expstmt {$$ = NULL;}
-   | compoundstmt {$$ = NULL;}
-   | returnstmt {$$ = NULL;}
-   | breakstmt {$$ = NULL;}
+// newStmtNode(IfK,)
+// newStmtNode(WhileK,)
+// newStmtNode(ForK,)
+matched : IF simpleExp THEN matched ELSE matched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
+   | WHILE simpleExp DO matched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
+   | FOR ID '=' iterRange DO matched {$$ = newStmtNode(StmtKind::ForK, $1, NULL, $4, $6); $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
+   | expstmt {$$ = $1;}
+   | compoundstmt {$$ = $1;}
+   | returnstmt {$$ = $1;}
+   | breakstmt {$$ = $1;}
    ;
 
 // rule 19
-iterRange : simpleExp TO simpleExp {$$ = NULL;}
-   | simpleExp TO simpleExp BY simpleExp {$$ = NULL;}
+// newStmtNode(RangeK,)
+// newStmtNode(RangeK,) 
+iterRange : simpleExp TO simpleExp {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $3);}
+   | simpleExp TO simpleExp BY simpleExp {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $3, $5);}
    ;
 
 // rule 20
+// not sure what to do here.
+// newStmtNode(StmtKind::IfK, $1, ?, ?)
 unmatched : IF simpleExp THEN stmt {$$ = NULL;}
    | IF simpleExp THEN matched ELSE unmatched {$$ = NULL;}
    | WHILE simpleExp DO unmatched {$$ = NULL;}
@@ -313,7 +326,7 @@ mulExp : mulExp mulop unaryExp {$$ = newExpNode(OpK, $2, $1, $3);}
    ;
 
 // rule 39
-mulop : '*' {$$ = NULL;}
+mulop : '*' {$$ = $1;}
    | '/' {$$ = $1;}
    | '%' {$$ = $1;}
    ;
@@ -349,7 +362,8 @@ immutable : '(' exp ')' {$$ = $2;}
 // rule 45
 // Here we want the ID as the root and args as the children
 // We must also store the string name of the ID in the ExpKind struct
-// for the new node.
+// as part of the new node's information block.
+
 call : ID '(' args ')' {$$ = newExpNode(ExpKind::CallK, $1, $3);
    $$->attr.name = $1->svalue;}
    ;

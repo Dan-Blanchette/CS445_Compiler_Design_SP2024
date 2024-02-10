@@ -25,7 +25,7 @@ TreeNode *newDeclNode(DeclKind kind,ExpType type,Token_Data *token,
 TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, 
                   TreeNode *c1, TreeNode *c2)
 {
-   TreeNode *newNode = (TreeNode*)malloc(sizeof(TreeNode));
+   TreeNode *newNode = new TreeNode;
    newNode->nodekind = NodeKind::StmtK;
    newNode->kind.stmt = kind;
    newNode->child[0] = c0;
@@ -50,12 +50,13 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token,
 
 // char *tokenToStr(int type)
 // {
-
+   
 // }
 
+// need to fill in still
 // char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
 // {
-   
+
 // }
 
 void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
