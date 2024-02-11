@@ -141,12 +141,13 @@ varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3);}
 
 // rule 8
 varDeclInit : varDeclId {$$ = $1;}
-   | varDeclId ':' simpleExp {$$ = $1;}
+   | varDeclId ':' simpleExp {$$ = $1, $3;}
    ;
 
 // rule 9
-varDeclId : ID {$$ = NULL;}
-   | ID '[' NUMCONST ']' {$$ = NULL;}
+varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1);}
+   | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1);
+     $$->isArray = true; $$->size = $3->nvalue + 1; }
    ;
 
 // rule 10
@@ -188,8 +189,8 @@ parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3);}
    ;
 
 // rule 16
-parmId : ID {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); $$->isArray = false;}
-   | ID '['']' {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); $$->isArray = true;}
+parmId : ID {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); $$->isArray = false; $$->size = 1;}
+   | ID '['']' {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); $$->isArray = true; $$->size = 1;}
    ;
 
 // rule 17
@@ -203,7 +204,9 @@ stmt : matched {$$ = $1; cout << "stmt : matched" << endl;}
 // newStmtNode(ForK,)
 matched : IF simpleExp THEN matched ELSE matched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
    | WHILE simpleExp DO matched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
-   | FOR ID '=' iterRange DO matched {$$ = newStmtNode(StmtKind::ForK, $1, NULL, $4, $6); $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
+   | FOR ID '=' iterRange DO matched {$$ = newStmtNode(StmtKind::ForK, $1, NULL, $4, $6); $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);
+        $$->child[0]->attr.name = $2->svalue; $$->child[0]->isArray = false; 
+        $$->child[0]->size = 1;}
    | expstmt {$$ = $1;}
    | compoundstmt {$$ = $1;}
    | returnstmt {$$ = $1;}
@@ -218,12 +221,14 @@ iterRange : simpleExp TO simpleExp {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $
    ;
 
 // rule 20
-// not sure what to do here.
-// newStmtNode(StmtKind::IfK, $1, ?, ?)
-unmatched : IF simpleExp THEN stmt {$$ = NULL;}
-   | IF simpleExp THEN matched ELSE unmatched {$$ = NULL;}
-   | WHILE simpleExp DO unmatched {$$ = NULL;}
-   | FOR ID '=' iterRange DO unmatched {$$ = NULL;}
+unmatched : IF simpleExp THEN stmt {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4);}
+   | IF simpleExp THEN matched ELSE unmatched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
+   | WHILE simpleExp DO unmatched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
+   | FOR ID '=' iterRange DO unmatched {$$ = newStmtNode(StmtKind::ForK, $1, NULL, $4, $6);
+      $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2); 
+      $$->child[0]->attr.name = $2->svalue;
+      $$->child[0]->isArray = false; 
+      $$->child[0]->size = 1;}
    ;
 
 // rule 21
@@ -301,7 +306,7 @@ relop : LEQ {$$ = $1;}
    ;
 
 // rule 34
-minmaxExp : minmaxExp minmaxop sumExp {$$ = NULL;}
+minmaxExp : minmaxExp minmaxop sumExp {$$ = newExpNode(ExpKind::OpK, $2, $1, $3);}
    | sumExp {$$ = $1;}
    ;
 
@@ -311,7 +316,7 @@ minmaxop : MAX {$$ = $1;}
    ;
 
 // rule 36
-sumExp : sumExp sumop mulExp {$$ = newExpNode(OpK, $2, $1, $3);}
+sumExp : sumExp sumop mulExp {$$ = newExpNode(ExpKind::OpK, $2, $1, $3);}
    | mulExp {$$ = $1;}
    ;
 
@@ -321,7 +326,7 @@ sumop : '+' {$$ = $1;}
    ;
 
 // rule 38
-mulExp : mulExp mulop unaryExp {$$ = newExpNode(OpK, $2, $1, $3);}
+mulExp : mulExp mulop unaryExp {$$ = newExpNode(ExpKind::OpK, $2, $1, $3);}
    | unaryExp {$$ = $1;}
    ;
 
@@ -332,7 +337,7 @@ mulop : '*' {$$ = $1;}
    ;
 
 // rule 40
-unaryExp : unaryop unaryExp {$$ = newExpNode(OpK,$1, $2);}
+unaryExp : unaryop unaryExp {$$ = newExpNode(ExpKind::OpK,$1, $2);}
    | factor {$$ = $1;}
    ;
 
@@ -349,8 +354,9 @@ factor : immutable {$$ = $1;}
 
 // rule 43
 // not sure about part 2 on this one
-mutable : ID {$$ = newExpNode(ExpKind::IdK, $1);}
-   | ID '[' exp ']' {$$ = NULL;} 
+mutable : ID {$$ = newExpNode(ExpKind::IdK, $1); $$->isArray = false; $$->attr.name = $1->svalue;}
+   | ID '[' exp ']' {$$ = newExpNode(ExpKind::OpK, $2, NULL, $3); $$->isArray = false; 
+      $$->child[0] = newExpNode(ExpKind::IdK, $1); $$->child[0]->attr.name = $1->svalue;} 
    ;
 
 // rule 44
@@ -377,16 +383,20 @@ args : argList {$$ = $1;}
 // production side so a sibling relationship is required here.
 // we use $1 because arglist is a treeType and also the 3rd entry exp is as well
 // ',' is not and we will not need to make a new node for it.
+
 argList : argList ',' exp {$$ = addSibling($1, $3);}
    | exp {$$ = $1;}
    ;
 
 // rule 48
-constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Integer;}
-   | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
-                $$->type = ExpType::Char;}
-   | STRINGCONST {$$ = newExpNode(ExpKind::ConstantK, $1);} 
-   | BOOLCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Boolean;}
+constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Integer;
+   $$->isArray = false; $$->size = 1; $$->attr.value = $1->nvalue;}
+   | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Char; $$->attr.cvalue = $1->cvalue;
+      $$->isArray = false; $$->size = 1;}
+   | STRINGCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->isArray = true; $$->type = ExpType::Char;
+      $$->size = $1->nvalue + 1; $$->attr.string = $1->svalue;} 
+   | BOOLCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Boolean; $$->isArray = false;
+      $$->size = 1; $$->attr.value = $1->nvalue;}
    ;
 
 %%
