@@ -8,8 +8,8 @@
 using namespace std;
 // Dan Blanchette
 // ASN_3
-// CS-445 Compiler Design
-// Doctor BC
+// CS-445 Compiler Design Spring 2023
+// Dr. BC
 #define YY_DECL extern "C" int yylex()
 #define YYSTYPE int
 
@@ -36,7 +36,6 @@ int setValue(int linenum, int tokenClass, char *svalue) {
 
     case NUMCONST:
        yylval.Token_Data->nvalue = stoi(svalue);
-         // yylval.Token_Data->nvalue = hmmmm ..... I don't need this yet, but
        break;
     case BOOLCONST:
        if(svalue[0] == 't') {
@@ -44,8 +43,7 @@ int setValue(int linenum, int tokenClass, char *svalue) {
        }
        else yylval.Token_Data->nvalue =0;
        break;
-         // yylval.Token_Data->nvalue = something to think about.. probably set to 0 or 1? 't' or 'f'?
-         break;
+
     //case OP:
          // yylval.Token_Data->cvalue = hmmm..... What should I set it to?
        break;

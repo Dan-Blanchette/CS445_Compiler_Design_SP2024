@@ -4,15 +4,18 @@
 #include <stdlib.h>
 
 // lots of these save the Token_Data block so line number and yytext are saved
-// TreeNode *cloneNode(TreeNode *currnode)
-// {
-
-// }
-
-TreeNode *newDeclNode(DeclKind kind,ExpType type,Token_Data *token,
-                  TreeNode *c0, TreeNode *c1, TreeNode *c2)
+TreeNode *cloneNode(TreeNode *currnode)
 {
-   TreeNode *newNode = (TreeNode*)malloc(sizeof(TreeNode));
+   // create a new tree node in memory
+   TreeNode *copyNode = new TreeNode;
+   copyNode = currnode;
+
+   return copyNode;
+}
+
+TreeNode *newDeclNode(DeclKind kind,ExpType type,Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
+{
+   TreeNode *newNode = new TreeNode;
    newNode->nodekind = NodeKind::DeclK;
    newNode->kind.decl = kind;
    newNode->child[0] = c0;
@@ -22,8 +25,7 @@ TreeNode *newDeclNode(DeclKind kind,ExpType type,Token_Data *token,
    return newNode;
 }  // save Token_Data block!!
 
-TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, 
-                  TreeNode *c1, TreeNode *c2)
+TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
    TreeNode *newNode = new TreeNode;
    newNode->nodekind = NodeKind::StmtK;
@@ -35,10 +37,10 @@ TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0,
    return newNode;
 }
 
-TreeNode *newExpNode(ExpKind kind, Token_Data *token,
-                  TreeNode *c0, TreeNode *c1, TreeNode *c2)
+TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
-   TreeNode *newNode = (TreeNode*)malloc(sizeof(TreeNode));
+   // create a new struct node 
+   TreeNode *newNode = new TreeNode;
    newNode->nodekind = NodeKind::ExpK;
    newNode->kind.exp = kind;
    newNode->child[0] = c0;
@@ -48,20 +50,27 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token,
    return newNode;
 }
 
-// char *tokenToStr(int type)
-// {
+// confused about this implementation as well.
+// how to I convert the token type to string?
+char *tokenToStr(int type)
+{
+   return;
+}
 
-// }
-
-
-// char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
-// {
-
-
-// }
+// Need help figuring this part out
+// The first parameter is an exp_type(void, integer, bool, char, or undefinedType)
+// The second parameter is referrring to the boolean value flag isArray (part of the TreeNode struct)
+// and the last is another boolean value flag that checks for a static value (part of the TreeNode struct)
+char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
+{
+   // how do I convert the listed exp types to become a string value?
+   // how does this tie into the yacc file and it's goals?
+   return;
+}
 
 void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
 {
+   // what should the output formatting be for this function?
    fprintf(out, "Hi I'm a node. I should say something about myself");
 }
 
