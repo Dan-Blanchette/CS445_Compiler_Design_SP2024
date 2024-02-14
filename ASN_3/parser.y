@@ -431,6 +431,7 @@ int main(int argc, char **argv) {
    }
    printf("Number of warnings: 0\n");
    printf("Number of errors: 0\n");
-   // printTree(stdout,,)
+   // call printTree from treeUtils
+   printTree(stdout,syntaxTree, false, false);
    return 0;
 }

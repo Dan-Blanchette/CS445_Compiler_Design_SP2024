@@ -67,8 +67,26 @@ char *tokenToStr(int type)
 char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
 {
    // how do I convert the listed exp types to become a string value?
-   // how does this tie into the yacc file and it's goals?
-   
+   // how does this tie into the yacc file and it's functionality?
+   switch(type)
+   {
+      // case Void:
+      // break;
+
+      // case Integer:
+      // break;
+
+      //  case Boolean:
+      // break;
+
+      // case Char:
+      // break;
+
+      // case UndenfinedType:
+      // break;
+   }
+
+
    //place holder return
    return 0;
 }
