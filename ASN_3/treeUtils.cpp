@@ -54,18 +54,23 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1
 // how to I convert the token type to string?
 char *tokenToStr(int type)
 {
-   return;
+   // place holder = return 0
+   return 0;
 }
 
 // Need help figuring this part out
-// The first parameter is an exp_type(void, integer, bool, char, or undefinedType)
+// The first parameter is an exp_type(void, integer, bool, char, or undefinedType) switch statement?
+// if switch what should the default case be?
+
 // The second parameter is referrring to the boolean value flag isArray (part of the TreeNode struct)
 // and the last is another boolean value flag that checks for a static value (part of the TreeNode struct)
 char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
 {
    // how do I convert the listed exp types to become a string value?
    // how does this tie into the yacc file and it's goals?
-   return;
+   
+   //place holder return
+   return 0;
 }
 
 void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
