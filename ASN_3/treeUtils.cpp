@@ -8,8 +8,9 @@ TreeNode *cloneNode(TreeNode *currnode)
 {
    // create a new tree node in memory
    TreeNode *copyNode = new TreeNode;
+   // copy the node data from the current node to the node copy variable
    copyNode = currnode;
-
+   // return the copy of the node
    return copyNode;
 }
 
@@ -64,37 +65,110 @@ char *tokenToStr(int type)
 
 // The second parameter is referrring to the boolean value flag isArray (part of the TreeNode struct)
 // and the last is another boolean value flag that checks for a static value (part of the TreeNode struct)
+
 char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
 {
+   char *exp_type_name;
    // how do I convert the listed exp types to become a string value?
    // how does this tie into the yacc file and it's functionality?
    switch(type)
    {
-      // case Void:
-      // break;
+      case Void:
+         exp_type_name = (char*)"void type";
+      break;
 
-      // case Integer:
-      // break;
+      case Integer:
+         exp_type_name = (char*)"integer type";
+      break;
 
-      //  case Boolean:
-      // break;
+      case Boolean:
+         exp_type_name = (char*)"boolean type";
+      break;
 
-      // case Char:
-      // break;
+      case Char:
+         exp_type_name = (char *)"char type";
+      break;
 
-      // case UndenfinedType:
-      // break;
+      case UndefinedType:
+         exp_type_name = (char *)"undefined type";
+      break;
+
+      default:
+         return 0;
    }
 
-
-   //place holder return
-   return 0;
 }
 
 void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
 {
-   // what should the output formatting be for this function?
-   fprintf(out, "Hi I'm a node. I should say something about myself");
+   // create case statments to print out information
+   // for each type of node kind
+   switch(syntaxTree->nodekind)
+   {
+      //Declaration Kind printing
+      case NodeKind::DeclK:
+         switch (syntaxTree->kind.decl)
+         {
+            case DeclKind::VarK:
+               break;
+            case DeclKind::FuncK:
+               break;
+            case DeclKind::ParamK:
+               break;
+            default:
+               break;
+         }
+      // Statement Kind printing
+      case NodeKind::StmtK:
+         switch (syntaxTree->kind.stmt)
+         {
+            case StmtKind::IfK:
+               break;
+            
+            case StmtKind::WhileK:
+               break;
+
+            case StmtKind::ForK:
+               break;
+
+            case StmtKind::CompoundK:
+               break;
+
+            case StmtKind::ReturnK:
+               break;
+
+            case StmtKind::BreakK:
+               break;
+
+            case StmtKind::RangeK:
+               break;
+         
+            default:
+               break;
+         }
+      // ExpKind printing
+      case NodeKind::ExpK:
+         switch (syntaxTree->kind.exp)
+         {
+            case ExpKind::AssignK:
+               break;
+
+            case ExpKind::CallK:
+               break;
+
+            case ExpKind::ConstantK:
+               break;
+
+            case ExpKind::IdK:
+               break;
+
+            case ExpKind::OpK:
+              break;
+              
+            default:
+              break;
+         }
+   }
 }
 
 void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation,
