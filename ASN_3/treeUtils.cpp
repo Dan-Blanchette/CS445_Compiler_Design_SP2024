@@ -110,7 +110,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          switch (syntaxTree->kind.decl)
          {
             case DeclKind::VarK:
-               printf("Var: %s ", syntanxTree->attr.name);
+               printf("Var: %s ", syntaxTree->attr.name);
                break;
             case DeclKind::FuncK:
                printf("Func: %s ", syntaxTree->attr.name);
