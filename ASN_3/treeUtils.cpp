@@ -127,33 +127,33 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          switch (syntaxTree->kind.stmt)
          {
             case StmtKind::IfK:
-               frprintf(out, "If");
+               fprintf(out, "If");
                break;
             
             case StmtKind::WhileK:
-               frprintf(out, "While");
+               fprintf(out, "While");
                break;
 
             case StmtKind::ForK:
-               frprintf(out, "For");
+               fprintf(out, "For");
                break;
 
             case StmtKind::CompoundK:
-               frprintf(out, "Compound");
+               fprintf(out, "Compound");
                break;
 
             case StmtKind::ReturnK:
-               frprintf(out, "Return");
+               fprintf(out, "Return");
                break;
 
             case StmtKind::BreakK:
-               frprintf(out, "Break");
+               fprintf(out, "Break");
                break;
 
             case StmtKind::RangeK:
-               frprintf(out, "Range");
+               fprintf(out, "Range");
                break;
-               
+
             default:
                fprintf(out, "Statment node kind not recognized: %d", syntaxTree->kind.stmt);
                break;
