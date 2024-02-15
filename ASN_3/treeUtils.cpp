@@ -53,11 +53,11 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1
 
 // confused about this implementation as well.
 // how to I convert the token type to string?
-char *tokenToStr(int type)
-{
-   // place holder = return 0
-   return 0;
-}
+// char *tokenToStr(int type)
+// {
+//    // place holder = return 0
+//    return 0;
+// }
 
 // Need help figuring this part out
 // The first parameter is an exp_type(void, integer, bool, char, or undefinedType) switch statement?
@@ -75,26 +75,26 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    {
       case Void:
          exp_type_name = (char*)"void type";
-      break;
+         break;
 
       case Integer:
          exp_type_name = (char*)"integer type";
-      break;
+         break;
 
       case Boolean:
          exp_type_name = (char*)"boolean type";
-      break;
+         break;
 
       case Char:
          exp_type_name = (char *)"char type";
-      break;
+         break;
 
       case UndefinedType:
          exp_type_name = (char *)"undefined type";
-      break;
+         break;
 
       default:
-         return 0;
+         break;
    }
 
 }
@@ -110,40 +110,52 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          switch (syntaxTree->kind.decl)
          {
             case DeclKind::VarK:
+               printf("Var: %s ", sytanxTree->attr.name);
                break;
             case DeclKind::FuncK:
+               printf("Func: %s ", syntaxTree->attr.name);
                break;
             case DeclKind::ParamK:
+               printf("Param: %s ", syntaxTree->attr.name);
                break;
             default:
                break;
          }
+
       // Statement Kind printing
       case NodeKind::StmtK:
          switch (syntaxTree->kind.stmt)
          {
             case StmtKind::IfK:
+               frprintf(out, "If");
                break;
             
             case StmtKind::WhileK:
+               frprintf(out, "While");
                break;
 
             case StmtKind::ForK:
+               frprintf(out, "For");
                break;
 
             case StmtKind::CompoundK:
+               frprintf(out, "Compound");
                break;
 
             case StmtKind::ReturnK:
+               frprintf(out, "Return");
                break;
 
             case StmtKind::BreakK:
+               frprintf(out, "Break");
                break;
 
             case StmtKind::RangeK:
+               frprintf(out, "Range");
                break;
-         
+               
             default:
+               fprintf(out, "Statment node kind not recognized: %d", syntaxTree->kind.stmt);
                break;
          }
       // ExpKind printing
