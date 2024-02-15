@@ -96,7 +96,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       default:
          break;
    }
-
+   return 0;
 }
 
 void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
