@@ -39,7 +39,7 @@ int setValue(int linenum, int tokenClass, char *svalue) {
          yylval.Token_Data->nvalue = stoi(svalue);
          break;
       case ID:
-         yylval.tinfo->svalue = strdup(svalue);
+         yylval.Token_Data->svalue = strdup(svalue);
          break;
       case BOOLCONST:
          if(svalue[0] == 't') 
@@ -60,7 +60,7 @@ int setValue(int linenum, int tokenClass, char *svalue) {
             }
          }
          else
-            yylval.tinfo->svalue = strdup(svalue);
+            yylval.Token_Data->svalue = strdup(svalue);
          break;
    }
 

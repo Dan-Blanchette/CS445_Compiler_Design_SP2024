@@ -20,7 +20,7 @@ void debugMsg(string str)
 {
    if (errflag == true)
    {
-      printf("%s : ", str);
+      std::cout << str << "- " << endl;
    }
 }
 
@@ -52,7 +52,7 @@ TreeNode *addSibling(TreeNode *t, TreeNode *s)
    {
       tNode = tNode->sibling;
    }
-   tNode->sibling = s
+   tNode->sibling = s;
    return t;
 }
 
@@ -167,7 +167,7 @@ varDeclInit : varDeclId {$$ = $1;}
    ;
 
 // rule 9
-varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1); $$isArray = false;}
+varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1); $$->isArray = false;}
    | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1);
      $$->isArray = true; $$->size = $3->nvalue + 1;}
    ;
