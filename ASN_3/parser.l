@@ -19,48 +19,52 @@ char *lastToken=(char *)"";
 
 // used as a means to communicate between .l and .y files
 int setValue(int linenum, int tokenClass, char *svalue) {
-    yylval.Token_Data = new Token_Data;
+   yylval.Token_Data = new Token_Data;
 
 
-    yylval.Token_Data->tokenclass = tokenClass;
-    yylval.Token_Data->linenum = linenum;
-    yylval.Token_Data->tokenstr = strdup(svalue);
-    yylval.Token_Data->cvalue = '@';
-    yylval.Token_Data->nvalue = 777;
-    yylval.Token_Data->svalue = NULL;
+   yylval.Token_Data->tokenclass = tokenClass;
+   yylval.Token_Data->linenum = linenum;
+   yylval.Token_Data->tokenstr = strdup(svalue);
+   yylval.Token_Data->cvalue = '@';
+   yylval.Token_Data->nvalue = 777;
+   yylval.Token_Data->svalue = NULL;
 
-    yylval.Token_Data->tokenstr = lastToken = strdup(svalue);
-    // yylval.Token_Data->cvalue = 
+   yylval.Token_Data->tokenstr = lastToken = strdup(svalue);
+   
 
-    switch (tokenClass) {
+   switch (tokenClass) 
+   {
 
-    case NUMCONST:
-       yylval.Token_Data->nvalue = stoi(svalue);
-       break;
-    case BOOLCONST:
-       if(svalue[0] == 't') {
-          yylval.Token_Data->nvalue = 1;
-       }
-       else yylval.Token_Data->nvalue =0;
-       break;
+      case NUMCONST:
+         yylval.Token_Data->nvalue = stoi(svalue);
+         break;
+      case ID:
+         yylval.tinfo->svalue = strdup(svalue);
+         break;
+      case BOOLCONST:
+         if(svalue[0] == 't') 
+         {
+            yylval.Token_Data->nvalue = 1;
+         }
+         else yylval.Token_Data->nvalue =0;
+            break;
 
-    //case OP:
-         // yylval.Token_Data->cvalue = hmmm..... What should I set it to?
-       break;
-    // case CHARCONST:
-       if(svalue[1] == '\\'){
-          if(svalue[2] == 'n')
-             yylval.Token_Data->cvalue = '\n';
-          else if(svalue[2] == '0') {
+      case CHARCONST:
+         if(svalue[1] == '\\')
+         {
+            if(svalue[2] == 'n')
+               yylval.Token_Data->cvalue = '\n';
+            else if(svalue[2] == '0') 
+            {
                yylval.Token_Data->cvalue = '\0';
-          }
-       }
-       // test
-         // yylval.Token_Data->cvalue = not sure what this should be set to yet.
-        //  break;
-    }
+            }
+         }
+         else
+            yylval.tinfo->svalue = strdup(svalue);
+         break;
+   }
 
-    return tokenClass;
+   return tokenClass;
 }
 
 %}

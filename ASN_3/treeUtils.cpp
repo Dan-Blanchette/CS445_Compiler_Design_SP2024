@@ -3,13 +3,65 @@
 #include "scanType.h"
 #include <stdlib.h>
 
+static int nodeIdNum = 0;
+
 // lots of these save the Token_Data block so line number and yytext are saved
 TreeNode *cloneNode(TreeNode *currnode)
 {
    // create a new tree node in memory
    TreeNode *copyNode = new TreeNode;
    // copy the node data from the current node to the node copy variable
-   copyNode = currnode;
+   // copyNode = currnode;
+   // this is great if we want to copy just the 
+   // current node's data. 
+   
+   // but if it's a parent node we need to also 
+   // copy all the struct data in treeNodes.h
+   // so we need to use a loop to copy all the children and update their attributes
+   // and siblings if there are any.
+   int num = 0;
+   // copy children
+   while(num < MAXCHILDREN)
+   {
+     copyNode->child[num] = currnode->child[num];
+     num++;
+   }
+   
+   // copy the siblings
+   copyNode->sibling = currnode->sibling;
+   copyNode->nodeNum = nodeIdNum++;
+  
+   // copy the node line number
+   copyNode->lineno = currnode->lineno;
+
+   // copy the node kind
+   copyNode->nodekind = currnode->nodekind;
+
+   // copy the node kind struct data
+   copyNode->kind.decl = currnode->kind.decl;
+   copyNode->kind.stmt = currnode->kind.stmt;
+   copyNode->kind.exp = currnode->kind.exp;
+
+   // copy the node attributes struct
+   copyNode->attr.op = currnode->attr.op;
+   copyNode->attr.value = currnode->attr.value;
+   copyNode->attr.cvalue = currnode->attr.cvalue;
+   copyNode->attr.name = currnode->attr.name;
+   copyNode->attr.string = currnode->attr.string;
+
+   // copy the node ExpType type and boolean data
+   copyNode->type = currnode->type;
+   copyNode->isStatic = currnode->isStatic;
+   copyNode->isArray = currnode->isArray;
+   copyNode->isConst = currnode->isConst;
+   copyNode->isUsed = currnode->isUsed;
+   copyNode->isAssigned = currnode->isAssigned;
+
+   // copy varKind and extra inferred node data
+   copyNode->varKind = currnode->varKind;
+   copyNode->offset = currnode->offset;
+   copyNode->size = currnode->size;
+
    // return the copy of the node
    return copyNode;
 }
@@ -22,6 +74,7 @@ TreeNode *newDeclNode(DeclKind kind,ExpType type,Token_Data *token, TreeNode *c0
    newNode->child[0] = c0;
    newNode->child[1] = c1;
    newNode->child[2] = c2;
+   newNode->sibling = NULL;
 
    return newNode;
 }  // save Token_Data block!!
@@ -34,6 +87,7 @@ TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, TreeNode *
    newNode->child[0] = c0;
    newNode->child[1] = c1;
    newNode->child[2] = c2;
+   newNode->sibling = NULL;
 
    return newNode;
 }
@@ -47,6 +101,7 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1
    newNode->child[0] = c0;
    newNode->child[1] = c1;
    newNode->child[2] = c2;
+   newNode->sibling = NULL;
 
    return newNode;
 }
@@ -163,6 +218,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          switch (syntaxTree->kind.exp)
          {
             case ExpKind::AssignK:
+               fprintf(out, "Assign: %s")
                break;
 
             case ExpKind::CallK:

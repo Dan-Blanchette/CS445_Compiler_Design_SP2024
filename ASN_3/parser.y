@@ -1,5 +1,6 @@
 %{
 #include <cstdio>
+#include <stdio.h>
 #include <iostream>
 #include "treeNodes.h"
 #include <stdlib.h>
@@ -14,17 +15,28 @@ extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
 
+bool errflag = false;
+void debugMsg(string str)
+{
+   if (errflag == true)
+   {
+      printf("%s : ", str);
+   }
+}
+
 int numErrors = 0;
 int numWarnings = 0;
 extern int line;
 extern int yylex();
+
+
 
 TreeNode *addSibling(TreeNode *t, TreeNode *s)
 {
    // make sure s is not the null value. If it is empty, major error, exit program!
    if(s == NULL)
    {
-      printf("ERROR: Sibling is equal to 0.");
+      debugMsg("ERROR: Sibling is equal to 0.");
       exit(1);
    }
 
@@ -34,7 +46,14 @@ TreeNode *addSibling(TreeNode *t, TreeNode *s)
       return s;
    }
    // look at t's sibling list until you finish with sibbling = null (the end of the list) and add s there.
-   return s;
+
+   TreeNode *tNode = t;
+   while(tNode->sibling)
+   {
+      tNode = tNode->sibling;
+   }
+   tNode->sibling = s
+   return t;
 }
 
 // pass the static type attribute to the sibling list
@@ -53,6 +72,8 @@ void setType(TreeNode *t, ExpType type, bool isStatic)
 TreeNode *syntaxTree;
 
 void yyerror(const char *msg);
+
+
 
 void printToken(Token_Data myData, string tokenName, int type = 0) {
    cout << "Line: " << myData.linenum << " Type: " << tokenName;
@@ -106,32 +127,33 @@ void printToken(Token_Data myData, string tokenName, int type = 0) {
 
 %%
 // rule 1
-program : precompList declList {syntaxTree = $2; cout << "program : precompList decList" << endl;}
+program : precompList declList {syntaxTree = $2;}
    ;
 
 // rule 2
 precompList : precompList PRECOMPILER {$$ = NULL;}
-   | PRECOMPILER {$$ = NULL; printf("%s\n", yylval.Token_Data->tokenstr);}
+   | PRECOMPILER {$$ = NULL;}
    | /*empty*/ {$$ = NULL;}
    ;
 
 // rule 3
 declList : declList decl {$$ = addSibling($1, $2);}
-   | decl {$$ = $1; cout << "| funDecl" << endl;}
+   | decl {$$ = $1;}
    ;
 
 // rule 4
-decl : varDecl {$$ = $1; cout << "varDecl" << endl;}
-   | funDecl {$$ = $1; cout << "| funDecl" << endl;}
+decl : varDecl {$$ = $1;}
+   | funDecl {$$ = $1;}
    ;
 
 //rule 5
-varDecl : typeSpec varDeclList  ';' {$$ = $2;}
+varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false);}
    ;
 
 // rule 6
-scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3;}
-   | typeSpec varDeclList ';' {$$ = $2;}
+// has typeSpec in production which needs the setType function as part of node creation
+scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true;}
+   | typeSpec varDeclList ';' {$$ = $2; setType($2, $1, false);}
    ;
 
 // rule 7
@@ -145,9 +167,9 @@ varDeclInit : varDeclId {$$ = $1;}
    ;
 
 // rule 9
-varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1);}
+varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1); $$isArray = false;}
    | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1);
-     $$->isArray = true; $$->size = $3->nvalue + 1; }
+     $$->isArray = true; $$->size = $3->nvalue + 1;}
    ;
 
 // rule 10
@@ -173,7 +195,8 @@ parmList : parmList ',' parmTypeList {$$ = addSibling($1, $3);}
    ;
 
 // rule 14
-parmTypeList : typeSpec parmIdList {$$ = $2;}
+// has typeSpec in production which needs the setType function
+parmTypeList : typeSpec parmIdList {$$ = $2; setType($2, $1, false);}
    | parmId {$$ = $1;}
    ;
 
@@ -237,8 +260,7 @@ expstmt : exp ';' {$$ = $1;}
    ;
 
 // rule 22
-compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3); cout << 
-"compoundstmt : '{' localDecls stmtList '}'" << endl;}
+compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3);}
    ;
 
 // rule 23
@@ -432,6 +454,6 @@ int main(int argc, char **argv) {
    printf("Number of warnings: 0\n");
    printf("Number of errors: 0\n");
    // call printTree from treeUtils
-   printTree(stdout,syntaxTree, false, false);
+   printTree(stdout, syntaxTree, false, false);
    return 0;
 }
