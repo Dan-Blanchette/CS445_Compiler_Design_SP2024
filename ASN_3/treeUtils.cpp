@@ -157,125 +157,148 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
 {
    // create case statments to print out information
    // for each type of node kind
-   switch (syntaxTree->nodekind)
+
+   // edit: changed from super nested case statements to an if else if else approach for the NodeKinds
+   // then kept switch statements for subkind print statments
+   if (syntaxTree->nodekind == NodeKind::DeclK)
    {
-   // Declaration Kind printing
-   case NodeKind::DeclK:
+
       switch (syntaxTree->kind.decl)
       {
-      case DeclKind::VarK:
-         printf("Var: %s ", syntaxTree->attr.name);
-         break;
-      case DeclKind::FuncK:
-         printf("Func: %s ", syntaxTree->attr.name);
-         break;
-      case DeclKind::ParamK:
-         printf("Param: %s ", syntaxTree->attr.name);
-         break;
-      default:
-         break;
+         case DeclKind::VarK:
+            fprintf(out, "Var: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+            break;
+         case DeclKind::FuncK:
+            printf("Func: %s ", syntaxTree->attr.name);
+            break;
+         case DeclKind::ParamK:
+            printf("Param: %s ", syntaxTree->attr.name);
+            break;
+         default:
+            fprintf(out, "Decl Node Reporting for Duty!");
+            break;
       }
-
-   // Statement Kind printing
-   case NodeKind::StmtK:
+   }
+      // Statement Kind printing
+   else if ( syntaxTree->nodekind == NodeKind::StmtK)
+   {      // Sub Kinds of Statements
       switch (syntaxTree->kind.stmt)
       {
-      case StmtKind::IfK:
-         fprintf(out, "If");
-         break;
-
-      case StmtKind::WhileK:
-         fprintf(out, "While");
-         break;
-
-      case StmtKind::ForK:
-         fprintf(out, "For");
-         break;
-
-      case StmtKind::CompoundK:
-         fprintf(out, "Compound");
-         break;
-
-      case StmtKind::ReturnK:
-         fprintf(out, "Return");
-         break;
-
-      case StmtKind::BreakK:
-         fprintf(out, "Break");
-         break;
-
-      case StmtKind::RangeK:
-         fprintf(out, "Range");
-         break;
-
-      default:
-         fprintf(out, "Statment node kind not recognized: %d", syntaxTree->kind.stmt);
-         break;
-      }
-   // ExpKind printing
-   case NodeKind::ExpK:
-      switch (syntaxTree->kind.exp)
-      {
-      case ExpKind::AssignK:
-         fprintf(out, "Assign: %s", syntaxTree->attr.name);
-         break;
-
-      case ExpKind::CallK:
-         fprintf(out, "Call: %s", syntaxTree->attr.name);
-         break;
-
-      case ExpKind::ConstantK:
-         switch (syntaxTree->kind.exp)
-         {
-         case ExpType::Boolean:
-            fprintf(out, "Const %s", (syntaxTree->attr.value) ? "true" : "false");
+         case StmtKind::IfK:
+            fprintf(out, "If");
             break;
 
-         case ExpType::Integer:
-            fprintf(out, "Const %d", (syntaxTree->attr.value));
+         case StmtKind::WhileK:
+            fprintf(out, "While");
             break;
 
-         case ExpType::Char:
-            if (syntaxTree->isArray)
-            {
-               fprintf(out, "Const ");
-               int i = 0;
-               for (i; i < syntaxTree->size; i++)
-               {
-                  printf("%c", syntaxTree->attr.string[i]);
-               }
-            }
-            else
-               fprintf(out, "Const '%c'", syntaxTree->attr.cvalue);
+         case StmtKind::ForK:
+            fprintf(out, "For");
             break;
-         case ExpType::Void:
+
+         case StmtKind::CompoundK:
+            fprintf(out, "Compound");
             break;
-         case ExpType::UndefinedType:
-            fprintf(out, "Some Error Message: %s\n", expTypeToStr(syntaxTree->type));
+
+         case StmtKind::ReturnK:
+            fprintf(out, "Return");
+            break;
+
+         case StmtKind::BreakK:
+            fprintf(out, "Break");
+            break;
+
+         case StmtKind::RangeK:
+            fprintf(out, "Range");
             break;
 
          default:
+            fprintf(out, "Statment node reporting for duty!");
             break;
-         }
-         break;
-
-      case ExpKind::IdK:
-         fprintf(out, "Id: %s", syntaxTree->attr.name);
-         break;
-
-      case ExpKind::OpK:
-         fprintf(out, "Op: %s", syntaxTree->attr.name);
-         break;
-
-      default:
-         fprintf(out, "I'm some sort of ExpK node.");
-         break;
       }
-   default:
-      fprintf(out, "hey I'm a node, say something here.");
-      break;
+         // End Stmnt Switch
    }
+      // ExpKind printing
+   else if ( syntaxTree->nodekind == NodeKind::ExpK)
+   {      // ExpK Switch Start
+         switch (syntaxTree->kind.exp)
+         {
+            case ExpKind::AssignK:
+               fprintf(out, "Assign: %s", syntaxTree->attr.name);
+               break;
+
+            case ExpKind::CallK:
+               fprintf(out, "Call: %s", syntaxTree->attr.name);
+               break;
+
+            case ExpKind::ConstantK:
+               // ExpTypes Switch Start
+               switch (syntaxTree->kind.exp)
+               {
+                  case ExpType::Boolean:
+                        fprintf(out, "Const %s", (syntaxTree->attr.value) ? "true" : "false");
+                        break;
+
+                  case ExpType::Integer:
+                     fprintf(out, "Const %d", (syntaxTree->attr.value));
+                     break;
+
+                  case ExpType::Char:
+                     if (syntaxTree->isArray)
+                     {
+                        fprintf(out, "Const ");
+                        int i = 0;
+                        for (i; i < syntaxTree->size; i++)
+                        {
+                           printf("%c", syntaxTree->attr.string[i]);
+                        }
+                     }
+                     else
+                        fprintf(out, "Const '%c'", syntaxTree->attr.cvalue);
+                     break;
+                  // void type
+                  case ExpType::Void:
+                     break;
+
+                  case ExpType::UndefinedType:
+                     fprintf(out, "Some Error Message: %s\n", expTypeToStr(syntaxTree->type));
+                     break;
+                  // ExpType Default
+                  default:
+                     break;
+               }
+               // ExpType Switch End
+            case ExpKind::IdK:
+               fprintf(out, "Id: %s", syntaxTree->attr.name);
+               break;
+
+            case ExpKind::OpK:
+               fprintf(out, "Op: %s", syntaxTree->attr.name);
+               break;
+
+            default:
+               fprintf(out, "I'm some sort of ExpK node.");
+               break;
+         }
+         //ExpK Switch End
+   }
+   else
+   {
+      fprintf(out, "hey I'm a node, say something here.");
+      fprintf(out, " [line: %d]", syntaxTree->lineno);
+   } 
    return;
+}
+
+// helper function for printing .  .  .
+void showDepth(FILE *out, int depth)
+{
+   int i = 0;
+   while(i < depth)
+   {
+      fprintf(out, ".   ");
+      i++;
+   }
 }
 
 void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation,
@@ -297,8 +320,9 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
       if (syntaxTree->child[q] != NULL)
       {
          // two spaces at the end
+         showDepth(out, depth);
          fprintf(out, "Child: %d  ", q);
-         printTreeRecursive(out, syntaxTree->child[q], showExpType, showAllocation, depth + 1);
+         printTreeRecursive(out, syntaxTree->child[q], showExpType, showAllocation, (depth + 1));
       }
    }
 
@@ -306,11 +330,13 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    if (sibling)
    {
       // show . . depth
+      showDepth(out, depth);
       // again two spaces at the end
       fprintf(out, "Sibling: %d  ", siblingCount);
-      printTreeRecursive(out, sibling, showExpType, showAllocation, depth, siblingCount + 1);
+      printTreeRecursive(out, sibling, showExpType, showAllocation, depth, (siblingCount + 1));
    }
 }
+
 
 void printTree(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
 {
@@ -319,7 +345,7 @@ void printTree(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAlloc
       fprintf(out, "NULL\n");
       return;
    }
-   printTreeRecursive(out, syntaxTree, showExpType, showAllocation, 0);
+   printTreeRecursive(out, syntaxTree, showExpType, showAllocation, 1);
 
    TreeNode *sibling = syntaxTree->sibling;
 }

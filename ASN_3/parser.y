@@ -15,14 +15,6 @@ extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
 
-bool errflag = false;
-void debugMsg(string str)
-{
-   if (errflag == true)
-   {
-      std::cout << str << "- " << endl;
-   }
-}
 
 int numErrors = 0;
 int numWarnings = 0;
@@ -36,7 +28,7 @@ TreeNode *addSibling(TreeNode *t, TreeNode *s)
    // make sure s is not the null value. If it is empty, major error, exit program!
    if(s == NULL)
    {
-      debugMsg("ERROR: Sibling is equal to 0.");
+      printf("ERROR: Sibling is equal to 0.");
       exit(1);
    }
 
@@ -438,11 +430,14 @@ int main(int argc, char **argv) {
 
    int ch;
    
-   while ((option = getopt (argc, argv, "")) != -1)
+   while ((option = getopt (argc, argv, "w")) != -1)
       switch (option)
       {
-      default:
-         ;
+         case 'w':
+            dotAST = true;
+            break;
+         default:
+           ;
       }
    if ( optind == argc ) yyparse();
    for (index = optind; index < argc; index++) 
@@ -451,9 +446,19 @@ int main(int argc, char **argv) {
       yyparse();
       fclose (yyin);
    }
+   if(numErrors == 0)
+   {
+      printTree(stdout, syntaxTree, true, true);
+   }
+   else 
+   {
+      printf("/***************\n");
+      printf("Error: %d\n", numErrors);
+      printf("*****************/\n");
+   }
+   // call printTree from treeUtils
+   // printTree(stdout, syntaxTree, false, false);
    printf("Number of warnings: 0\n");
    printf("Number of errors: 0\n");
-   // call printTree from treeUtils
-   printTree(stdout, syntaxTree, false, false);
    return 0;
 }
