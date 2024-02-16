@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include "treeUtils.h"
 #include "scanType.h"
+
 using namespace std;
 
 //for pushing
@@ -26,25 +27,25 @@ extern int yylex();
 TreeNode *addSibling(TreeNode *t, TreeNode *s)
 {
    // make sure s is not the null value. If it is empty, major error, exit program!
-   if(s == NULL)
+   if(s == nullptr)
    {
       printf("ERROR: Sibling is equal to 0.");
       exit(1);
    }
 
    // make sure t is not the null value. If it is, return s;
-   if (t == NULL)
+   if (t == nullptr)
    {
       return s;
    }
-   // look at t's sibling list until you finish with sibbling = null (the end of the list) and add s there.
+   // look at t's siblings until you finish with sibbling = null (the end of the list) and add string there.
 
-   TreeNode *tNode = t;
-   while(tNode->sibling)
+   TreeNode *treeNode = treeNode;
+   while(treeNode->sibling != nullptr)
    {
-      tNode = tNode->sibling;
+      treeNode = treeNode->sibling;
    }
-   tNode->sibling = s;
+   treeNode->sibling = s;
    return t;
 }
 
@@ -66,17 +67,7 @@ TreeNode *syntaxTree;
 void yyerror(const char *msg);
 
 
-
-void printToken(Token_Data myData, string tokenName, int type = 0) {
-   cout << "Line: " << myData.linenum << " Type: " << tokenName;
-   if(type==0)
-     cout << " Token: " << myData.tokenstr;
-   if(type==1)
-     cout << " Token: " << myData.nvalue;
-   if(type==2)
-     cout << " Token: " << myData.cvalue;
-   cout << endl;
-}
+// removed printToken function
 
 %}
 
@@ -149,17 +140,17 @@ scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true);
    ;
 
 // rule 7
-varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3);}
+varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3); $$->isStatic = true;}
    | varDeclInit {$$ = $1;}
    ;
 
 // rule 8
 varDeclInit : varDeclId {$$ = $1;}
-   | varDeclId ':' simpleExp {$$ = $1, $3;}
+   | varDeclId ':' simpleExp {$$ = $1; if($$ != NULL); $$->child[0] = $3;}
    ;
 
 // rule 9
-varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1); $$->isArray = false;}
+varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1); $$->isArray = false; $$->size = 1; }
    | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1);
      $$->isArray = true; $$->size = $3->nvalue + 1;}
    ;
@@ -209,14 +200,11 @@ parmId : ID {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); $$-
    ;
 
 // rule 17
-stmt : matched {$$ = $1; cout << "stmt : matched" << endl;}
-   | unmatched {$$ = $1; cout << "| unmatched" << endl;}
+stmt : matched {$$ = $1;}
+   | unmatched {$$ = $1;}
    ;
 
 // rule 18
-// newStmtNode(IfK,)
-// newStmtNode(WhileK,)
-// newStmtNode(ForK,)
 matched : IF simpleExp THEN matched ELSE matched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
    | WHILE simpleExp DO matched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
    | FOR ID '=' iterRange DO matched {$$ = newStmtNode(StmtKind::ForK, $1, NULL, $4, $6); $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);
@@ -229,8 +217,6 @@ matched : IF simpleExp THEN matched ELSE matched {$$ = newStmtNode(StmtKind::IfK
    ;
 
 // rule 19
-// newStmtNode(RangeK,)
-// newStmtNode(RangeK,) 
 iterRange : simpleExp TO simpleExp {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $3);}
    | simpleExp TO simpleExp BY simpleExp {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $3, $5);}
    ;
@@ -261,7 +247,7 @@ localDecls : localDecls scopedVarDecl {$$ = addSibling($1, $2);}
    ;
 
 // rule 24
-stmtList : stmtList stmt {$$ = addSibling($1, $2);}
+stmtList : stmtList stmt { $$ = ($2 == NULL ? $1 : $$ = addSibling($1, $2));}
    | /*empty*/ {$$ = NULL;}
    ;
 
@@ -279,7 +265,7 @@ exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3);}
    | mutable INC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | mutable DEC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | simpleExp {$$ = $1;}
-   | mutable assignop error {$$ = newExpNode(ExpKind::AssignK, $2, $1, NULL);} 
+   | mutable assignop error {$$ = newExpNode(ExpKind::AssignK, $2, $1);} 
    ;
 
 // rule 28
@@ -356,8 +342,8 @@ unaryExp : unaryop unaryExp {$$ = newExpNode(ExpKind::OpK,$1, $2);}
    ;
 
 // rule 41
-unaryop : '-' {$$ = $1;}
-   | '*' {$$ = $1;}
+unaryop : '-' {$$ = $1; $$->svalue = (char *)"ch_sign";}
+   | '*' {$$ = $1; $$->svalue = (char *)"indir";}
    | '?' {$$ = $1;}
    ;
 
@@ -414,15 +400,80 @@ constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType
    ;
 
 %%
+
+// char *largerTokens[LASTTERM+1]; // used in the utils.cpp file printing routines
+// create a mapping from token class enum to a printable name in a
+// way that makes it easy to keep the mapping straight.
+// void initTokenStrings()
+// {
+// largerTokens[ADDASS] = (char *)"+=";
+// largerTokens[AND] = (char *)"and";
+// largerTokens[BOOL] = (char *)"bool";
+// largerTokens[BOOLCONST] = (char *)"boolconst";
+// largerTokens[BREAK] = (char *)"break";
+// largerTokens[BY] = (char *)"by";
+// largerTokens[CHAR] = (char *)"char";
+// largerTokens[CHARCONST] = (char *)"charconst";
+// largerTokens[CHSIGN] = (char *)"chsign";
+// largerTokens[DEC] = (char *)"--";
+// largerTokens[DIVASS] = (char *)"/=";
+// largerTokens[DO] = (char *)"do";
+// largerTokens[ELSE] = (char *)"else";
+// largerTokens[EQ] = (char *)"==";
+// largerTokens[FOR] = (char *)"for";
+// largerTokens[GEQ] = (char *)">=";
+// largerTokens[ID] = (char *)"id";
+// largerTokens[IF] = (char *)"if";
+// largerTokens[INC] = (char *)"++";
+// largerTokens[INT] = (char *)"int";
+// largerTokens[LEQ] = (char *)"<=";
+// largerTokens[MAX] = (char *)":>:";
+// largerTokens[MIN] = (char *)":<:";
+// largerTokens[MULASS] = (char *)"*=";
+// largerTokens[NEQ] = (char *)"!=";
+// largerTokens[NOT] = (char *)"not";
+// largerTokens[NUMCONST] = (char *)"numconst";
+// largerTokens[OR] = (char *)"or";
+// largerTokens[RETURN] = (char *)"return";
+// largerTokens[SIZEOF] = (char *)"sizeof";
+// largerTokens[STATIC] = (char *)"static";
+// largerTokens[STRINGCONST] = (char *)"stringconst";
+// largerTokens[SUBASS] = (char *)"-=";
+// largerTokens[THEN] = (char *)"then";
+// largerTokens[TO] = (char *)"to";
+// largerTokens[WHILE] = (char *)"while";
+// largerTokens[LASTTERM] = (char *)"lastterm";
+// }
+
+// static char tokenBuffer[16];
+// char *tokenToStr(int type)
+//  { 
+//   if (type>LASTTERM) {
+//   return (char*)"UNKNOWN";
+//    }
+//    else if (type>256) {
+//   return largerTokens[type];
+//    }
+//    else if ((type<32) || (type>127)) {
+//   sprintf(tokenBuffer, "Token#%d", type);
+//    } else {
+//   tokenBuffer[0] = type;
+//   tokenBuffer[1] = '\0';
+//    }
+//    return tokenBuffer;
+//}
+
 void yyerror (const char *msg)
 { 
    cout << "Error: " <<  msg << endl;
 }
+
 int main(int argc, char **argv) {
    // these lines allow us to read information from the parser.l file
    yylval.Token_Data = (Token_Data*)malloc(sizeof(Token_Data));
    yylval.tree = (TreeNode*)malloc(sizeof(TreeNode));
    yylval.Token_Data->linenum = 1;
+
    int option, index;
    char *file = NULL;
    bool dotAST = false;
@@ -431,14 +482,18 @@ int main(int argc, char **argv) {
    int ch;
    
    while ((option = getopt (argc, argv, "w")) != -1)
+   {
       switch (option)
       {
          case 'w':
             dotAST = true;
             break;
+         case '?':
          default:
            ;
       }
+   }
+
    if ( optind == argc ) yyparse();
    for (index = optind; index < argc; index++) 
    {
@@ -452,7 +507,7 @@ int main(int argc, char **argv) {
    }
    else 
    {
-      printf("/***************\n");
+      printf("/****************\n");
       printf("Error: %d\n", numErrors);
       printf("*****************/\n");
    }

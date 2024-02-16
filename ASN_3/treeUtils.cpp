@@ -106,18 +106,8 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1
    return newNode;
 }
 
-// confused about this implementation as well.
-// how to I convert the token type to string?
-// char *tokenToStr(int type)
-// {
-//    // place holder = return 0
-//    return 0;
-// }
 
-// Need help figuring this part out
-// The first parameter is an exp_type(void, integer, bool, char, or undefinedType) switch statement?
-// if switch what should the default case be?
-
+// The first parameter is an exp_type(void, integer, bool, char, or undefinedType)
 // The second parameter is referrring to the boolean value flag isArray (part of the TreeNode struct)
 // and the last is another boolean value flag that checks for a static value (part of the TreeNode struct)
 char expBuff[100];
