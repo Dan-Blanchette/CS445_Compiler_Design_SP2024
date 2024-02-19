@@ -77,7 +77,7 @@ TreeNode *newDeclNode(DeclKind kind, ExpType type, Token_Data *token, TreeNode *
    newNode->sibling = NULL;
 
    return newNode;
-} // save Token_Data block!!
+}
 
 TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
