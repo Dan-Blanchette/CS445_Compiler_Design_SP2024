@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include "treeUtils.h"
 #include "scanType.h"
+#include "dot.h"
 
 using namespace std;
 
@@ -52,7 +53,7 @@ TreeNode *addSibling(TreeNode *t, TreeNode *s)
 // pass the static type attribute to the sibling list
 void setType(TreeNode *t, ExpType type, bool isStatic)
 {
-   while(t)
+   while(t != nullptr)
    {
       // set t->type and t->isStatic
       t->type = type;
@@ -114,9 +115,10 @@ program : precompList declList {syntaxTree = $2;}
    ;
 
 // rule 2
-precompList : precompList PRECOMPILER {$$ = NULL;}
-   | PRECOMPILER {$$ = NULL;}
-   | /*empty*/ {$$ = NULL;}
+// changing NULL to nullptr here. Not sure if that is the issue.
+precompList : precompList PRECOMPILER {$$ = nullptr;}
+   | PRECOMPILER {$$ = nullptr;}
+   | /*empty*/ {$$ = nullptr;}
    ;
 
 // rule 3
@@ -134,19 +136,20 @@ varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false);}
    ;
 
 // rule 6
+// UPDATE; set isStatic value to false.
 // has typeSpec in production which needs the setType function as part of node creation
 scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true;}
-   | typeSpec varDeclList ';' {$$ = $2; setType($2, $1, false);}
+   | typeSpec varDeclList ';' {$$ = $2; setType($2, $1, false); $$isStatic=false;}
    ;
 
 // rule 7
-varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3); $$->isStatic = true;}
+varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3);}
    | varDeclInit {$$ = $1;}
    ;
 
 // rule 8
 varDeclInit : varDeclId {$$ = $1;}
-   | varDeclId ':' simpleExp {$$ = $1; if($$ != NULL); $$->child[0] = $3;}
+   | varDeclId ':' simpleExp {$$ = $1; $1->child[0] = $3;}
    ;
 
 // rule 9
@@ -168,8 +171,9 @@ funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, $1, 
    ;
 
 // rule 12
+// changed null to nullptr
 parms : parmList {$$ = $1;}
-   | /*empty*/ {$$ = NULL;}
+   | /*empty*/ {$$ = nullptr;}
    ;
 
 // rule 13
@@ -178,9 +182,9 @@ parmList : parmList ',' parmTypeList {$$ = addSibling($1, $3);}
    ;
 
 // rule 14
+// UPDATE: removed parmID was accidentally added as an OR condition for this production.
 // has typeSpec in production which needs the setType function
 parmTypeList : typeSpec parmIdList {$$ = $2; setType($2, $1, false);}
-   | parmId {$$ = $1;}
    ;
 
 // rule 15
@@ -205,9 +209,10 @@ stmt : matched {$$ = $1;}
    ;
 
 // rule 18
+// changed NULL to nullptr
 matched : IF simpleExp THEN matched ELSE matched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
    | WHILE simpleExp DO matched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
-   | FOR ID '=' iterRange DO matched {$$ = newStmtNode(StmtKind::ForK, $1, NULL, $4, $6); $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);
+   | FOR ID '=' iterRange DO matched {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6); $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);
         $$->child[0]->attr.name = $2->svalue; $$->child[0]->isArray = false; 
         $$->child[0]->size = 1;}
    | expstmt {$$ = $1;}
@@ -222,19 +227,18 @@ iterRange : simpleExp TO simpleExp {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $
    ;
 
 // rule 20
+// UPDATE: removed extra struct variable assignments(not sure they were needed).
 unmatched : IF simpleExp THEN stmt {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4);}
    | IF simpleExp THEN matched ELSE unmatched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
    | WHILE simpleExp DO unmatched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
-   | FOR ID '=' iterRange DO unmatched {$$ = newStmtNode(StmtKind::ForK, $1, NULL, $4, $6);
-      $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2); 
-      $$->child[0]->attr.name = $2->svalue;
-      $$->child[0]->isArray = false; 
-      $$->child[0]->size = 1;}
+   | FOR ID '=' iterRange DO unmatched {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6);
+      $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
    ;
 
 // rule 21
+// changed to NULL to nullptr
 expstmt : exp ';' {$$ = $1;}
-   | ';' {$$ = NULL;}
+   | ';' {$$ = nullptr;}
    ;
 
 // rule 22
@@ -242,13 +246,16 @@ compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK
    ;
 
 // rule 23
+// changed to NULL to nullptr
 localDecls : localDecls scopedVarDecl {$$ = addSibling($1, $2);}
-   | /*empty*/ {$$ = NULL;}
+   | /*empty*/ {$$ = nullptr;}
    ;
 
 // rule 24
-stmtList : stmtList stmt { $$ = ($2 == NULL ? $1 : $$ = addSibling($1, $2));}
-   | /*empty*/ {$$ = NULL;}
+// changed to NULL to nullptr
+// removed turnary logic(going to see if this works)
+stmtList : stmtList stmt { $$ = addSibling($1, $2);}
+   | /*empty*/ {$$ = nullptr;}
    ;
 
 // rule 25
@@ -261,7 +268,7 @@ breakstmt : BREAK ';' {$$ = newStmtNode(StmtKind::BreakK, $1);}
    ;
 
 // rule 27
-exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3);}
+exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3); $$->isAssigned = true;}
    | mutable INC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | mutable DEC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | simpleExp {$$ = $1;}
@@ -342,8 +349,8 @@ unaryExp : unaryop unaryExp {$$ = newExpNode(ExpKind::OpK,$1, $2);}
    ;
 
 // rule 41
-unaryop : '-' {$$ = $1; $$->svalue = (char *)"ch_sign";}
-   | '*' {$$ = $1; $$->svalue = (char *)"indir";}
+unaryop : '-' {$$ = $1; $$->svalue = (char *)"chsign";}
+   | '*' {$$ = $1; $$->svalue = (char *)"sizeof";}
    | '?' {$$ = $1;}
    ;
 
@@ -355,8 +362,8 @@ factor : immutable {$$ = $1;}
 // rule 43
 // not sure about part 2 on this one
 mutable : ID {$$ = newExpNode(ExpKind::IdK, $1); $$->isArray = false; $$->attr.name = $1->svalue;}
-   | ID '[' exp ']' {$$ = newExpNode(ExpKind::OpK, $2, NULL, $3); $$->isArray = false; 
-      $$->child[0] = newExpNode(ExpKind::IdK, $1); $$->child[0]->attr.name = $1->svalue;} 
+   | ID '[' exp ']' {$$ = newExpNode(ExpKind::OpK, $2, nullptr, $3); $$->isArray = false; 
+      $$->child[0] = newExpNode(ExpKind::IdK, $1);} 
    ;
 
 // rule 44
@@ -376,7 +383,7 @@ call : ID '(' args ')' {$$ = newExpNode(ExpKind::CallK, $1, $3);
 
 // rule 46
 args : argList {$$ = $1;}
-   | /* empty */ {$$ = NULL;}
+   | /* empty */ {$$ = nullptr;}
    ;
 
 // rule 47  in this rule, production 1 arglist repeats the definition on the 
@@ -390,13 +397,27 @@ argList : argList ',' exp {$$ = addSibling($1, $3);}
 
 // rule 48
 constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Integer;
-   $$->isArray = false; $$->size = 1; $$->attr.value = $1->nvalue;}
-   | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Char; $$->attr.cvalue = $1->cvalue;
-      $$->isArray = false; $$->size = 1;}
-   | STRINGCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->isArray = true; $$->type = ExpType::Char;
-      $$->size = $1->nvalue + 1; $$->attr.string = $1->svalue;} 
-   | BOOLCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Boolean; $$->isArray = false;
-      $$->size = 1; $$->attr.value = $1->nvalue;}
+   $$->isArray = false; 
+   $$->size = 1; 
+   $$->attr.value = $1->nvalue;}
+
+   | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
+   $$->type = ExpType::Char; 
+   $$->attr.cvalue = $1->cvalue;
+   $$->isArray = false; 
+   $$->size = 1;}
+
+   | STRINGCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
+   $$->isArray = true; 
+   $$->type = ExpType::Char;
+   $$->size = $1->nvalue + 1; 
+   $$->attr.string = $1->svalue;} 
+
+   | BOOLCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
+   $$->type = ExpType::Boolean; 
+   $$->isArray = false;
+   $$->size = 1; 
+   $$->attr.value = $1->nvalue;}
    ;
 
 %%
@@ -479,7 +500,7 @@ int main(int argc, char **argv) {
    bool dotAST = false;
    extern FILE *yyin;
 
-   int ch;
+   int option;
    
    while ((option = getopt (argc, argv, "w")) != -1)
    {
@@ -504,15 +525,14 @@ int main(int argc, char **argv) {
    if(numErrors == 0)
    {
       printTree(stdout, syntaxTree, true, true);
+      if (dotAST){printDotTree(stdout, syntaxTree, false, false)};
    }
    else 
    {
       printf("/****************\n");
       printf("Error: %d\n", numErrors);
       printf("*****************/\n");
-   }
-   // call printTree from treeUtils
-   // printTree(stdout, syntaxTree, false, false);
+   };
    printf("Number of warnings: 0\n");
    printf("Number of errors: 0\n");
    return 0;
