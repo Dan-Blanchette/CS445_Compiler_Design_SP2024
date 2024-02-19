@@ -20,7 +20,7 @@ TreeNode *cloneNode(TreeNode *currnode)
    // so we need to use a loop to copy all the children and update their attributes
    // and siblings if there are any.
    int num = 0;
-   // copy children
+   // copy children and sibling data
    while (num < MAXCHILDREN)
    {
       copyNode->child[num] = currnode->child[num];
@@ -65,7 +65,7 @@ TreeNode *cloneNode(TreeNode *currnode)
    // return the copy of the node
    return copyNode;
 }
-
+// NOTE : This will be the same for statement and exp functions
 TreeNode *newDeclNode(DeclKind kind, ExpType type, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
    TreeNode *newNode = new TreeNode;
@@ -75,6 +75,18 @@ TreeNode *newDeclNode(DeclKind kind, ExpType type, Token_Data *token, TreeNode *
    newNode->child[1] = c1;
    newNode->child[2] = c2;
    newNode->sibling = NULL;
+
+   newNode->nodeNum = nodeIdNum++;
+   newNode->lineno = token->linenum;
+   newNode->type = type;
+
+   // update the rest of the node data
+   newNode->attr.value = token->nvalue;
+   newNode->attr.op = token->tokenclass;
+   newNode->attr.name = token->svalue;
+   newNode->attr.cvalue = token->cvalue;
+   
+
 
    return newNode;
 }
@@ -89,6 +101,16 @@ TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, TreeNode *
    newNode->child[2] = c2;
    newNode->sibling = NULL;
 
+   newNode->lineno = token->linenum;
+   newNode->nodeNum = nodeIdNum++;
+   
+
+   // update the rest of the node data
+   newNode->attr.value = token->nvalue;
+   newNode->attr.op = token->tokenclass;
+   newNode->attr.name = token->svalue;
+   newNode->attr.string = token->tokenstr;
+
    return newNode;
 }
 
@@ -102,6 +124,16 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1
    newNode->child[1] = c1;
    newNode->child[2] = c2;
    newNode->sibling = NULL;
+
+   newNode->lineno = token->linenum;
+   newNode->nodeNum = nodeIdNum++;
+
+   // update the rest of the node data
+   newNode->attr.value = token->nvalue;
+   newNode->attr.op = token->tokenclass;
+   newNode->attr.name = token->svalue;
+   newNode->attr.cvalue = token->cvalue;
+   
 
    return newNode;
 }
@@ -118,19 +150,19 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    // how does this tie into the yacc file and it's functionality?
    switch (type)
    {
-   case Void:
+   case ExpType::Void:
       exp_type_name = (char *)"void type";
       break;
 
-   case Integer:
+   case ExpType::Integer:
       exp_type_name = (char *)"integer type";
       break;
 
-   case Boolean:
+   case ExpType::Boolean:
       exp_type_name = (char *)"boolean type";
       break;
 
-   case Char:
+   case ExpType::Char:
       exp_type_name = (char *)"char type";
       break;
 
@@ -291,6 +323,30 @@ void showDepth(FILE *out, int depth)
    }
 }
 
+char *tokenToStr(int type)
+{
+   char *tokenStr;
+
+   switch (type)
+   {
+   case NodeKind::DeclK:
+      strcpy(tokenStr, "DECL");
+      break;
+   case NodeKind::StmtK:
+      strcpy(tokenStr, "STMT");
+      break;
+   case NodeKind::ExpK:
+      strcpy(tokenStr, "ExpK");
+      break;
+   
+   default:
+      break;
+   }
+
+   return tokenStr;
+
+}
+
 void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation,
                         int depth, int siblingCount = 1)
 {
@@ -317,8 +373,9 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    }
 
    TreeNode *sibling = syntaxTree->sibling;
-   if (sibling)
+   if (sibling != NULL)
    {
+      depth = (depth - 1);
       // show . . depth
       showDepth(out, depth);
       // again two spaces at the end
