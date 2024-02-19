@@ -139,7 +139,7 @@ varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false);}
 // UPDATE; set isStatic value to false.
 // has typeSpec in production which needs the setType function as part of node creation
 scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true;}
-   | typeSpec varDeclList ';' {$$ = $2; setType($2, $1, false); $$isStatic=false;}
+   | typeSpec varDeclList ';' {$$ = $2; setType($2, $1, false); $$->isStatic=false;}
    ;
 
 // rule 7
