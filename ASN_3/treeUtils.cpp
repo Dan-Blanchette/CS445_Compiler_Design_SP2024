@@ -190,11 +190,12 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          case DeclKind::VarK:
             fprintf(out, "Var: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
             break;
+
          case DeclKind::FuncK:
-            printf("Func: %s ", syntaxTree->attr.name);
+            fprintf(out, "Func: %s returns %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
             break;
          case DeclKind::ParamK:
-            printf("Param: %s ", syntaxTree->attr.name);
+            fprintf(out, "Param: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaTree->isStatic));   
             break;
          default:
             fprintf(out, "Decl Node Reporting for Duty!");
@@ -254,11 +255,22 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                break;
 
             case ExpKind::ConstantK:
+
+               char *boolVal;
+
+               fprintf(out, "Const");
                // ExpTypes Switch Start
-               switch (syntaxTree->kind.exp)
+               switch (syntaxTree->type)
                {
                   case ExpType::Boolean:
-                        fprintf(out, "Const %s", (syntaxTree->attr.value) ? "true" : "false");
+                        if(syntaxTree->attr.value == 1)
+                        {
+                           boolVal = "true";
+                        }
+                        else
+                           boolVal = "false";
+                        
+                        fprintf(out, " %s", boolVal);
                         break;
 
                   case ExpType::Integer:
@@ -268,7 +280,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                   case ExpType::Char:
                      if (syntaxTree->isArray)
                      {
-                        fprintf(out, "Const ");
+                        fprintf(out, " %s", syntaxTree->attr.name);
                         int i = 0;
                         for (i; i < syntaxTree->size; i++)
                         {
@@ -363,7 +375,7 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    for (int q = 0; q < MAXCHILDREN; q++)
    {
       // draw .  .  . for depth
-      if (syntaxTree->child[q] != NULL)
+      if (syntaxTree->child[q] != nullptr)
       {
          // two spaces at the end
          showDepth(out, depth);
@@ -387,12 +399,11 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
 
 void printTree(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
 {
-   if (syntaxTree == NULL)
+   if (syntaxTree == nullptr)
    {
       fprintf(out, "NULL\n");
       return;
    }
    printTreeRecursive(out, syntaxTree, showExpType, showAllocation, 1);
-
-   TreeNode *sibling = syntaxTree->sibling;
+   return;
 }
