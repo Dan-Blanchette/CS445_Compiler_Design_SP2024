@@ -499,8 +499,6 @@ int main(int argc, char **argv) {
    char *file = NULL;
    bool dotAST = false;
    extern FILE *yyin;
-
-   int option;
    
    while ((option = getopt (argc, argv, "w")) != -1)
    {
