@@ -261,10 +261,10 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          {
             if (syntaxTree->attr.value == 0)
             {
-               boolValue = (char *)"false";
+               boolVal = (char *)"false";
             }
             else
-               boolValue = (char *)"true";
+               boolVal = (char *)"true";
          }
          else if (syntaxTree->type == Char)
          {
@@ -280,7 +280,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          }
          else if (syntaxTree->type == Integer)
          {
-            fprintf(out, " %d", sytanxTree->attr.value);
+            fprintf(out, " %d", syntaxTree->attr.value);
          }
          else if (syntaxTree->type == Void)
          {
