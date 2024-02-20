@@ -106,6 +106,7 @@ TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, TreeNode *
    // update the rest of the node data
    newNode->attr.value = token->nvalue;
    newNode->attr.op = token->tokenclass;
+   newNode->attr.cvalue = token->cvalue;
    newNode->attr.name = token->svalue;
    newNode->attr.string = token->tokenstr;
 
@@ -255,40 +256,40 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          char *boolVal;
 
          fprintf(out, "Const");
-         // ExpTypes Switch Start
-         switch (syntaxTree->type)
+         // ExpTypes If Statment Start
+         if(syntaxTree->type == Boolean)
          {
-         case ExpType::Boolean:
-            if (syntaxTree->attr.value == 1)
+            if (syntaxTree->attr.value == 0)
             {
-               boolVal = (char *)"true";
+               boolValue = (char *)"false";
             }
             else
-               boolVal = (char *)"false";
-
-            fprintf(out, " %s", boolVal);
-            break;
-
-         case ExpType::Char:
-            if (syntaxTree->isArray)
-            {
-               fprintf(out, " %s", syntaxTree->attr.name);
-            }
-            else
-               fprintf(out, "Const '%c'", syntaxTree->attr.cvalue);
-            break;
-         // void type
-         case ExpType::Void:
-            break;
-
-         case ExpType::UndefinedType:
-            fprintf(out, "Some Error Message: %s\n", expTypeToStr(syntaxTree->type));
-            break;
-         // ExpType Default
-         default:
-            break;
+               boolValue = (char *)"true";
          }
-         // ExpType Switch End
+         else if (syntaxTree->type == Char)
+         {
+            // it's a character symbol
+            if (syntaxTree->isArray == false)
+            {
+               fprintf(out, " '%c'", syntaxTree->attr.cvalue);
+            }
+            // it's a string
+            else
+               fprintf(out, " %s",  syntaxTree->attr.name);
+
+         }
+         else if (syntaxTree->type == Integer)
+         {
+            fprintf(out, " %d", sytanxTree->attr.value);
+         }
+         else if (syntaxTree->type == Void)
+         {
+            // Do Nothing
+         }
+         else
+            fprintf(out, " %d", syntaxTree->attr.value);
+         break;
+         // End ExpType struct value assignments
       case ExpKind::IdK:
          fprintf(out, "Id: %s", syntaxTree->attr.name);
          break;
@@ -358,16 +359,17 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    // Draw enough . . . for this node
    printTreeNode(out, syntaxTree, showExpType, showAllocation);
    fprintf(out, "\n");
+   int i = 0;
    /*for loop to check for max children. If the depth = 0, then it is the root node*/
-   for (int q = 0; q < MAXCHILDREN; q++)
+   for (i; i < MAXCHILDREN; i++)
    {
       // draw .  .  . for depth
-      if (syntaxTree->child[q] != nullptr)
+      if (syntaxTree->child[i] != nullptr)
       {
          // two spaces at the end
          showDepth(out, depth);
-         fprintf(out, "Child: %d  ", q);
-         printTreeRecursive(out, syntaxTree->child[q], showExpType, showAllocation, (depth + 1));
+         fprintf(out, "Child: %d  ", i);
+         printTreeRecursive(out, syntaxTree->child[i], showExpType, showAllocation, (depth + 1));
       }
    }
 
