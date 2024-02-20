@@ -138,6 +138,7 @@ varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false);}
 // rule 6
 // UPDATE; set isStatic value to false.
 // has typeSpec in production which needs the setType function as part of node creation
+
 scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true;}
    | typeSpec varDeclList ';' {$$ = $2; setType($2, $1, false); $$->isStatic=false;}
    ;
@@ -153,9 +154,9 @@ varDeclInit : varDeclId {$$ = $1;}
    ;
 
 // rule 9
-varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1); $$->isArray = false; $$->size = 1; }
-   | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, ExpType::UndefinedType, $1);
-     $$->isArray = true; $$->size = $3->nvalue + 1;}
+varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = false; $$->size = 1; }
+   | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1);
+     $$->isArray = true;}
    ;
 
 // rule 10
@@ -166,6 +167,7 @@ typeSpec : INT {$$ = ExpType::Integer;}
 
 // rule 11
 // second production is not making sense to me
+
 funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, $1, $2, $4, $6);}
    | ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, ExpType::Void, $1, $3, $5);}
    ;
@@ -184,6 +186,7 @@ parmList : parmList ',' parmTypeList {$$ = addSibling($1, $3);}
 // rule 14
 // UPDATE: removed parmID was accidentally added as an OR condition for this production.
 // has typeSpec in production which needs the setType function
+
 parmTypeList : typeSpec parmIdList {$$ = $2; setType($2, $1, false);}
    ;
 
@@ -199,8 +202,11 @@ parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3);}
    ;
 
 // rule 16
-parmId : ID {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); $$->isArray = false; $$->size = 1;}
-   | ID '['']' {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); $$->isArray = true; $$->size = 1;}
+
+parmId : ID {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); 
+     $$->isArray = false; $$->isStatic = false;}
+   | ID '['']' {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); 
+     $$->isArray = true; $$->isStatic = false;}
    ;
 
 // rule 17
@@ -212,9 +218,8 @@ stmt : matched {$$ = $1;}
 // changed NULL to nullptr
 matched : IF simpleExp THEN matched ELSE matched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
    | WHILE simpleExp DO matched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
-   | FOR ID '=' iterRange DO matched {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6); $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);
-        $$->child[0]->attr.name = $2->svalue; $$->child[0]->isArray = false; 
-        $$->child[0]->size = 1;}
+   | FOR ID '=' iterRange DO matched {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6);
+        $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
    | expstmt {$$ = $1;}
    | compoundstmt {$$ = $1;}
    | returnstmt {$$ = $1;}
@@ -228,6 +233,7 @@ iterRange : simpleExp TO simpleExp {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $
 
 // rule 20
 // UPDATE: removed extra struct variable assignments(not sure they were needed).
+
 unmatched : IF simpleExp THEN stmt {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4);}
    | IF simpleExp THEN matched ELSE unmatched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
    | WHILE simpleExp DO unmatched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
@@ -247,6 +253,7 @@ compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK
 
 // rule 23
 // changed to NULL to nullptr
+
 localDecls : localDecls scopedVarDecl {$$ = addSibling($1, $2);}
    | /*empty*/ {$$ = nullptr;}
    ;
@@ -268,7 +275,7 @@ breakstmt : BREAK ';' {$$ = newStmtNode(StmtKind::BreakK, $1);}
    ;
 
 // rule 27
-exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3); $$->isAssigned = true;}
+exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3);}
    | mutable INC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | mutable DEC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | simpleExp {$$ = $1;}
@@ -361,9 +368,10 @@ factor : immutable {$$ = $1;}
 
 // rule 43
 // not sure about part 2 on this one
-mutable : ID {$$ = newExpNode(ExpKind::IdK, $1); $$->isArray = false; $$->attr.name = $1->svalue;}
-   | ID '[' exp ']' {$$ = newExpNode(ExpKind::OpK, $2, nullptr, $3); $$->isArray = false; 
-      $$->child[0] = newExpNode(ExpKind::IdK, $1);} 
+mutable : ID {$$ = newExpNode(ExpKind::IdK, $1); 
+         $$->isArray = false;}
+   | ID '[' exp ']' {$$ = newExpNode(ExpKind::OpK, $2, nullptr, $3); 
+         $$->child[0] = newExpNode(ExpKind::IdK, $1);} 
    ;
 
 // rule 44
@@ -377,8 +385,7 @@ immutable : '(' exp ')' {$$ = $2;}
 // We must also store the string name of the ID in the ExpKind struct
 // as part of the new node's information block.
 
-call : ID '(' args ')' {$$ = newExpNode(ExpKind::CallK, $1, $3);
-   $$->attr.name = $1->svalue;}
+call : ID '(' args ')' {$$ = newExpNode(ExpKind::CallK, $1, $3);}
    ;
 
 // rule 46
@@ -396,28 +403,25 @@ argList : argList ',' exp {$$ = addSibling($1, $3);}
    ;
 
 // rule 48
-constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); $$->type = ExpType::Integer;
+constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
+   $$->type = ExpType::Integer;
    $$->isArray = false; 
-   $$->size = 1; 
-   $$->attr.value = $1->nvalue;}
+   $$->size = 1;}
 
    | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->type = ExpType::Char; 
    $$->attr.cvalue = $1->cvalue;
    $$->isArray = false; 
-   $$->size = 1;}
+   $$->attr.cvalue = $1->cvalue;}
 
    | STRINGCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->isArray = true; 
    $$->type = ExpType::Char;
-   $$->size = $1->nvalue + 1; 
-   $$->attr.string = $1->svalue;} 
+   $$->isArray = true; } 
 
    | BOOLCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->type = ExpType::Boolean; 
-   $$->isArray = false;
-   $$->size = 1; 
-   $$->attr.value = $1->nvalue;}
+   $$->isArray = false; }
    ;
 
 %%
@@ -522,11 +526,10 @@ int main(int argc, char **argv) {
    }
    if(numErrors == 0)
    {
-      printTree(stdout, syntaxTree, true, true);
+      printTree(stdout, syntaxTree, false, false);
    }
    else 
    {
-      printTree(stdout, syntaxTree, false, false);
       printf("/****************\n");
       printf("Error: %d\n", numErrors);
       printf("*****************/\n");
