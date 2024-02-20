@@ -265,10 +265,10 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                   case ExpType::Boolean:
                         if(syntaxTree->attr.value == 1)
                         {
-                           boolVal = "true";
+                           boolVal = (char *)"true";
                         }
                         else
-                           boolVal = "false";
+                           boolVal = (char *)"false";
                         
                         fprintf(out, " %s", boolVal);
                         break;
