@@ -75,19 +75,17 @@ TreeNode *newDeclNode(DeclKind kind, ExpType type, Token_Data *token, TreeNode *
    newNode->child[1] = c1;
    newNode->child[2] = c2;
    newNode->sibling = NULL;
-
+   // Node Data
+   newNode->type = type;
    newNode->nodeNum = nodeIdNum++;
    newNode->lineno = token->linenum;
-   newNode->type = type;
-
-   // update the rest of the node data
-   newNode->attr.value = token->nvalue;
-   newNode->attr.op = token->tokenclass;
-   newNode->attr.name = token->svalue;
-   newNode->attr.cvalue = token->cvalue;
    
-
-
+   // update the rest of the node data
+   newNode->attr.op = token->tokenclass;
+   newNode->attr.value = token->nvalue;
+   newNode->attr.cvalue = token->cvalue;
+   newNode->attr.name = token->svalue;
+   
    return newNode;
 }
 
@@ -101,10 +99,10 @@ TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, TreeNode *
    newNode->child[2] = c2;
    newNode->sibling = NULL;
 
-   newNode->lineno = token->linenum;
+   // write to stmt node struct vars
    newNode->nodeNum = nodeIdNum++;
+   newNode->lineno = token->linenum;
    
-
    // update the rest of the node data
    newNode->attr.value = token->nvalue;
    newNode->attr.op = token->tokenclass;
@@ -124,16 +122,15 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1
    newNode->child[1] = c1;
    newNode->child[2] = c2;
    newNode->sibling = NULL;
-
-   newNode->lineno = token->linenum;
+   // Update ExpNode struct vars
    newNode->nodeNum = nodeIdNum++;
+   newNode->lineno = token->linenum;
 
    // update the rest of the node data
-   newNode->attr.value = token->nvalue;
    newNode->attr.op = token->tokenclass;
-   newNode->attr.name = token->svalue;
+   newNode->attr.value = token->nvalue;
    newNode->attr.cvalue = token->cvalue;
-   
+   newNode->attr.name = token->svalue;
 
    return newNode;
 }
@@ -150,29 +147,29 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    // how does this tie into the yacc file and it's functionality?
    switch (type)
    {
-   case ExpType::Void:
-      exp_type_name = (char *)"void type";
+   case Boolean:
+      exp_type_name = (char *)"type bool";
       break;
 
-   case ExpType::Integer:
-      exp_type_name = (char *)"integer type";
+   case Char:
+      exp_type_name = (char *)"type char";
       break;
 
-   case ExpType::Boolean:
-      exp_type_name = (char *)"boolean type";
+   case Integer:
+      exp_type_name = (char *)"type int";
       break;
 
-   case ExpType::Char:
-      exp_type_name = (char *)"char type";
+   case Void:
+      exp_type_name = (char *)"type void";
       break;
 
    default:
       exp_type_name = (char *)"undefined";
       break;
    }
-
-   sprintf(expBuff, "%s%s%s%s", (isArray && isStatic ? (char *)"static " : ""), (isArray ? (char *)"array of " : ""), (isStatic && !isArray ? (char *)"static " : ""), exp_type_name);
-   return expBuff;
+   
+   sprintf(expBuff, "%s%s%s%s", (isStatic ? "static " : ""), (isArray ? "array of " : ""), exp_type_name);
+   return strdup(expBuff); // this is a memory leak
 }
 
 void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
@@ -184,143 +181,133 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    // then kept switch statements for subkind print statments
    if (syntaxTree->nodekind == NodeKind::DeclK)
    {
-
       switch (syntaxTree->kind.decl)
       {
-         case DeclKind::VarK:
-            fprintf(out, "Var: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
-            break;
+      case DeclKind::VarK:
+         fprintf(out, "Var: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         break;
 
-         case DeclKind::FuncK:
-            fprintf(out, "Func: %s returns %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
-            break;
-         case DeclKind::ParamK:
-            fprintf(out, "Param: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));   
-            break;
-         default:
-            fprintf(out, "Decl Node Reporting for Duty!");
-            break;
+      case DeclKind::FuncK:
+         fprintf(out, "Func: %s returns %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         break;
+      case DeclKind::ParamK:
+         fprintf(out, "Param: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         break;
+      default:
+         fprintf(out, "Decl Node Reporting for Duty!");
+         break;
       }
    }
-      // Statement Kind printing
-   else if ( syntaxTree->nodekind == NodeKind::StmtK)
-   {      // Sub Kinds of Statements
+   // Statement Kind printing
+   else if (syntaxTree->nodekind == NodeKind::StmtK)
+   { // Sub Kinds of Statements
       switch (syntaxTree->kind.stmt)
       {
-         case StmtKind::IfK:
-            fprintf(out, "If");
-            break;
+      case StmtKind::IfK:
+         fprintf(out, "If");
+         break;
 
-         case StmtKind::WhileK:
-            fprintf(out, "While");
-            break;
+      case StmtKind::WhileK:
+         fprintf(out, "While");
+         break;
 
-         case StmtKind::ForK:
-            fprintf(out, "For");
-            break;
+      case StmtKind::ForK:
+         fprintf(out, "For");
+         break;
 
-         case StmtKind::CompoundK:
-            fprintf(out, "Compound");
-            break;
+      case StmtKind::CompoundK:
+         fprintf(out, "Compound");
+         break;
 
-         case StmtKind::ReturnK:
-            fprintf(out, "Return");
-            break;
+      case StmtKind::ReturnK:
+         fprintf(out, "Return");
+         break;
 
-         case StmtKind::BreakK:
-            fprintf(out, "Break");
-            break;
+      case StmtKind::BreakK:
+         fprintf(out, "Break");
+         break;
 
-         case StmtKind::RangeK:
-            fprintf(out, "Range");
-            break;
+      case StmtKind::RangeK:
+         fprintf(out, "Range");
+         break;
 
-         default:
-            fprintf(out, "Statment node reporting for duty!");
-            break;
+      default:
+         fprintf(out, "Statment node reporting for duty!");
+         break;
       }
-         // End Stmnt Switch
+      // End Stmnt Switch
    }
-      // ExpKind printing
-   else if ( syntaxTree->nodekind == NodeKind::ExpK)
-   {      // ExpK Switch Start
-         switch (syntaxTree->kind.exp)
+   // ExpKind printing
+   else if (syntaxTree->nodekind == NodeKind::ExpK)
+   { // ExpK Switch Start
+      switch (syntaxTree->kind.exp)
+      {
+      case ExpKind::AssignK:
+         fprintf(out, "Assign: %s", syntaxTree->attr.name);
+         break;
+
+      case ExpKind::CallK:
+         fprintf(out, "Call: %s", syntaxTree->attr.name);
+         break;
+
+      case ExpKind::ConstantK:
+         // bool variable to string
+         char *boolVal;
+
+         fprintf(out, "Const");
+         // ExpTypes Switch Start
+         switch (syntaxTree->type)
          {
-            case ExpKind::AssignK:
-               fprintf(out, "Assign: %s", syntaxTree->attr.name);
-               break;
+         case ExpType::Boolean:
+            if (syntaxTree->attr.value == 1)
+            {
+               boolVal = (char *)"true";
+            }
+            else
+               boolVal = (char *)"false";
 
-            case ExpKind::CallK:
-               fprintf(out, "Call: %s", syntaxTree->attr.name);
-               break;
+            fprintf(out, " %s", boolVal);
+            break;
 
-            case ExpKind::ConstantK:
+         case ExpType::Char:
+            if (syntaxTree->isArray)
+            {
+               fprintf(out, " %s", syntaxTree->attr.name);
+            }
+            else
+               fprintf(out, "Const '%c'", syntaxTree->attr.cvalue);
+            break;
+         // void type
+         case ExpType::Void:
+            break;
 
-               char *boolVal;
-
-               fprintf(out, "Const");
-               // ExpTypes Switch Start
-               switch (syntaxTree->type)
-               {
-                  case ExpType::Boolean:
-                        if(syntaxTree->attr.value == 1)
-                        {
-                           boolVal = (char *)"true";
-                        }
-                        else
-                           boolVal = (char *)"false";
-                        
-                        fprintf(out, " %s", boolVal);
-                        break;
-
-                  case ExpType::Integer:
-                     fprintf(out, "Const %d", (syntaxTree->attr.value));
-                     break;
-
-                  case ExpType::Char:
-                     if (syntaxTree->isArray)
-                     {
-                        fprintf(out, " %s", syntaxTree->attr.name);
-                        int i = 0;
-                        for (i; i < syntaxTree->size; i++)
-                        {
-                           printf("%c", syntaxTree->attr.string[i]);
-                        }
-                     }
-                     else
-                        fprintf(out, "Const '%c'", syntaxTree->attr.cvalue);
-                     break;
-                  // void type
-                  case ExpType::Void:
-                     break;
-
-                  case ExpType::UndefinedType:
-                     fprintf(out, "Some Error Message: %s\n", expTypeToStr(syntaxTree->type));
-                     break;
-                  // ExpType Default
-                  default:
-                     break;
-               }
-               // ExpType Switch End
-            case ExpKind::IdK:
-               fprintf(out, "Id: %s", syntaxTree->attr.name);
-               break;
-
-            case ExpKind::OpK:
-               fprintf(out, "Op: %s", syntaxTree->attr.name);
-               break;
-
-            default:
-               fprintf(out, "I'm some sort of ExpK node.");
-               break;
+         case ExpType::UndefinedType:
+            fprintf(out, "Some Error Message: %s\n", expTypeToStr(syntaxTree->type));
+            break;
+         // ExpType Default
+         default:
+            break;
          }
-         //ExpK Switch End
+         // ExpType Switch End
+      case ExpKind::IdK:
+         fprintf(out, "Id: %s", syntaxTree->attr.name);
+         break;
+
+      case ExpKind::OpK:
+         fprintf(out, "Op: %s", syntaxTree->attr.name);
+         break;
+
+      default:
+         fprintf(out, "I'm some sort of ExpK node.");
+         break;
+      }
+      // ExpK Switch End
    }
    else
    {
       fprintf(out, "hey I'm a node, say something here.");
       fprintf(out, " [line: %d]", syntaxTree->lineno);
-   } 
+   }
    return;
 }
 

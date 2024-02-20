@@ -526,6 +526,7 @@ int main(int argc, char **argv) {
    }
    else 
    {
+      printTree(stdout, syntaxTree, false, false);
       printf("/****************\n");
       printf("Error: %d\n", numErrors);
       printf("*****************/\n");
