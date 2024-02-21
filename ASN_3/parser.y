@@ -67,9 +67,6 @@ TreeNode *syntaxTree;
 
 void yyerror(const char *msg);
 
-
-// removed printToken function
-
 %}
 
 %union
@@ -165,7 +162,6 @@ typeSpec : INT {$$ = ExpType::Integer;}
    ;
 
 // rule 11
-// second production is not making sense to me
 
 funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, $1, $2, $4, $6);}
    | ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, ExpType::Void, $1, $3, $5);}
@@ -203,9 +199,9 @@ parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3);}
 // rule 16
 
 parmId : ID {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); 
-     $$->isArray = false; $$->isStatic = false;}
+             $$->isArray = false; $$->isStatic = false;}
    | ID '['']' {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); 
-     $$->isArray = true; $$->isStatic = false;}
+                $$->isArray = true; $$->isStatic = false;}
    ;
 
 // rule 17
@@ -248,6 +244,7 @@ expstmt : exp ';' {$$ = $1;}
 
 // rule 22
 compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3);}
+   | compoundstmt ';' {$$ = $1;}
    ;
 
 // rule 23

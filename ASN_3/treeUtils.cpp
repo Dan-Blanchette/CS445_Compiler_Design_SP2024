@@ -266,14 +266,14 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          }
          else if (syntaxTree->type == ExpType::Char)
          {
-            // it's a character symbol
-            if (syntaxTree->isArray == false)
-            {
-               fprintf(out, " '%c'", syntaxTree->attr.cvalue);
-            }
             // it's a string
+            if (syntaxTree->isArray)
+            {
+               fprintf(out, " %s", syntaxTree->attr.name);
+            }
+            // it's a char
             else
-               fprintf(out, " %s",  syntaxTree->attr.name);
+               fprintf(out, " '%c'",  syntaxTree->attr.cvalue);
 
          }
          else if (syntaxTree->type == ExpType::Integer)
