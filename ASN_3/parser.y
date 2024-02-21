@@ -526,8 +526,8 @@ int main(int argc, char **argv) {
    }
    if(numErrors == 0)
    {
-      printTree(stdout, syntaxTree, false, false);
-      if(dotAST) { printDotTree(stdout, syntaxTree, false, false);}
+      printTree(stdout, syntaxTree, true, true);
+      // if(dotAST) { printDotTree(stdout, syntaxTree, false, false);}
    }
    else 
    {
