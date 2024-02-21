@@ -278,7 +278,7 @@ exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3); $$->i
    | mutable INC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | mutable DEC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | simpleExp {$$ = $1;}
-   | mutable assignop error {$$ = newExpNode(ExpKind::AssignK, $2, $1); yyerror($3->tokenstr)} 
+   | mutable assignop error {$$ = newExpNode(ExpKind::AssignK, $2, $1); yyerror($3->tokenstr);} 
    ;
 
 // rule 28
