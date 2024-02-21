@@ -93,6 +93,8 @@ int setValue(int linenum, int tokenClass, char *svalue) {
       case '?':
       case ':':
       
+         yylval.Token_Data->svalue = strdup(svalue);
+         break;     
    }
 
    return tokenClass;
