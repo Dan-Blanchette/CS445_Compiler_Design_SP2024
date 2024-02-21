@@ -155,8 +155,7 @@ varDeclInit : varDeclId {$$ = $1;}
 
 // rule 9
 varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = false; $$->size = 1; }
-   | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1);
-     $$->isArray = true;}
+   | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = true;}
    ;
 
 // rule 10
@@ -275,11 +274,11 @@ breakstmt : BREAK ';' {$$ = newStmtNode(StmtKind::BreakK, $1);}
    ;
 
 // rule 27
-exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3);}
+exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3); $$->isAssigned = true;}
    | mutable INC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | mutable DEC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
    | simpleExp {$$ = $1;}
-   | mutable assignop error {$$ = newExpNode(ExpKind::AssignK, $2, $1);} 
+   | mutable assignop error {$$ = newExpNode(ExpKind::AssignK, $2, $1); yyerror($3->tokenstr)} 
    ;
 
 // rule 28
@@ -411,11 +410,9 @@ constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
    | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->type = ExpType::Char; 
    $$->attr.cvalue = $1->cvalue;
-   $$->isArray = false; 
-   $$->attr.cvalue = $1->cvalue;}
+   $$->isArray = false;}
 
    | STRINGCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
-   $$->isArray = true; 
    $$->type = ExpType::Char;
    $$->isArray = true; } 
 
@@ -526,8 +523,7 @@ int main(int argc, char **argv) {
    }
    if(numErrors == 0)
    {
-      printTree(stdout, syntaxTree, true, true);
-      // if(dotAST) { printDotTree(stdout, syntaxTree, false, false);}
+      printTree(stdout, syntaxTree, false, false);
    }
    else 
    {
@@ -535,7 +531,7 @@ int main(int argc, char **argv) {
       printf("Error: %d\n", numErrors);
       printf("*****************/\n");
    };
-   printf("Number of warnings: 0\n");
-   printf("Number of errors: 0\n");
+   printf("Number of warnings: %i\n", numWarnings);
+   printf("Number of errors: %i\n", numErrors);
    return 0;
 }

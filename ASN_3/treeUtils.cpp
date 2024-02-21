@@ -168,7 +168,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    }
    
    sprintf(expBuff, "%s%s%s", (isStatic ? "static " : ""), (isArray ? "array of " : ""), exp_type_name);
-   return strdup(expBuff); // this is a memory leak
+   return expBuff; 
 }
 
 void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation)
@@ -306,8 +306,8 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    {
       fprintf(out, "hey I'm a node, say something here.");
       fprintf(out, " [line: %d]", syntaxTree->lineno);
+      return;
    }
-   return;
 }
 
 // helper function for printing .  .  .
@@ -333,11 +333,9 @@ char *tokenToStr(int type)
    case NodeKind::StmtK:
       strcpy(tokenStr, "STMT");
       break;
-   case NodeKind::ExpK:
-      strcpy(tokenStr, "ExpK");
-      break;
    
    default:
+      strcpy(tokenStr, "EXP");
       break;
    }
 
