@@ -255,7 +255,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
 
          fprintf(out, "Const");
          // ExpTypes If Statment Start
-         if(syntaxTree->type == Boolean)
+         if(syntaxTree->type == ExpType::Boolean)
          {
             if (syntaxTree->attr.value == 0)
             {
@@ -264,7 +264,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
             else
                boolVal = (char *)"true";
          }
-         else if (syntaxTree->type == Char)
+         else if (syntaxTree->type == ExpType::Char)
          {
             // it's a character symbol
             if (syntaxTree->isArray == false)
@@ -276,11 +276,11 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                fprintf(out, " %s",  syntaxTree->attr.name);
 
          }
-         else if (syntaxTree->type == Integer)
+         else if (syntaxTree->type == ExpType::Integer)
          {
             fprintf(out, " %d", syntaxTree->attr.value);
          }
-         else if (syntaxTree->type == Void)
+         else if (syntaxTree->type == ExpType::Void)
          {
             // Do Nothing
          }
@@ -305,9 +305,9 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    else
    {
       fprintf(out, "hey I'm a node, say something here.");
-      fprintf(out, " [line: %d]", syntaxTree->lineno);
-      return;
    }
+   fprintf(out, " [line: %d]", syntaxTree->lineno);
+   return;
 }
 
 // helper function for printing .  .  .
