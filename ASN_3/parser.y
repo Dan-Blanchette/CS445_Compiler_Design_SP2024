@@ -41,12 +41,12 @@ TreeNode *addSibling(TreeNode *t, TreeNode *s)
    }
    // look at t's siblings until you finish with sibbling = null (the end of the list) and add string there.
 
-   TreeNode *treeNode = treeNode;
-   while(treeNode->sibling != nullptr)
+   TreeNode *treePtr = treePtr;
+   while(treePtr->sibling != nullptr)
    {
-      treeNode = treeNode->sibling;
+      treePtr = treePtr->sibling;
    }
-   treeNode->sibling = s;
+   treePtr->sibling = s;
    return t;
 }
 
@@ -116,8 +116,8 @@ program : precompList declList {syntaxTree = $2;}
 
 // rule 2
 // changing NULL to nullptr here. Not sure if that is the issue.
-precompList : precompList PRECOMPILER {$$ = nullptr;}
-   | PRECOMPILER {$$ = nullptr;}
+precompList : precompList PRECOMPILER {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
+   | PRECOMPILER {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
    | /*empty*/ {$$ = nullptr;}
    ;
 

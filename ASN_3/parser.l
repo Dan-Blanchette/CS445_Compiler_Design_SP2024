@@ -6,10 +6,13 @@
 #include "parser.tab.h" // This has to be the last include
 
 using namespace std;
+
 // Dan Blanchette
 // ASN_3
 // CS-445 Compiler Design Spring 2023
 // Dr. BC
+
+// removed regex line: ^"#DRBCRUN ".* { return setValue(line, PRECOMPILER, yytext);}
 #define YY_DECL extern "C" int yylex()
 #define YYSTYPE int
 
@@ -30,6 +33,8 @@ int setValue(int linenum, int tokenClass, char *svalue) {
    yylval.Token_Data->svalue = NULL;
 
    yylval.Token_Data->tokenstr = lastToken = strdup(svalue);
+
+   yylval.Token_Data->cvalue = svalue[1];
    
 
    switch (tokenClass) 
@@ -42,12 +47,12 @@ int setValue(int linenum, int tokenClass, char *svalue) {
          yylval.Token_Data->svalue = strdup(svalue);
          break;
       case BOOLCONST:
-         if(svalue[0] == 't') 
+         if(svalue[0] == 'f') 
          {
-            yylval.Token_Data->nvalue = 1;
+            yylval.Token_Data->nvalue = 0;
          }
-         else yylval.Token_Data->nvalue =0;
-            break;
+         else yylval.Token_Data->nvalue = 1;
+         break;
 
       case CHARCONST:
          if(svalue[1] == '\\')
@@ -61,7 +66,33 @@ int setValue(int linenum, int tokenClass, char *svalue) {
          }
          else
             yylval.Token_Data->svalue = strdup(svalue);
-         break;
+            break;
+      case STRINGCONST:
+      case ADDASS:
+      case MULASS:
+      case DIVASS:
+      case SUBASS:
+      case AND:
+      case OR:
+      case NOT:
+      case DEC:
+      case INC:
+      case EQ:
+      case NEQ:
+      case LEQ:
+      case GEQ:
+      case MIN:
+      case MAX:
+      case '%':
+      case '/':
+      case '*':
+      case '-':
+      case '+':
+      case '>':
+      case '<':
+      case '?':
+      case ':':
+      
    }
 
    return tokenClass;
@@ -82,7 +113,8 @@ string      {letdig}+|{op}+|{whitespace}+|{limitters}+|{period}+
 limitters   [\;\,\(\)\{\}\[\]]
 whitespace  [\ \t]
 op [\(\)\*\+\,\-\/\:\;\<\=\>\?\[\]\%\{\}]
-comment \/\/.*   
+comment \/\/.*  
+ 
 %%
 {op}           { return setValue(line, yytext[0], yytext);} // single char tokens
 "!="           { return setValue(line, NEQ, yytext);}
@@ -115,7 +147,6 @@ comment \/\/.*
 "return"       { return setValue(line, RETURN, yytext);}
 "break"        { return setValue(line, BREAK, yytext);}
 ^"#DRBC ".*    { return setValue(line, PRECOMPILER, yytext);}
-^"#DRBCRUN ".* { return setValue(line, PRECOMPILER, yytext);}
 {digit}+       { return setValue(line, NUMCONST, yytext); }
 "true"|"false" {return setValue(line, BOOLCONST, yytext);}
 {comment}      ;

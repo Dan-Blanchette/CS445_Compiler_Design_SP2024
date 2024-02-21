@@ -1,7 +1,5 @@
 #include "treeUtils.h"
-#include "treeNodes.h"
-#include "scanType.h"
-#include <stdlib.h>
+
 
 static int nodeIdNum = 0;
 
