@@ -31,7 +31,7 @@ TreeNode *cloneNode(TreeNode *currnode)
 
    // copy the node line number
    copyNode->lineno = currnode->lineno;
-   
+
    // copy the node kind
    copyNode->nodekind = currnode->nodekind;
 
@@ -283,7 +283,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          }
          else 
          {
-            if (syntaxTree->type == ExpectType::Void)
+            if (syntaxTree->type == ExpType::Void)
             {
                // Do Nothing
             }    
