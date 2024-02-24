@@ -151,7 +151,7 @@ varDeclInit : varDeclId {$$ = $1;}
    ;
 
 // rule 9
-varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = false; $$->size = 1; }
+varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = false; }
    | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = true;}
    ;
 

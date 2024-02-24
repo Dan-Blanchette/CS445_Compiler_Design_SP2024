@@ -32,6 +32,7 @@ TreeNode *cloneNode(TreeNode *currnode)
    // copy the node line number
    copyNode->lineno = currnode->lineno;
 
+   
    // copy the node kind
    copyNode->nodekind = currnode->nodekind;
 
@@ -40,13 +41,6 @@ TreeNode *cloneNode(TreeNode *currnode)
    copyNode->kind.stmt = currnode->kind.stmt;
    copyNode->kind.exp = currnode->kind.exp;
 
-   // copy the node attributes struct
-   copyNode->attr.op = currnode->attr.op;
-   copyNode->attr.value = currnode->attr.value;
-   copyNode->attr.cvalue = currnode->attr.cvalue;
-   copyNode->attr.name = currnode->attr.name;
-   copyNode->attr.string = currnode->attr.string;
-
    // copy the node ExpType type and boolean data
    copyNode->type = currnode->type;
    copyNode->isStatic = currnode->isStatic;
@@ -54,6 +48,14 @@ TreeNode *cloneNode(TreeNode *currnode)
    copyNode->isConst = currnode->isConst;
    copyNode->isUsed = currnode->isUsed;
    copyNode->isAssigned = currnode->isAssigned;
+
+   // copy the node attributes struct
+   copyNode->attr.op = currnode->attr.op;
+   copyNode->attr.value = currnode->attr.value;
+   copyNode->attr.cvalue = currnode->attr.cvalue;
+   copyNode->attr.name = currnode->attr.name;
+   copyNode->attr.string = currnode->attr.string;
+
 
    // copy varKind and extra inferred node data
    copyNode->varKind = currnode->varKind;
@@ -146,19 +148,19 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    // how does this tie into the yacc file and it's functionality?
    switch (type)
    {
-   case Boolean:
+   case ExpType::Boolean:
       exp_type_name = (char *)"type bool";
       break;
 
-   case Char:
+   case ExpType::Char:
       exp_type_name = (char *)"type char";
       break;
 
-   case Integer:
+   case ExpType::Integer:
       exp_type_name = (char *)"type int";
       break;
 
-   case Void:
+   case ExpType::Void:
       exp_type_name = (char *)"type void";
       break;
 
@@ -280,12 +282,13 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          {
             fprintf(out, " %d", syntaxTree->attr.value);
          }
-         else if (syntaxTree->type == ExpType::Void)
+         else 
          {
-            // Do Nothing
+            if (syntaxTree->type == ExpectType::Void)
+            {
+               // Do Nothing
+            }    
          }
-         else
-            fprintf(out, " %d", syntaxTree->attr.value);
          break;
          // End ExpType struct value assignments
       case ExpKind::IdK:
