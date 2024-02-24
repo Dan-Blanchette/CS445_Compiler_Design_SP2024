@@ -31,7 +31,6 @@ TreeNode *cloneNode(TreeNode *currnode)
 
    // copy the node line number
    copyNode->lineno = currnode->lineno;
-
    
    // copy the node kind
    copyNode->nodekind = currnode->nodekind;
@@ -358,6 +357,7 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    // Draw enough . . . for this node
    printTreeNode(out, syntaxTree, showExpType, showAllocation);
    fprintf(out, "\n");
+   
    int i = 0;
    /*for loop to check for max children. If the depth = 0, then it is the root node*/
    for (i; i < MAXCHILDREN; i++)
