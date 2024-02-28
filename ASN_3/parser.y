@@ -420,7 +420,7 @@ constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
 
 %%
 
-// char *largerTokens[LASTTERM+1]; // used in the utils.cpp file printing routines
+char *largerTokens[LASTTERM+1]; // used in the utils.cpp file printing routines
 // create a mapping from token class enum to a printable name in a
 // way that makes it easy to keep the mapping straight.
  void initTokenStrings()
@@ -432,7 +432,7 @@ constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
  largerTokens[BREAK] = (char *)"break";
  largerTokens[BY] = (char *)"by";
  largerTokens[CHAR] = (char *)"char";
-largerTokens[CHARCONST] = (char *)"charconst";
+ largerTokens[CHARCONST] = (char *)"charconst";
  largerTokens[CHSIGN] = (char *)"chsign";
  largerTokens[DEC] = (char *)"--";
  largerTokens[DIVASS] = (char *)"/=";
@@ -442,20 +442,20 @@ largerTokens[CHARCONST] = (char *)"charconst";
  largerTokens[FOR] = (char *)"for";
  largerTokens[GEQ] = (char *)">=";
  largerTokens[ID] = (char *)"id";
-largerTokens[IF] = (char *)"if";
+ largerTokens[IF] = (char *)"if";
  largerTokens[INC] = (char *)"++";
-largerTokens[INT] = (char *)"int";
+ largerTokens[INT] = (char *)"int";
  largerTokens[LEQ] = (char *)"<=";
  largerTokens[MAX] = (char *)":>:";
  largerTokens[MIN] = (char *)":<:";
-largerTokens[MULASS] = (char *)"*=";
+ largerTokens[MULASS] = (char *)"*=";
  largerTokens[NEQ] = (char *)"!=";
-largerTokens[NOT] = (char *)"not";
+ largerTokens[NOT] = (char *)"not";
  largerTokens[NUMCONST] = (char *)"numconst";
  largerTokens[OR] = (char *)"or";
  largerTokens[RETURN] = (char *)"return";
  largerTokens[SIZEOF] = (char *)"sizeof";
-largerTokens[STATIC] = (char *)"static";
+ largerTokens[STATIC] = (char *)"static";
  largerTokens[STRINGCONST] = (char *)"stringconst";
  largerTokens[SUBASS] = (char *)"-=";
  largerTokens[THEN] = (char *)"then";
