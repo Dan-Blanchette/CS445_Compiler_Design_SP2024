@@ -92,7 +92,7 @@ void yyerror(const char *msg);
 
 %token <Token_Data> FIRSTOP
 %token <Token_Data> ADDASS DIVASS MULASS SUBASS
-%token <Token_Data> AND OR NOT
+%token <Token_Data> AND OR NOT CHSIGN SIZEOF
 %token <Token_Data> EQ GEQ LEQ NEQ
 %token <Token_Data> MIN MAX INC DEC
 %token <Token_Data> '*' '-' '/' '+' '<' '>' '=' '%' '?'
