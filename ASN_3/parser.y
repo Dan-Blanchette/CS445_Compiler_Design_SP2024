@@ -464,23 +464,22 @@ constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
 // largerTokens[LASTTERM] = (char *)"lastterm";
 // }
 
-// static char tokenBuffer[16];
-// char *tokenToStr(int type)
-//  { 
-//   if (type>LASTTERM) {
-//   return (char*)"UNKNOWN";
-//    }
-//    else if (type>256) {
-//   return largerTokens[type];
-//    }
-//    else if ((type<32) || (type>127)) {
-//   sprintf(tokenBuffer, "Token#%d", type);
-//    } else {
-//   tokenBuffer[0] = type;
-//   tokenBuffer[1] = '\0';
-//    }
-//    return tokenBuffer;
-//}
+ static char tokenBuffer[16];
+ char *tokenToStr(int type)
+  { 
+   if (type>LASTTERM) {
+   return (char*)"UNKNOWN";
+    }
+    else if (type>256) {
+   return largerTokens[type];
+    }   else if ((type<32) || (type>127)) {
+  sprintf(tokenBuffer, "Token#%d", type);
+    } else {
+   tokenBuffer[0] = type;
+  tokenBuffer[1] = '\0';
+    }
+    return tokenBuffer;
+}
 
 void yyerror (const char *msg)
 { 
