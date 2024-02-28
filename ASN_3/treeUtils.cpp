@@ -243,7 +243,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       switch (syntaxTree->kind.exp)
       {
       case ExpKind::AssignK:
-         fprintf(out, "Assign: %s", syntaxTree->attr.name);
+         fprintf(out, "Assign: %s", tokenToStr(syntaxTree->attr.op));
          break;
 
       case ExpKind::CallK:
