@@ -22,7 +22,7 @@ char *lastToken=(char *)"";
 
 // used as a means to communicate between .l and .y files
 int setValue(int linenum, int tokenClass, char *svalue) {
-   yylval.Token_Data = new Token_Data;
+   yylval.tokenData = new tokenData;
 
 
    yylval.tokenData->tokenclass = tokenClass;

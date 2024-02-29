@@ -5,21 +5,21 @@
 #include <string.h>
 #include <iostream>
 
-// lots of these save the Token_Data block so line number and yytext are saved
+// lots of these save the tokenData block so line number and yytext are saved
 TreeNode *cloneNode(TreeNode *currnode);
 TreeNode *newDeclNode(DeclKind kind,
                       ExpType type,
-                      Token_Data *token=NULL,
+                      tokenData *token=NULL,
                       TreeNode *c0=NULL,
                       TreeNode *c1=NULL,
-                      TreeNode *c2=NULL);  // save Token_Data block!!
+                      TreeNode *c2=NULL);  // save tokenData block!!
 TreeNode *newStmtNode(StmtKind kind,
-                      Token_Data *token,
+                      tokenData *token,
                       TreeNode *c0=NULL,
                       TreeNode *c1=NULL,
                       TreeNode *c2=NULL);
 TreeNode *newExpNode(ExpKind kind,
-                     Token_Data *token,
+                     tokenData *token,
                      TreeNode *c0=NULL,
                      TreeNode *c1=NULL,
                      TreeNode *c2=NULL);
