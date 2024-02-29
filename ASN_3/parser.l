@@ -23,49 +23,49 @@ char *lastToken=(char *)"";
 // used as a means to communicate between .l and .y files
 int setValue(int linenum, int tokenClass, char *svalue) 
 {
-   yylval.tokenData = new tokenData;
+   yylval.Token_Data = new Token_Data;
 
-   yylval.tokenData->tokenclass = tokenClass;
-   yylval.tokenData->linenum = linenum;
-   yylval.tokenData->tokenstr = strdup(svalue);
-   yylval.tokenData->cvalue = '@';
-   yylval.tokenData->nvalue = 777;
-   yylval.tokenData->svalue = NULL;
+   yylval.Token_Data->tokenclass = tokenClass;
+   yylval.Token_Data->linenum = linenum;
+   yylval.Token_Data->tokenstr = strdup(svalue);
+   yylval.Token_Data->cvalue = '@';
+   yylval.Token_Data->nvalue = 777;
+   yylval.Token_Data->svalue = NULL;
 
-   yylval.tokenData->tokenstr = lastToken = strdup(svalue);
+   yylval.Token_Data->tokenstr = lastToken = strdup(svalue);
 
-   yylval.tokenData->cvalue = svalue[1];
+   yylval.Token_Data->cvalue = svalue[1];
    
 
    switch (tokenClass) 
    {
 
       case NUMCONST:
-         yylval.tokenData->nvalue = stoi(svalue);
+         yylval.Token_Data->nvalue = stoi(svalue);
          break;
       case ID:
-         yylval.tokenData->svalue = strdup(svalue);
+         yylval.Token_Data->svalue = strdup(svalue);
          break;
       case BOOLCONST:
          if(svalue[0] == 'f') 
          {
-            yylval.tokenData->nvalue = 0;
+            yylval.Token_Data->nvalue = 0;
          }
-         else yylval.tokenData->nvalue = 1;
+         else yylval.Token_Data->nvalue = 1;
          break;
 
       case CHARCONST:
          if(svalue[1] == '\\')
          {
             if(svalue[2] == 'n')
-               yylval.tokenData->cvalue = '\n';
+               yylval.Token_Data->cvalue = '\n';
             else if(svalue[2] == '0') 
             {
-               yylval.tokenData->cvalue = '\0';
+               yylval.Token_Data->cvalue = '\0';
             }
          }
          else
-            yylval.tokenData->svalue = strdup(svalue);
+            yylval.Token_Data->svalue = strdup(svalue);
             break;
       case STRINGCONST:
       case ADDASS:
@@ -93,7 +93,7 @@ int setValue(int linenum, int tokenClass, char *svalue)
       case '?':
       case ':':
       
-         yylval.tokenData->svalue = strdup(svalue);
+         yylval.Token_Data->svalue = strdup(svalue);
          break;     
    }
 

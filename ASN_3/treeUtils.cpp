@@ -3,7 +3,7 @@
 
 static int nodeIdNum = 0;
 
-// lots of these save the tokenData block so line number and yytext are saved
+// lots of these save the Token_Data block so line number and yytext are saved
 TreeNode *cloneNode(TreeNode *currnode)
 {
    // create a new tree node in memory
@@ -65,7 +65,7 @@ TreeNode *cloneNode(TreeNode *currnode)
    return copyNode;
 }
 // NOTE : This will be the same for statement and exp functions
-TreeNode *newDeclNode(DeclKind kind, ExpType type, tokenData *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
+TreeNode *newDeclNode(DeclKind kind, ExpType type, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
    TreeNode *newNode = new TreeNode;
    newNode->nodekind = NodeKind::DeclK;
@@ -88,7 +88,7 @@ TreeNode *newDeclNode(DeclKind kind, ExpType type, tokenData *token, TreeNode *c
    return newNode;
 }
 
-TreeNode *newStmtNode(StmtKind kind, tokenData *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
+TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
    TreeNode *newNode = new TreeNode;
    newNode->nodekind = NodeKind::StmtK;
@@ -112,7 +112,7 @@ TreeNode *newStmtNode(StmtKind kind, tokenData *token, TreeNode *c0, TreeNode *c
    return newNode;
 }
 
-TreeNode *newExpNode(ExpKind kind, tokenData *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
+TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
    // create a new struct node
    TreeNode *newNode = new TreeNode;

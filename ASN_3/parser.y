@@ -71,13 +71,13 @@ void yyerror(const char *msg);
 
 %union
 {
-   struct tokenData *tokenData;
+   struct Token_Data *Token_Data;
    struct TreeNode *tree;
    ExpType type; // for passing type spec up the tree
 }
 
-%type <tokenData> sumop mulop unaryop
-%type <tokenData> assignop relop minmaxop
+%type <Token_Data> sumop mulop unaryop
+%type <Token_Data> assignop relop minmaxop
 
 %type <tree> program precompList compoundstmt
 %type <tree> parmList parmId parms parmTypeList parmIdList args argList
@@ -90,20 +90,20 @@ void yyerror(const char *msg);
 
 %type <type> typeSpec
 
-%token <tokenData> FIRSTOP
-%token <tokenData> ADDASS DIVASS MULASS SUBASS
-%token <tokenData> AND OR NOT CHSIGN SIZEOF
-%token <tokenData> EQ GEQ LEQ NEQ
-%token <tokenData> MIN MAX INC DEC
-%token <tokenData> '*' '-' '/' '+' '<' '>' '=' '%' '?'
-%token <tokenData> PRECOMPILER
-%token <tokenData> LASTOP
+%token <Token_Data> FIRSTOP
+%token <Token_Data> ADDASS DIVASS MULASS SUBASS
+%token <Token_Data> AND OR NOT CHSIGN SIZEOF
+%token <Token_Data> EQ GEQ LEQ NEQ
+%token <Token_Data> MIN MAX INC DEC
+%token <Token_Data> '*' '-' '/' '+' '<' '>' '=' '%' '?'
+%token <Token_Data> PRECOMPILER
+%token <Token_Data> LASTOP
 
-%token <tokenData> IF BOOL THEN ELSE FOR INT BY TO RETURN STATIC DO WHILE BREAK CHAR 
-%token <tokenData> ID 
-%token <tokenData> BOOLCONST NUMCONST CHARCONST STRINGCONST
-%token <tokenData> ':' '[' ']' '(' ')' '{' '}' ';' ','
-%token <tokenData> LASTTERM
+%token <Token_Data> IF BOOL THEN ELSE FOR INT BY TO RETURN STATIC DO WHILE BREAK CHAR 
+%token <Token_Data> ID 
+%token <Token_Data> BOOLCONST NUMCONST CHARCONST STRINGCONST
+%token <Token_Data> ':' '[' ']' '(' ')' '{' '}' ';' ','
+%token <Token_Data> LASTTERM
 
 
 %%
@@ -113,8 +113,8 @@ program : precompList declList {syntaxTree = $2;}
 
 // rule 2
 // changing NULL to nullptr here. Not sure if that is the issue.
-precompList : precompList PRECOMPILER {cout << yylval.tokenData->tokenstr << "\n"; $$ = nullptr;}
-   | PRECOMPILER {cout << yylval.tokenData->tokenstr << "\n"; $$ = nullptr;}
+precompList : precompList PRECOMPILER {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
+   | PRECOMPILER {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
    | /*empty*/ {$$ = nullptr;}
    ;
 
@@ -488,9 +488,9 @@ void yyerror (const char *msg)
 
 int main(int argc, char **argv) {
    // these lines allow us to read information from the parser.l file
-   yylval.tokenData = (tokenData*)malloc(sizeof(tokenData));
+   yylval.Token_Data = (Token_Data*)malloc(sizeof(Token_Data));
    yylval.tree = (TreeNode*)malloc(sizeof(TreeNode));
-   yylval.tokenData->linenum = 1;
+   yylval.Token_Data->linenum = 1;
 
    int option, index;
    char *file = NULL;
