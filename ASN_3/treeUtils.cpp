@@ -323,7 +323,27 @@ void showDepth(FILE *out, int depth)
    }
 }
 
+// char *tokenToStr(int type)
+// {
+//    char *tokenStr;
 
+//    switch (type)
+//    {
+//    case NodeKind::DeclK:
+//       strcpy(tokenStr, "DECL");
+//       break;
+//    case NodeKind::StmtK:
+//       strcpy(tokenStr, "STMT");
+//       break;
+   
+//    default:
+//       strcpy(tokenStr, "EXP");
+//       break;
+//    }
+
+//    return tokenStr;
+
+// }
 
 void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation,
                         int depth, int siblingCount = 1)
