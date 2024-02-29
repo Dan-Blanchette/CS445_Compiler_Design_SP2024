@@ -99,6 +99,15 @@ void yyerror(const char *msg);
 %token <tokenData> PRECOMPILER
 %token <tokenData> LASTOP
 
+%token <tokenData> FIRSTOP
+%token <tokenData> ADDASS DIVASS MULASS SUBASS
+%token <tokenData> AND OR NOT CHSIGN SIZEOF
+%token <tokenData> EQ GEQ LEQ NEQ
+%token <tokenData> MIN MAX INC DEC
+%token <tokenData> '*' '-' '/' '+' '<' '>' '=' '%' '?'
+%token <tokenData> PRECOMPILER
+%token <tokenData> LASTOP
+
 %token <tokenData> IF BOOL THEN ELSE FOR INT BY TO RETURN STATIC DO WHILE BREAK CHAR 
 %token <tokenData> ID 
 %token <tokenData> BOOLCONST NUMCONST CHARCONST STRINGCONST
