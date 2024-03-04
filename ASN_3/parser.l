@@ -21,8 +21,7 @@ char *lastToken=(char *)"";
 //extern int numErrors;
 
 // used as a means to communicate between .l and .y files
-int setValue(int linenum, int tokenClass, char *svalue) 
-{
+int setValue(int linenum, int tokenClass, char *svalue) {
    yylval.Token_Data = new Token_Data;
 
 
@@ -48,11 +47,11 @@ int setValue(int linenum, int tokenClass, char *svalue)
          yylval.Token_Data->svalue = strdup(svalue);
          break;
       case BOOLCONST:
-         if(svalue[0] == 'f') 
+         if(svalue[0] == 't') 
          {
-            yylval.Token_Data->nvalue = 0;
+            yylval.Token_Data->nvalue = 1;
          }
-         else yylval.Token_Data->nvalue = 1;
+         else yylval.Token_Data->nvalue = 0;
          break;
 
       case CHARCONST:
@@ -93,7 +92,8 @@ int setValue(int linenum, int tokenClass, char *svalue)
       case '<':
       case '?':
       case ':':
-      
+      case '=':
+      case '[':
          yylval.Token_Data->svalue = strdup(svalue);
          break;     
    }
