@@ -264,6 +264,8 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
             }
             else
                boolVal = (char *)"true";
+            
+            fprintf(out, " %s", boolVal);
          }
          else if (syntaxTree->type == ExpType::Char)
          {
