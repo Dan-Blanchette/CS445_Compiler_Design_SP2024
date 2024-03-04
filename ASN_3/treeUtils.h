@@ -28,5 +28,6 @@ char *expTypeToStr(ExpType type, bool isArray=false, bool isStatic=false);
 
 void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation);
 void printTree(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation);
+void showDepth(FILE *out, int depth);
 
 #endif
