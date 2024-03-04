@@ -41,12 +41,13 @@ TreeNode *addSibling(TreeNode *t, TreeNode *s)
    }
    // look at t's siblings until you finish with sibbling = null (the end of the list) and add string there.
 
-   TreeNode *treePtr = treePtr;
+   TreeNode *treePtr = t;
    while(treePtr->sibling != nullptr)
    {
       treePtr = treePtr->sibling;
    }
    treePtr->sibling = s;
+
    return t;
 }
 
@@ -92,7 +93,8 @@ void yyerror(const char *msg);
 
 %token <Token_Data> FIRSTOP
 %token <Token_Data> ADDASS DIVASS MULASS SUBASS
-%token <Token_Data> AND OR NOT CHSIGN SIZEOF
+%token <Token_Data> AND OR NOT 
+%token <Token_Data> CHSIGN SIZEOF
 %token <Token_Data> EQ GEQ LEQ NEQ
 %token <Token_Data> MIN MAX INC DEC
 %token <Token_Data> '*' '-' '/' '+' '<' '>' '=' '%' '?'
