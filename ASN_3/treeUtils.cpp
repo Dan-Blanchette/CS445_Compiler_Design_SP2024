@@ -168,7 +168,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       break;
    }
    
-   sprintf(expBuff, "%s%s%s", (isStatic ? "static " : ""), (isArray ? "array of " : ""), exp_type_name);
+   sprintf(expBuff, "%s%s%s%s", (isStatic && isArray ? (char*)"static " : ""), (isArray ? (char *)"array of " : ""), (isArray && isStatic ? (char *)"static " : ""), exp_type_name);
    return expBuff; 
 }
 
@@ -315,35 +315,13 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
 // helper function for printing .  .  .
 void showDepth(FILE *out, int depth)
 {
-   int i = 0;
-   while(i < depth)
+   
+   for(int i = 0; i < depth; i++)
    {
       fprintf(out, ".   ");
-      i++;
    }
 }
 
-// char *tokenToStr(int type)
-// {
-//    char *tokenStr;
-
-//    switch (type)
-//    {
-//    case NodeKind::DeclK:
-//       strcpy(tokenStr, "DECL");
-//       break;
-//    case NodeKind::StmtK:
-//       strcpy(tokenStr, "STMT");
-//       break;
-   
-//    default:
-//       strcpy(tokenStr, "EXP");
-//       break;
-//    }
-
-//    return tokenStr;
-
-// }
 
 void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation,
                         int depth, int siblingCount = 1)
@@ -358,16 +336,16 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    printTreeNode(out, syntaxTree, showExpType, showAllocation);
    fprintf(out, "\n");
    
-   int i = 0;
+   
    /*for loop to check for max children. If the depth = 0, then it is the root node*/
-   for (i; i < MAXCHILDREN; i++)
+   for (int i = 0; i < MAXCHILDREN; i++)
    {
       // draw .  .  . for depth
       if (syntaxTree->child[i] != nullptr)
       {
          // two spaces at the end
          showDepth(out, depth);
-         fprintf(out, "Child: %d  ", i);
+         fprintf(out, "Child: %i  ", i);
          printTreeRecursive(out, syntaxTree->child[i], showExpType, showAllocation, (depth + 1));
       }
    }
@@ -375,9 +353,8 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    TreeNode *sibling = syntaxTree->sibling;
    if (sibling != NULL)
    {
-      depth = (depth - 1);
       // show . . depth
-      showDepth(out, depth);
+      showDepth(out, (depth - 1));
       // again two spaces at the end
       fprintf(out, "Sibling: %d  ", siblingCount);
       printTreeRecursive(out, sibling, showExpType, showAllocation, depth, (siblingCount + 1));
