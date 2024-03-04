@@ -116,18 +116,18 @@ program : precompList declList {syntaxTree = $2;}
 // rule 2
 // changing NULL to nullptr here. Not sure if that is the issue.
 precompList : precompList PRECOMPILER {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
-   | PRECOMPILER {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
-   | /*empty*/ {$$ = nullptr;}
+   | PRECOMPILER                      {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
+   | /*empty*/                        {$$ = nullptr;}
    ;
 
 // rule 3
 declList : declList decl {$$ = addSibling($1, $2);}
-   | decl {$$ = $1;}
+   | decl                {$$ = $1;}
    ;
 
 // rule 4
 decl : varDecl {$$ = $1;}
-   | funDecl {$$ = $1;}
+   | funDecl   {$$ = $1;}
    ;
 
 //rule 5
@@ -139,45 +139,45 @@ varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false);}
 // has typeSpec in production which needs the setType function as part of node creation
 
 scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true;}
-   | typeSpec varDeclList ';' {$$ = $2; setType($2, $1, false); $$->isStatic=false;}
+   | typeSpec varDeclList ';'                   {$$ = $2; setType($2, $1, false); $$->isStatic=false;}
    ;
 
 // rule 7
 varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3);}
-   | varDeclInit {$$ = $1;}
+   | varDeclInit                          {$$ = $1;}
    ;
 
 // rule 8
-varDeclInit : varDeclId {$$ = $1;}
+varDeclInit : varDeclId      {$$ = $1;}
    | varDeclId ':' simpleExp {$$ = $1; $1->child[0] = $3;}
    ;
 
 // rule 9
-varDeclId : ID {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = false; }
+varDeclId : ID           {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = false; }
    | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = true;}
    ;
 
 // rule 10
 typeSpec : INT {$$ = ExpType::Integer;}
-   | BOOL {$$ = ExpType::Boolean;}
-   | CHAR {$$ = ExpType::Char;}
+   | BOOL      {$$ = ExpType::Boolean;}
+   | CHAR      {$$ = ExpType::Char;}
    ;
 
 // rule 11
 
 funDecl : typeSpec ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, $1, $2, $4, $6);}
-   | ID '(' parms ')' stmt {$$ = newDeclNode(DeclKind::FuncK, ExpType::Void, $1, $3, $5);}
+   | ID '(' parms ')' stmt               {$$ = newDeclNode(DeclKind::FuncK, ExpType::Void, $1, $3, $5);}
    ;
 
 // rule 12
 // changed null to nullptr
 parms : parmList {$$ = $1;}
-   | /*empty*/ {$$ = nullptr;}
+   | /*empty*/   {$$ = nullptr;}
    ;
 
 // rule 13
 parmList : parmList ',' parmTypeList {$$ = addSibling($1, $3);}
-   | parmTypeList {$$ = $1;}
+   | parmTypeList                    {$$ = $1;}
    ;
 
 // rule 14
@@ -195,15 +195,15 @@ parmTypeList : typeSpec parmIdList {$$ = $2; setType($2, $1, false);}
 // and $3 parmId is a sibling to $1 parmIdList.
 
 parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3);}
-   | parmId  {$$ = $1;}
+   | parmId                         {$$ = $1;}
    ;
 
 // rule 16
 
-parmId : ID {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); 
-             $$->isArray = false; $$->isStatic = false;}
+parmId : ID    {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); 
+                 $$->isArray = false; $$->isStatic = false;}
    | ID '['']' {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); 
-                $$->isArray = true; $$->isStatic = false;}
+                 $$->isArray = true; $$->isStatic = false;}
    ;
 
 // rule 17
@@ -214,34 +214,34 @@ stmt : matched {$$ = $1;}
 // rule 18
 // changed NULL to nullptr
 matched : IF simpleExp THEN matched ELSE matched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
-   | WHILE simpleExp DO matched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
-   | FOR ID '=' iterRange DO matched {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6);
-        $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
-   | expstmt {$$ = $1;}
+   | WHILE simpleExp DO matched                  {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
+   | FOR ID '=' iterRange DO matched             {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6);
+                                                   $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
+   | expstmt      {$$ = $1;}
    | compoundstmt {$$ = $1;}
-   | returnstmt {$$ = $1;}
-   | breakstmt {$$ = $1;}
+   | returnstmt   {$$ = $1;}
+   | breakstmt    {$$ = $1;}
    ;
 
 // rule 19
-iterRange : simpleExp TO simpleExp {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $3);}
+iterRange : simpleExp TO simpleExp       {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $3);}
    | simpleExp TO simpleExp BY simpleExp {$$ = newStmtNode(StmtKind::RangeK, $2, $1, $3, $5);}
    ;
 
 // rule 20
 // UPDATE: removed extra struct variable assignments(not sure they were needed).
 
-unmatched : IF simpleExp THEN stmt {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4);}
+unmatched : IF simpleExp THEN stmt            {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4);}
    | IF simpleExp THEN matched ELSE unmatched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
-   | WHILE simpleExp DO unmatched {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
-   | FOR ID '=' iterRange DO unmatched {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6);
-      $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
+   | WHILE simpleExp DO unmatched             {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
+   | FOR ID '=' iterRange DO unmatched        {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6);
+                                                $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
    ;
 
 // rule 21
 // changed to NULL to nullptr
 expstmt : exp ';' {$$ = $1;}
-   | ';' {$$ = nullptr;}
+   | ';'          {$$ = nullptr;}
    ;
 
 // rule 22
@@ -265,18 +265,18 @@ stmtList : stmtList stmt { $$ = addSibling($1, $2);}
 
 // rule 25
 returnstmt : RETURN ';' {$$ = newStmtNode(StmtKind::ReturnK, $1);}
-   | RETURN exp ';' {$$ = newStmtNode(StmtKind::ReturnK, $1, $2);}
+   | RETURN exp ';'     {$$ = newStmtNode(StmtKind::ReturnK, $1, $2);}
    ;
 
 //rule 26
-breakstmt : BREAK ';' {$$ = newStmtNode(StmtKind::BreakK, $1);}
+breakstmt : BREAK ';'   {$$ = newStmtNode(StmtKind::BreakK, $1);}
    ;
 
 // rule 27
-exp : mutable assignop exp {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3); $$->isAssigned = true;}
-   | mutable INC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
-   | mutable DEC {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
-   | simpleExp {$$ = $1;}
+exp : mutable assignop exp  {$$ = newExpNode(ExpKind::AssignK, $2, $1, $3); $$->isAssigned = true;}
+   | mutable INC            {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
+   | mutable DEC            {$$ = newExpNode(ExpKind::AssignK, $2, $1);}
+   | simpleExp              {$$ = $1;}
    | mutable assignop error {$$ = newExpNode(ExpKind::AssignK, $2, $1);} 
    ;
 
@@ -494,14 +494,14 @@ int main(int argc, char **argv) {
    yylval.tree = (TreeNode*)malloc(sizeof(TreeNode));
    yylval.Token_Data->linenum = 1;
 
-   int option, index;
+   int opt, index;
    char *file = NULL;
    bool dotAST = false;
    extern FILE *yyin;
    
-   while ((option = getopt (argc, argv, "w")) != -1)
+   while ((opt = getopt(argc, argv, "w")) != -1)
    {
-      switch (option)
+      switch (opt)
       {
          case 'w':
             dotAST = true;
@@ -522,7 +522,9 @@ int main(int argc, char **argv) {
    }
    if(numErrors == 0)
    {
-      printTree(stdout, syntaxTree, false, false);
+      printTree(stdout, syntaxTree, true, true);
+      if (dotAST)
+         showDepth(stdout, syntaxTree, false, false);
    }
    else 
    {
