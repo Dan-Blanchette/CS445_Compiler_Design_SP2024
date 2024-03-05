@@ -148,6 +148,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    // how does this tie into the yacc file and it's functionality?
    if (isStatic)
    {
+      // If is static
       if (isArray)
       {
          switch(type)
@@ -169,6 +170,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
                break;
          }         
       }
+      // Switch for is Static
       switch(type)
       {
          case ExpType::Boolean:
@@ -287,67 +289,67 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    { // ExpK Switch Start
       switch (syntaxTree->kind.exp)
       {
-      case ExpKind::AssignK:
-         fprintf(out, "Assign: %s", tokenToStr(syntaxTree->attr.op));
-         break;
+         case ExpKind::AssignK:
+            fprintf(out, "Assign: %s", tokenToStr(syntaxTree->attr.op));
+            break;
 
-      case ExpKind::CallK:
-         fprintf(out, "Call: %s", syntaxTree->attr.name);
-         break;
+         case ExpKind::CallK:
+            fprintf(out, "Call: %s", syntaxTree->attr.name);
+            break;
 
-      case ExpKind::ConstantK:
-         // bool variable to string
-         char *boolVal;
+         case ExpKind::ConstantK:
+            // bool variable to string
+            char *boolVal;
 
-         fprintf(out, "Const");
-         // ExpTypes If Statment Start
-         if(syntaxTree->type == ExpType::Boolean)
-         {
-            if (syntaxTree->attr.value == 0)
+            fprintf(out, "Const");
+            // ExpTypes If Statment Start
+            if(syntaxTree->type == ExpType::Boolean)
             {
-               boolVal = (char *)"false";
+               if (syntaxTree->attr.value == 0)
+               {
+                  boolVal = (char *)"false";
+               }
+               else
+                  boolVal = (char *)"true";
+               
+               fprintf(out, " %s", boolVal);
             }
-            else
-               boolVal = (char *)"true";
-            
-            fprintf(out, " %s", boolVal);
-         }
-         else if (syntaxTree->type == ExpType::Char)
-         {
-            // it's a string
-            if (syntaxTree->isArray)
+            else if (syntaxTree->type == ExpType::Char)
             {
-               fprintf(out, " %s", syntaxTree->attr.name);
+               // it's a string
+               if (syntaxTree->isArray)
+               {
+                  fprintf(out, " %s", syntaxTree->attr.name);
+               }
+               // it's a char
+               else
+                  fprintf(out, " '%c'",  syntaxTree->attr.cvalue);
+
             }
-            // it's a char
-            else
-               fprintf(out, " '%c'",  syntaxTree->attr.cvalue);
-
-         }
-         else if (syntaxTree->type == ExpType::Integer)
-         {
-            fprintf(out, " %d", syntaxTree->attr.value);
-         }
-         else 
-         {
-            if (syntaxTree->type == ExpType::Void)
+            else if (syntaxTree->type == ExpType::Integer)
             {
-               // Do Nothing
-            }    
-         }
-         break;
-         // End ExpType struct value assignments
-      case ExpKind::IdK:
-         fprintf(out, "Id: %s", syntaxTree->attr.name);
-         break;
+               fprintf(out, " %d", syntaxTree->attr.value);
+            }
+            else 
+            {
+               if (syntaxTree->type == ExpType::Void)
+               {
+                  // Do Nothing
+               }    
+            }
+            break;
+            // End ExpType struct value assignments
+         case ExpKind::IdK:
+            fprintf(out, "Id: %s", syntaxTree->attr.name);
+            break;
 
-      case ExpKind::OpK:
-         fprintf(out, "Op: %s", syntaxTree->attr.name);
-         break;
+         case ExpKind::OpK:
+            fprintf(out, "Op: %s", syntaxTree->attr.name);
+            break;
 
-      default:
-         fprintf(out, "I'm some sort of ExpK node.");
-         break;
+         default:
+            fprintf(out, "I'm some sort of ExpK node.");
+            break;
       }
       // ExpK Switch End
    }

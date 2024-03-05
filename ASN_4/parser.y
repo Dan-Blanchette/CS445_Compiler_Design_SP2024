@@ -8,7 +8,7 @@
 #include "treeUtils.h"
 #include "scanType.h"
 #include "dot.h"
-// Assignment 3 complete
+// Assignment 4 in progress
 using namespace std;
 
 //for pushing

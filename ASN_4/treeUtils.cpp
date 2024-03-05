@@ -1,6 +1,6 @@
 #include "treeUtils.h"
 
-// Assignment 3 completed
+// Assignment 4 in progress
 
 static int nodeIdNum = 0;
 
@@ -68,7 +68,10 @@ TreeNode *cloneNode(TreeNode *currnode)
 // NOTE : This will be the same for statement and exp functions
 TreeNode *newDeclNode(DeclKind kind, ExpType type, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
-   TreeNode *newNode = new TreeNode;
+   TreeNode *newNode = new TreeNode; // allocate memory for new a new node
+
+   newNode->size = 1;
+   newNode->offset = 0;
    newNode->nodekind = NodeKind::DeclK;
    newNode->kind.decl = kind;
    newNode->child[0] = c0;
@@ -91,7 +94,9 @@ TreeNode *newDeclNode(DeclKind kind, ExpType type, Token_Data *token, TreeNode *
 
 TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
-   TreeNode *newNode = new TreeNode;
+   TreeNode *newNode = new TreeNode; // allocate memory for new a new node
+   newNode->size = 1;
+   newNode->offset = 0;
    newNode->nodekind = NodeKind::StmtK;
    newNode->kind.stmt = kind;
    newNode->child[0] = c0;
@@ -116,7 +121,9 @@ TreeNode *newStmtNode(StmtKind kind, Token_Data *token, TreeNode *c0, TreeNode *
 TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1, TreeNode *c2)
 {
    // create a new struct node
-   TreeNode *newNode = new TreeNode;
+   TreeNode *newNode = new TreeNode; // allocate memory for new a new node
+   newNode->size = 1;
+   newNode->offset = 0;   
    newNode->nodekind = NodeKind::ExpK;
    newNode->kind.exp = kind;
    newNode->child[0] = c0;
