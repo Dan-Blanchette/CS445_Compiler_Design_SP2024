@@ -168,7 +168,13 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    }
    if (isArray)
    {
-      return (char *)"array of";
+      switch(type)
+      {
+         case ExpType::Char:
+            return (char *)"array of type char";
+            break
+      }
+      
    }
  
    switch (type)
