@@ -161,6 +161,23 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
             return (char *)"static type void";
       }
    }
+   if (isArray)
+   {
+      switch(type)
+      {
+         case ExpType::Boolean:
+            return (char *)"array of type bool";
+         case ExpType::Char:
+            return (char *)"array of type char";
+         case ExpType::Integer:
+            return (char *)"array of type int";
+         case ExpType::UndefinedType:
+            return (char *)"array of type UNDEFINED";
+         case ExpType::Void:
+            return (char *)"array of type void";
+      }      
+   }
+
    switch (type)
    {
    case ExpType::Boolean:
@@ -184,7 +201,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       break;
    }
    
-   sprintf(expBuff, "%s%s%s%s", (isStatic && isArray ? (char*)"static " : ""), (isArray && isStatic ? (char *)"static " : ""), (isArray ? (char *)"array of " : ""), exp_type_name);
+   // sprintf(expBuff, "%s%s%s%s", (isStatic && isArray ? (char*)"static " : ""), (isArray && isStatic ? (char *)"static " : ""), (isArray ? (char *)"array of " : ""), exp_type_name);
    return expBuff; 
 }
 
