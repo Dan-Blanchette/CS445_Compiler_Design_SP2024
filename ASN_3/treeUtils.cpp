@@ -166,6 +166,10 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
             break;
       }
    }
+   if (isArray)
+   {
+      return (char *)"array of";
+   }
  
    switch (type)
    {
