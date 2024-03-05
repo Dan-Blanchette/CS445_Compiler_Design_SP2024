@@ -170,23 +170,23 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    switch (type)
    {
    case ExpType::Boolean:
-      return (char *)"type bool";
+      exp_type_name = (char *)"type bool";
       break;
 
    case ExpType::Char:
-      return (char *)"type char";
+      exp_type_name = (char *)"type char";
       break;
 
    case ExpType::Integer:
-      return (char *)"type int";
+      exp_type_name = (char *)"type int";
       break;
 
    case ExpType::Void:
-      return (char *)"type void";
+      exp_type_name = (char *)"type void";
       break;
 
    default:
-      return (char *)"undefined";
+      exp_type_name = (char *)"UNDEFINED";
       break;
    }
    
