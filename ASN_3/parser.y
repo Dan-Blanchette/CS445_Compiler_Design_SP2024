@@ -176,7 +176,7 @@ parms : parmList {$$ = $1;}
    ;
 
 // rule 13
-parmList : parmList ',' parmTypeList {$$ = addSibling($1, $3);}
+parmList : parmList ';' parmTypeList {$$ = addSibling($1, $3);}
    | parmTypeList                    {$$ = $1;}
    ;
 
