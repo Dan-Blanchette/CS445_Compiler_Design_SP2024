@@ -143,28 +143,74 @@ char expBuff[100];
 char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
 {
    char *exp_type_name;
-
-   if (ExpType::Boolean)
+   // how do I convert the listed exp types to become a string value?
+   // how does this tie into the yacc file and it's functionality?
+   if (isStatic)
    {
-      exp_type_name = (char *)"type bool";
+      switch(type)
+      {
+         case ExpType::Boolean:
+            return (char *)"static type bool";
+            break;
+         case ExpType::Char:
+            return (char *)"static type char";
+            break;
+         case ExpType::Integer:
+            return (char *)"static type int";
+            break;
+         case ExpType::UndefinedType:
+            return (char *)"static type UNDEFINED";
+            break;
+         case ExpType::Void:
+            return (char *)"static type void";
+            break;
+      }
    }
-   else if (ExpType::Char)
+   if (isArray)
    {
-      exp_type_name = (char *)"type char";
-   }  
-   else if (ExpType::Integer)
-   {
-      exp_type_name = (char *)"type int";
-   }  
-   else if (ExpType::Void)
-   {
-      exp_type_name = (char *)"type void";
-   }   
-   else
-   { 
-      exp_type_name = (char *)"undefined";
+      switch(type)
+      {
+         case ExpType::Boolean:
+            return (char *)"static array of type bool";
+            break;
+         case ExpType::Char:
+            return (char *)"static array of type char";
+            break;
+         case ExpType::Integer:
+            return (char *)"static array of type int";
+            break;
+         case ExpType::UndefinedType:
+            return (char *)"static array of type UNDEFINED";
+            break;
+         case ExpType::Void:
+            return (char *)"static array of type void";
+            break;
+      }      
    }
 
+   switch (type)
+   {
+   case ExpType::Boolean:
+      return (char *)"type bool";
+      break;
+
+   case ExpType::Char:
+      return (char *)"type char";
+      break;
+
+   case ExpType::Integer:
+      return (char *)"type int";
+      break;
+
+   case ExpType::Void:
+      return (char *)"type void";
+      break;
+
+   default:
+      return (char *)"undefined";
+      break;
+   }
+   
    sprintf(expBuff, "%s%s%s%s", (isStatic && isArray ? (char*)"static " : ""), (isArray && isStatic ? (char *)"static " : ""), (isArray ? (char *)"array of " : ""), exp_type_name);
    return expBuff; 
 }
