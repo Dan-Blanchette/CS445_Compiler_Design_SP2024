@@ -147,6 +147,27 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    // how does this tie into the yacc file and it's functionality?
    if (isStatic)
    {
+      if (isArray)
+      {
+         switch(type)
+         {
+            case ExpType::Boolean:
+               return (char *)"static array of type bool";
+               break;
+            case ExpType::Char:
+               return (char *)"static array of type char";
+               break;
+            case ExpType::Integer:
+               return (char *)"static array of type int";
+               break;
+            case ExpType::UndefinedType:
+               return (char *)"static array of type UNDEFINED";
+               break;
+            case ExpType::Void:
+               return (char *)"static array of type void";
+               break;
+         }         
+      }
       switch(type)
       {
          case ExpType::Boolean:
@@ -167,27 +188,6 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       }
    }
 
-   if (isArray && isStatic)
-   {
-      switch(type)
-      {
-         case ExpType::Boolean:
-            return (char *)"static array";
-            break;
-         case ExpType::Char:
-            return (char *)"static array";
-            break;
-         case ExpType::Integer:
-            return (char *)"static array";
-            break;
-         case ExpType::UndefinedType:
-            return (char *)"static array";
-            break;
-         case ExpType::Void:
-            return (char *)"static array";
-            break;
-      }
-   }
  
    switch (type)
    {
