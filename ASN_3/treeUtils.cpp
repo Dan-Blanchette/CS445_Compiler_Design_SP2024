@@ -190,7 +190,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       break;
    }
    
-   sprintf(expBuff, "%s%s", ((isArray ? (char *)"array of " : ""), exp_type_name);
+   sprintf(expBuff, "%s%s", ((isArray ? (char *)"array of " : ""), exp_type_name));
    return expBuff; 
 }
 
