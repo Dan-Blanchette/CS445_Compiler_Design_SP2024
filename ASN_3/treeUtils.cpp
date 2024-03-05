@@ -145,6 +145,22 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    char *exp_type_name;
    // how do I convert the listed exp types to become a string value?
    // how does this tie into the yacc file and it's functionality?
+   if (isArray)
+   {
+      switch(type)
+      {
+         // case ExpType::Boolean:
+         //    return (char *)"static type bool";
+         // case ExpType::Char:
+         //    return (char *)"static type char";
+         case ExpType::Integer:
+            return (char *)"static array of type int";
+         // case ExpType::UndefinedType:
+         //    return (char *)"static type UNDEFINED";
+         // case ExpType::Void:
+         //    return (char *)"static type void";
+      }      
+   }
    if (isStatic)
    {
       switch(type)
