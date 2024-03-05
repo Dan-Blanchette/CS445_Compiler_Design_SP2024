@@ -166,28 +166,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
             break;
       }
    }
-   if (isArray)
-   {
-      switch(type)
-      {
-         case ExpType::Boolean:
-            return (char *)"array of type bool";
-            break;
-         case ExpType::Char:
-            return (char *)"array of type char";
-            break;
-         case ExpType::Integer:
-            return (char *)"array of type int";
-            break;
-         case ExpType::UndefinedType:
-            return (char *)"array of type UNDEFINED";
-            break;
-         case ExpType::Void:
-            return (char *)"array of type void";
-            break;
-      }      
-   }
-
+ 
    switch (type)
    {
    case ExpType::Boolean:
