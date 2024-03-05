@@ -166,7 +166,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
             break;
       }
    }
-   if (isArray)
+   else if (isArray)
    {
       switch(type)
       {
@@ -179,7 +179,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       }
       
    }
- 
+   
    switch (type)
    {
    case ExpType::Boolean:
@@ -203,7 +203,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       break;
    }
    
-   sprintf(expBuff, "%s%s%s%s", (isStatic && isArray ? (char*)"static " : ""), (isArray && isStatic ? (char *)"static " : ""), (isArray ? (char *)"array of " : ""), exp_type_name);
+   sprintf(expBuff, "%s%s%s", (isStatic && isArray ? (char*)"static " : ""), (isArray && isStatic ? (char *)"static " : ""), exp_type_name);
    return expBuff; 
 }
 
