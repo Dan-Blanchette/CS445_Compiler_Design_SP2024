@@ -173,6 +173,9 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
          case ExpType::Char:
             return (char *)"array of type char";
             break;
+         case ExpType::Integer:
+            return (char *)"array of type int";
+            break;
       }
       
    }
