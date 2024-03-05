@@ -1,5 +1,6 @@
 #include "treeUtils.h"
 
+// Assignment 3 completed
 
 static int nodeIdNum = 0;
 
