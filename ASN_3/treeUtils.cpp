@@ -151,14 +151,19 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       {
          case ExpType::Boolean:
             return (char *)"static type bool";
+            break;
          case ExpType::Char:
             return (char *)"static type char";
+            break;
          case ExpType::Integer:
             return (char *)"static type int";
+            break;
          case ExpType::UndefinedType:
             return (char *)"static type UNDEFINED";
+            break;
          case ExpType::Void:
             return (char *)"static type void";
+            break;
       }
    }
    if (isArray)
@@ -167,37 +172,42 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       {
          case ExpType::Boolean:
             return (char *)"array of type bool";
+            break;
          case ExpType::Char:
             return (char *)"array of type char";
+            break;
          case ExpType::Integer:
             return (char *)"array of type int";
+            break;
          case ExpType::UndefinedType:
             return (char *)"array of type UNDEFINED";
+            break;
          case ExpType::Void:
             return (char *)"array of type void";
+            break;
       }      
    }
 
    switch (type)
    {
    case ExpType::Boolean:
-      exp_type_name = (char *)"type bool";
+      return (char *)"type bool";
       break;
 
    case ExpType::Char:
-      exp_type_name = (char *)"type char";
+      return (char *)"type char";
       break;
 
    case ExpType::Integer:
-      exp_type_name = (char *)"type int";
+      return (char *)"type int";
       break;
 
    case ExpType::Void:
-      exp_type_name = (char *)"type void";
+      return (char *)"type void";
       break;
 
    default:
-      exp_type_name = (char *)"undefined";
+      return (char *)"undefined";
       break;
    }
    
