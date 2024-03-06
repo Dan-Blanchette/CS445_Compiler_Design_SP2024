@@ -3,6 +3,21 @@
 int foffset = 0;
 int goffset = 0;
 
+
+TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an annotated syntax treebool shareCompoundSpaceIn,   // SPECIAL OPTION: make compound after a function share scope
+                           bool noDuplicateUndefsIn,    // SPECIAL OPTION: no duplicate undefines
+                           SymbolTable *symtabX,       // pass in and return the symbol table
+                           int &globalOffset            // return the offset past the globals
+    );
+{
+   // code goes here
+}
+
+void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
+{
+   // code for bottom up parsing: post order algorithm code
+}
+
 bool insertCheck(TreeNode *syntree, SymbolTable *symtab)
 {
    if (!symtab->insert(syntree->attr.name, syntree))
@@ -12,7 +27,7 @@ bool insertCheck(TreeNode *syntree, SymbolTable *symtab)
    return true;
 }
 
-void treeTraverseDecl(TreeNode *syntree, SymblTable *symtab)
+void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
 {
    // debug statement here
    TreeNode *c0,  *c1, *temp;
@@ -28,8 +43,10 @@ void treeTraverseDecl(TreeNode *syntree, SymblTable *symtab)
          symtab->enter(syntree->attr.name);
          treeTraverse(c0, symtab);
          syntree->varKind = Global;
+         syntree->size = foffset;
          treeTraverse(c1, symtab);
          symtab->leave();
+         
          break;
 
       case VarK:
@@ -122,7 +139,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
    }
 }
 
-void treeTraverseExp(TreeNode *syntree, SymblTable *symtab)
+void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
 {
    TreeNode *c0,  *c1, *temp;
    c0 = syntree->child[0];

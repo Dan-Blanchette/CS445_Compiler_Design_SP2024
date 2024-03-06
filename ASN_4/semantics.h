@@ -10,7 +10,8 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
                            int &globalOffset            // return the offset past the globals
     );
 
-void treeTraverseDecl(TreeNode *syntree, SymblTable *symtab);
-void treeTraverseStmt(TreeNode *syntree, SymblTable *symtab);
-void treeTraverseExp(TreeNode *syntree, SymblTable *symtab);
+void treeTraverse(TreeNode* syntree, SymbolTable *symtab);
+void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab);
+void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab);
+void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab);
 bool insertCheck(TreeNode *syntree, SymbolTable *symtab);
