@@ -46,7 +46,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          syntree->size = foffset;
          treeTraverse(c1, symtab);
          symtab->leave();
-         
+
          break;
 
       case VarK:
@@ -155,6 +155,16 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          treeTraverse(c1, symtab);         
          break;
       case CallK:
+         if(temp = (TreeNode *)(symtab->lookup(syntree->attr.name)))
+         {
+            temp->isUsed = true;
+            syntree->type = temp->type;
+            syntree->size = temp->size;
+         }
+         else
+         {
+           // This looks like an error condition symbol table vaue is not there
+         }
          break;      
       case ConstantK:
          syntree->isConst = true;
