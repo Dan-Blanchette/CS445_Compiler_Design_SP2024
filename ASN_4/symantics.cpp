@@ -152,7 +152,11 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          treeTraverse(c1, symtab);
       case AssignK:
          treeTraverse(c0, symtab);
-         treeTraverse(c1, symtab);         
+         treeTraverse(c1, symtab);
+         if(syntree->attr.op == int('+') || syntree->attr.op == int('['))
+         {
+            syntree->type = c0->type;
+         }         
          break;
       case CallK:
          if(temp = (TreeNode *)(symtab->lookup(syntree->attr.name)))
