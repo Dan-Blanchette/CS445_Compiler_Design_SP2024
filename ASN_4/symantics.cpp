@@ -156,6 +156,14 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          if(syntree->attr.op == int('+') || syntree->attr.op == int('['))
          {
             syntree->type = c0->type;
+         }
+         else if(syntree->attr.op == AND)
+         {
+
+         }
+         else
+         {
+            syntree->type = ExpectType::Integer;
          }         
          break;
       case CallK:
