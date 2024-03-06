@@ -159,11 +159,11 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          }
          else if(syntree->attr.op == AND)
          {
-
+            syntree->type = ExpType::Boolean;
          }
          else
          {
-            syntree->type = ExpectType::Integer;
+            syntree->type = ExpType::Integer;
          }         
          break;
       case CallK:
