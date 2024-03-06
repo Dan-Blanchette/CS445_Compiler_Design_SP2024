@@ -157,7 +157,11 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          {
             syntree->type = c0->type;
          }
-         else if(syntree->attr.op == AND)
+         else if(syntree->attr.op == AND || syntree->attr.op == OR || 
+                  syntree->attr.op == LEQ || syntree->attr.op == GEQ ||
+                  syntree->attr.op == NOT || syntree->attr.op == int('<') ||
+                  syntree->attr.op == int('>') || syntree->attr.op == EQ ||
+                  syntree->attr.op == NEQ )
          {
             syntree->type = ExpType::Boolean;
          }
@@ -175,13 +179,27 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          }
          else
          {
-           // This looks like an error condition symbol table vaue is not there
+           // This looks like an error condition symbol table vaue is not there w06
          }
          break;      
       case ConstantK:
          syntree->isConst = true;
          break;
       case IdK:
+         if (temp = (TreeNode *)(symtab->lookup(syntree->attr.name)))
+         {
+            temp->isUsed = true;
+            syntree->type = temp->type;
+            syntree->isStatic = temp->isStatic;
+            syntree->isArray = temp->isArray;
+            syntree->size = temp->size;
+            syntree->varKind = temp->varKind;
+            syntree->offset = temp->offset;
+         }
+         else
+         {
+            // probably and error w06
+         }
          break;    
    }
 }
