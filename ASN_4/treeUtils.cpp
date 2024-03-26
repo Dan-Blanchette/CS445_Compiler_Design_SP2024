@@ -143,6 +143,30 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1
    return newNode;
 }
 
+char *varkToStr(int varKind)
+{
+   switch(varKind)
+   {
+      case None:
+         return (char *) "None";
+
+      case Global:
+         return (char *) "Global";
+
+      case LocalStatic:
+         return (char *) "LocalStatic";
+      
+      case Local:
+         return (char *) "Local";
+
+      case Parameter:
+         return (char *) "Parameter";
+      
+      default:
+         return (char *) "Unknown VarKind";
+   }
+   /* END SWITCH */
+}
 
 // The first parameter is an exp_type(void, integer, bool, char, or undefinedType)
 // The second parameter is referrring to the boolean value flag isArray (part of the TreeNode struct)
@@ -245,6 +269,10 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
 
       case DeclKind::FuncK:
          fprintf(out, "Func: %s returns %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         if (showAllocation)
+         {
+            fprintf(out, " [mem: %s loc: %d size: %d]", varKindToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+         }
          break;
       case DeclKind::ParamK:
          fprintf(out, "Parm: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
