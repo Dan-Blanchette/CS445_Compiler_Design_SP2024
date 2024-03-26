@@ -11,7 +11,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
                            int &globalOffset            // return the offset past the globals
     );
 
-void treeTraverse(TreeNode* syntree, SymbolTable *symtab);
+void treeTraverse(TreeNode* syntree, SymbolTable *, bool isNodeCompound);
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab);
 void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab);
 void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab);

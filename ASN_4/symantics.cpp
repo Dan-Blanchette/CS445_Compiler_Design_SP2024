@@ -18,7 +18,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
    // not sure what to do here yet
 }
 
-void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
+void treeTraverse(TreeNode *syntree, SymbolTable *symtab, bool isNodeCompound)
 {
    // if the syntree is empty, do nothing
    if (syntree == NULL)
@@ -26,6 +26,12 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
       return;
    }
 
+   isNodeCompound = compoundCheck(syntree);
+   if (isNodeCompound == true)
+   {
+      char *newScope = strdup("{");
+      symtab->enter("new scope " + (string)newScope);
+   }
 }
 
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
