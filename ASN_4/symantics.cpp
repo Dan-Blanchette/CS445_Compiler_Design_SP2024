@@ -20,6 +20,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
 
 void treeTraverse(TreeNode *syntree, SymbolTable *symtab, bool isNodeCompound)
 {
+   int tempFoffset = foffset;
    // if the syntree is empty, do nothing
    if (syntree == NULL)
    {
@@ -32,6 +33,29 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab, bool isNodeCompound)
       char *newScope = strdup("{");
       symtab->enter("new scope " + (string)newScope);
    }
+
+   // traverse the left child. Update symbol table 
+   treeTraverse(syntree->child[0], symtab);
+   // check the left node kind
+   switch(syntree->nodekind)
+   {
+      case DeclK:
+         treeTraverseDecl(syntree, symtab);
+         break;
+
+      case StmtK:
+         treeTraverseStmt(syntree, symtab);
+         break;
+      
+      case ExpK:
+         treeTraverse(syntree, symtab);
+         break;
+      
+      default:
+         //print some sort of error
+         break;
+   }
+   // end switch
 }
 
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
