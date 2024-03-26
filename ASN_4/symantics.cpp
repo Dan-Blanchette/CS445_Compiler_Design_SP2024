@@ -1,5 +1,10 @@
 #include "semantics.h"
 
+
+// GLOBAL SCOPE VARS
+
+
+// memory offsets
 int foffset = 0;
 int goffset = 0;
 
@@ -66,7 +71,9 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
             }
             else if(syntree->isStatic)
             {
-               //// remember to finish this
+               syntree->varKind = LocalStatic;
+               syntree->offset = goffset;
+               goffset -= syntree->size//// remember to finish this
             }
             else
             {
@@ -88,6 +95,9 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
             }
             else if(syntree->isStatic)
             {
+               syntree->varKind = LocalStatic;
+               syntree->offset = goffset;
+               goffset -= syntree->size;
                //// remember to finish this
             }
             else
