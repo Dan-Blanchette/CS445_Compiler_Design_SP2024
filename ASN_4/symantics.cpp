@@ -18,6 +18,14 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
    // not sure what to do here yet
 }
 
+// Generating 10 nodes as indicated by slide 4 and pre
+TreeNode *IOLib(TreeNode *syntree)
+{
+   TreeNode *funcInput, *funcInputB, *funcInputC;
+   TreeNode *funOutput, *funOutputB, *funOutputC;
+   TreeNode *paramDummy;
+}
+
 void treeTraverse(TreeNode *syntree, SymbolTable *symtab, bool isNodeCompound)
 {
    int tempFoffset = foffset;

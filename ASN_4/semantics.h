@@ -11,6 +11,9 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
                            int &globalOffset            // return the offset past the globals
     );
 
+// need to make nodes from slide 4 and generate the symbol table with default values?
+TreeNode *IOLib(TreeNode *syntree);
+
 void treeTraverse(TreeNode* syntree, SymbolTable *, bool isNodeCompound);
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab);
 void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab);
