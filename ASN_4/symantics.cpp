@@ -185,11 +185,15 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          {
             temp->isUsed = true;
             syntree->type = temp->type;
+            syntree->isArray = temp->isArray;
+            syntree->isStatic = temp->isStatic;
+            syntree->varKind = temp->varKind;
+            syntree->offset = temp->offset;
             syntree->size = temp->size;
          }
          else
          {
-           // This looks like an error condition symbol table vaue is not there w06
+           // This looks like an error condition symbol table value is not there w06
          }
          break;      
       case ConstantK:
