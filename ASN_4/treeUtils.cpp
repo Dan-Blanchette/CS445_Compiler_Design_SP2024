@@ -237,6 +237,10 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       {
       case DeclKind::VarK:
          fprintf(out, "Var: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         if (showAllocation)
+         {
+            fprintf(out, " [mem: %s loc: %d size: %d]", varKindToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+         }
          break;
 
       case DeclKind::FuncK:
