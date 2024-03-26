@@ -15,21 +15,17 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
                            int &globalOffset            // return the offset past the globals
     );
 {
-   // code goes here
+   // not sure what to do here yet
 }
 
 void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
 {
-   // code for bottom up parsing: post order algorithm code
-}
-
-bool insertCheck(TreeNode *syntree, SymbolTable *symtab)
-{
-   if (!symtab->insert(syntree->attr.name, syntree))
+   // if the syntree is empty, do nothing
+   if (syntree == NULL)
    {
-      return false;
+      return;
    }
-   return true;
+
 }
 
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
@@ -98,7 +94,6 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
                syntree->varKind = LocalStatic;
                syntree->offset = goffset;
                goffset -= syntree->size;
-               //// remember to finish this
             }
             else
             {
@@ -224,4 +219,37 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          }
          break;    
    }
+}
+
+bool insertCheck(TreeNode *syntree, SymbolTable *symtab)
+{
+   if (!symtab->insert(syntree->attr.name, syntree))
+   {
+      return false;
+   }
+   return true;
+}
+
+bool compoundCheck(TreeNode *syntree)
+{
+   if (syntree == NULL)
+   {
+      return false;
+   }
+
+   if (syntree->kind.decl == FunK && syntree->nodekind == DeclK)
+   {
+      foffset = -2;
+      return true;
+   }
+
+   if (syntree->nodekind == StmtK)
+   {
+      if (syntree->kind.stmt == ForK || syntree->kind.stmt == CompoundK)
+      {
+         return true;
+      }
+   }
+
+   return false;
 }

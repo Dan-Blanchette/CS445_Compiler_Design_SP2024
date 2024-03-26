@@ -16,3 +16,4 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab);
 void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab);
 void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab);
 bool insertCheck(TreeNode *syntree, SymbolTable *symtab);
+bool compoundCheck(TreeNode *syntree);
