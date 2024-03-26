@@ -263,7 +263,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          fprintf(out, "Var: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
          if (showAllocation)
          {
-            fprintf(out, " [mem: %s loc: %d size: %d]", varKindToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+            fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
          }
          break;
 
@@ -271,7 +271,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          fprintf(out, "Func: %s returns %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
          if (showAllocation)
          {
-            fprintf(out, " [mem: %s loc: %d size: %d]", varKindToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+            fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
          }
          break;
       case DeclKind::ParamK:
