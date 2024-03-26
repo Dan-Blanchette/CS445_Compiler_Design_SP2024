@@ -56,6 +56,39 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab, bool isNodeCompound)
          break;
    }
    // end switch
+
+   if (isNodeCompound == true)
+   {
+      symtab->leave();
+   }
+
+   if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
+   {
+      foffset -= 2;
+   }
+   // visit the right child. Update symbol table
+   treeTraverse(syntree->child[1], symtab);
+
+   if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
+   {
+      syntree->size = foffset;
+   }
+
+   if( syntree->kind.stmt = CompoundK && syntree->nodekind == StmtK)
+   {
+      syntree->size = foffset;
+      foffset = tempFoffset;
+   }
+
+   // now traverse the sibling nodes
+   treeTraverse(syntree->sibling, symtab);
+
+   if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
+   {
+      foffset = tempFoffset;
+   }
+
+   return;
 }
 
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
@@ -245,7 +278,7 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          }
          else
          {
-            // probably and error w06
+            // probably an error w06
          }
          break;    
    }
