@@ -198,6 +198,14 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          break;      
       case ConstantK:
          syntree->isConst = true;
+         
+         // case where string constant could be initialized in the global space.
+         if (syntree->type == syntree->isArray && ExpType::Char)
+         {
+            syntree->varKind = Global;
+            syntree->offset = (goffset - 1);
+            goffset -= syntree->size;
+         }
          break;
       case IdK:
          if (temp = (TreeNode *)(symtab->lookup(syntree->attr.name)))
