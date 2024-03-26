@@ -22,8 +22,14 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
 TreeNode *IOLib(TreeNode *syntree)
 {
    TreeNode *funcInput, *funcInputB, *funcInputC;
-   TreeNode *funOutput, *funOutputB, *funOutputC;
-   TreeNode *paramDummy;
+   TreeNode *funcOutput, *funcOutputB, *funcOutputC;
+   TreeNode *paramOutput, *paramOutputB, ParamOutputC; 
+   TreeNode *funcOutnl;
+
+   funcInput = newDeclNode(DeclKind::FuncK, Integer);
+   funcInput->lineno = -1;
+   funcInput->attr.name = strdup("input");
+   funcInput->type = Integer;
 }
 
 void treeTraverse(TreeNode *syntree, SymbolTable *symtab, bool isNodeCompound)
