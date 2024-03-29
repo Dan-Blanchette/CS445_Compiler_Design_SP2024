@@ -18,7 +18,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
    // not sure what to do here yet
 }
 
-// Generating 10 nodes as indicated by slide 4 and pre
+// Generating 10 nodes as indicated by slide 4.
 TreeNode *IOLib(TreeNode *syntree)
 {
    TreeNode *funcInput, *funcInputB, *funcInputC;
