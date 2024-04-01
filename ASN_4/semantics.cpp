@@ -15,7 +15,13 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
                            int &globalOffset            // return the offset past the globals
     );
 {
-   // not sure what to do here yet
+   share
+   noDuplicateUndefs = noDuplicateUndefsIn;
+
+
+   syntree = loadIOLib(syntree);
+
+   treeTraverse(syntree, symtab);
 }
 
 // Generating 10 nodes as indicated by slide 4.
