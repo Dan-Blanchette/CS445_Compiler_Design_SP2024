@@ -4,9 +4,9 @@
 // GLOBAL SCOPE VARS
 
 
-// memory offsets
-int foffset = 0;
-int goffset = 0;
+// memory offsets: ensure counts are updated until end of runtime
+static int foffset = 0;
+static int goffset = 0;
 
 
 TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an annotated syntax treebool shareCompoundSpaceIn,   // SPECIAL OPTION: make compound after a function share scope
@@ -21,20 +21,32 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
 // Generating 10 nodes as indicated by slide 4.
 TreeNode *IOLib(TreeNode *syntree)
 {
-   TreeNode *funcInput, *funcInputB, *funcInputC;
-   TreeNode *funcOutput, *funcOutputB, *funcOutputC;
-   TreeNode *paramOutput, *paramOutputB, ParamOutputC; 
-   TreeNode *funcOutnl;
+   // renamed node variables to reflect slide labels
+   TreeNode *Func_input, *Func_inputB, *Func_inputC;
+   TreeNode *Func_output, *Func_outputB, *Func_outputC;
+   TreeNode *Param_output, *Param_outputB, Param_outputC; 
+   TreeNode *Func_outnl;
 
-   funcInput = newDeclNode(DeclKind::FuncK, Integer);
-   funcInput->lineno = -1;
-   funcInput->attr.name = strdup("input");
-   funcInput->type = Integer;
+   Func_input = newDeclNode(DeclKind::FuncK, Integer);
+   Func_input->lineno = -1;
+   Func_input->attr.name = strdup("input");
+   Func_input->type = Integer;
+
+   Func_inputB = newDeclNode(DeclKind::FuncK, Boolean)
+   Func_inputB->lineno = -1;
+   Func_inputB->attr.name = strdup("inputb");
+   Func_inputB->type = Boolean;
+
+   Func_inputC = newDeclNode(DeclKind::FuncK, Boolean)
+   Func_inputC->lineno = -1;
+   Func_inputC->attr.name = strdup("inputc");
+   Func_inputC->type = Char;
 }
 
-void treeTraverse(TreeNode *syntree, SymbolTable *symtab, bool isNodeCompound)
+void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
 {
    int tempFoffset = foffset;
+   bool isNodeCompound;
    // if the syntree is empty, do nothing
    if (syntree == NULL)
    {
@@ -62,7 +74,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab, bool isNodeCompound)
          break;
       
       case ExpK:
-         treeTraverse(syntree, symtab);
+         treeTraverseExp(syntree, symtab);
          break;
       
       default:
@@ -124,7 +136,6 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          syntree->size = foffset;
          treeTraverse(c1, symtab);
          symtab->leave();
-
          break;
 
       case VarK:
