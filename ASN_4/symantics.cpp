@@ -32,16 +32,70 @@ TreeNode *IOLib(TreeNode *syntree)
    Func_input->attr.name = strdup("input");
    Func_input->type = Integer;
 
-   Func_inputB = newDeclNode(DeclKind::FuncK, Boolean)
+   Func_inputB = newDeclNode(DeclKind::FuncK, Boolean);
    Func_inputB->lineno = -1;
    Func_inputB->attr.name = strdup("inputb");
    Func_inputB->type = Boolean;
 
-   Func_inputC = newDeclNode(DeclKind::FuncK, Boolean)
+   Func_inputC = newDeclNode(DeclKind::FuncK, Boolean);
    Func_inputC->lineno = -1;
    Func_inputC->attr.name = strdup("inputc");
    Func_inputC->type = Char;
+
+   Param_output = newDeclNode(DeclKind::ParamK, Void);
+   Param_output->lineno = -1;
+   Param_output->attr.name = strdup("*dummy*");
+   Param_output->type = Integer;
+
+   Param_outputB = newDeclNode(DeclKind::ParamK, Void);
+   Param_outputB->lineno = -1;
+   Param_outputB->attr.name = strdup("*dummy*");
+   Param_outputB->type = Boolean;
+
+   Param_outputC = newDeclNode(DeclKind::ParamK, Void);
+   Param_outputC->lineno = -1;
+   Param_outputC->attr.name = strdup("*dummy*");
+   Param_outpuC->type = Char;
+
+   Func_output = newDeclNode(DeclKind::FuncK, Void);
+   Func_output->lineno = -1;
+   Func_output->attr.name = strdup("output");
+   Func_output->type = Integer;
+
+   Func_outputB = newDeclNode(DeclKind::FuncK, Void);
+   Func_outputB->lineno = -1;
+   Func_outputB->attr.name = strdup("outputb");
+   Func_outputB->type = Boolean;
+
+   Func_outputC = newDeclNode(DeclKind::FuncK, Void);
+   Func_outputC->lineno = -1;
+   Func_outputC->attr.name = strdup("outputc");
+   Func_outputC->type = Char;
+
+   Func_outnl = newDeclNode(DeclKind::FuncK, Void);
+   Func_outnl->lineno = -1;
+   Func_outnl->attr.name = strdup("outnl");
+   Func_outnl->type = Void;
+   Func_outnl->child[0] = NULL;
+
+   // input connected to output
+   Func_input->sibling = Func_output;
+   // output connect to inputb
+   Func_output->sibling = Func_inputB;
+   // inputb connected to outputgb
+   Func_inputB->sibling = Func_outputB;
+   // outputb connected to inputc
+   Func_outputB->sibling = Func_inputC;
+   // inputc connected to outputc
+   Func_inputC->sibling = Func_outputC;
+   // outputc connected to outnl
+   Func_outputC->sibling = Func_outnl;
+   // outnl connected to the sytnax tree nodes
+   Func_outnl->sibling = syntree;
+
+   return Func_input;
 }
+
 
 void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
 {
