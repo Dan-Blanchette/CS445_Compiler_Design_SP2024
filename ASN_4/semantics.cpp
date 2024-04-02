@@ -17,7 +17,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
                            int &globalOffset            // return the offset past the globals
     )
 {
-   syntree = loadIOLib(syntree);
+   syntree = IOLib(syntree);
    // traverse the tree while doing the sematic analysis
    treeTraverse(syntree, symtab);
    // update and track globals
