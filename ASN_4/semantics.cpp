@@ -31,7 +31,7 @@ TreeNode *IOLib(TreeNode *syntree)
    // renamed node variables to reflect slide labels
    TreeNode *Func_input, *Func_inputB, *Func_inputC;
    TreeNode *Func_output, *Func_outputB, *Func_outputC;
-   TreeNode *Param_output, *Param_outputB, Param_outputC; 
+   TreeNode *Param_output, *Param_outputB, *Param_outputC; 
    TreeNode *Func_outnl;
 
    Func_input = newDeclNode(DeclKind::FuncK, Integer);
@@ -62,7 +62,7 @@ TreeNode *IOLib(TreeNode *syntree)
    Param_outputC = newDeclNode(DeclKind::ParamK, Void);
     // Param_outputC->lineno = -1; Not Needed
    Param_outputC->attr.name = strdup("*dummy*");
-   Param_outpuC->type = Char;
+   Param_outputC->type = Char;
 
    Func_output = newDeclNode(DeclKind::FuncK, Void);
    Func_output->lineno = -1;
