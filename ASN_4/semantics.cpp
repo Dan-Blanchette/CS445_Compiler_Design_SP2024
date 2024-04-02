@@ -188,7 +188,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
 
    switch(syntree->kind.decl)
    {
-      case FunK:
+      case FuncK:
          // debug goes here
          foffset = -2;
          insertCheck(syntree, symtab);
@@ -387,7 +387,7 @@ bool compoundCheck(TreeNode *syntree)
       return false;
    }
 
-   if (syntree->kind.decl == FunK && syntree->nodekind == DeclK)
+   if (syntree->kind.decl == FuncK && syntree->nodekind == DeclK)
    {
       foffset = -2;
       return true;
