@@ -254,7 +254,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          }
          if(syntree->kind.decl == ParamK)
          {
-            syntree->VarKind = Parameter;
+            syntree->varKind = Parameter;
          }
          else if(syntree->isArray)
          {
