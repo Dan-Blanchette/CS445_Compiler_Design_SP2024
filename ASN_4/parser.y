@@ -530,7 +530,7 @@ int main(int argc, char **argv) {
    SymbolTable *symtab;
    symtab = new SymbolTable();
    symtab->debug(debugSymTab);
-   syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
+   semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
    treeTraverse(syntaxTree, symtab);
 
    if(numErrors == 0)
