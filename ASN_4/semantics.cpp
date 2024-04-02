@@ -232,10 +232,28 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          break;
       case ReturnK:
          break;
+      case RangeK:
+         treeTraverse(c0, symtab);
+         treeTraverse(c1, symtab);
+         treeTraverse(c2, symtab);
+         break;
+      case BreakK:
+         treeTraverse(c0, symtab);
+         treeTraverse(c1, symtab);
+         treeTraverse(c2, symtab);         
+         break;
       case WhileK:
          break;
       case ForK:
+         treeTraverse(c0, symtab);
+         syntree->size = foffset - 1;
+         treeTraverse(c1, symtab);
+         syntree->size = foffset - 1;
+         treeTraverse(c2, symtab);
+         syntree->size = foffset - 1;
          break;
+      default:
+         printf("unknow kind.stmt");
    }
 }
 
@@ -288,7 +306,6 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          break;      
       case ConstantK:
          syntree->isConst = true;
-         
          // case where string constant could be initialized in the global space.
          if (syntree->type == syntree->isArray && ExpType::Char)
          {
@@ -312,7 +329,9 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          {
             // probably an error w06
          }
-         break;    
+         break;
+      default:
+         printf("unknown kind.exp");    
    }
 }
 
