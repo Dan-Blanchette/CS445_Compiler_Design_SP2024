@@ -539,7 +539,7 @@ int main(int argc, char **argv)
       printTree(stdout, syntaxTree, true, true);
       if (dotAST)
       {
-         // printTree(stdout, syntaxTree, false, false);
+         printTree(stdout, syntaxTree, false, false);
       }
    }
    else 
