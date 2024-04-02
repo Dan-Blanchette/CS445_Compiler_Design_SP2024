@@ -174,7 +174,7 @@ char *varkToStr(VarKind varK)
    }
          
    sprintf(varBuff, "%s", strToReturn);
-   return resultBuff;
+   return varBuff;
 }
 
 // The first parameter is an exp_type(void, integer, bool, char, or undefinedType)
