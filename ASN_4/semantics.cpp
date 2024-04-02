@@ -1,4 +1,5 @@
 #include "semantics.h"
+#include "parser.tab.h"
 
 
 // GLOBAL SCOPE VARS
@@ -118,8 +119,6 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
       return;
    }
 
-   // traverse the left child. Update symbol table 
-   treeTraverse(syntree->child[0], symtab);
    // check the left node kind
    switch(syntree->nodekind)
    {
@@ -136,44 +135,44 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
          break;
       
       default:
-         //print some sort of error
+         treeTraverse(syntree->sibling, symtab);
          break;
    }
    // end switch
 
-   if (isNodeCompound == true)
-   {
-      symtab->leave();
-   }
+   // if (isNodeCompound == true)
+   // {
+   //    symtab->leave();
+   // }
 
-   if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
-   {
-      foffset -= 2;
-   }
-   // visit the right child. Update symbol table
-   treeTraverse(syntree->child[1], symtab);
-   treeTraverse(syntree->child[2], symtab);
+   // if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
+   // {
+   //    foffset -= 2;
+   // }
+   // // visit the right child. Update symbol table
+   // treeTraverse(syntree->child[1], symtab);
+   // treeTraverse(syntree->child[2], symtab);
 
-   if (syntree->kind.stmt == ForK && syntree->nodekind == NodeKind::StmtK)
-   {
-      syntree->size = foffset;
-   }
+   // if (syntree->kind.stmt == ForK && syntree->nodekind == NodeKind::StmtK)
+   // {
+   //    syntree->size = foffset;
+   // }
 
-   if( syntree->kind.stmt == CompoundK && syntree->nodekind == NodeKind::StmtK)
-   {
-      syntree->size = foffset;
-      foffset = tempFoffset;
-   }
+   // if( syntree->kind.stmt == CompoundK && syntree->nodekind == NodeKind::StmtK)
+   // {
+   //    syntree->size = foffset;
+   //    foffset = tempFoffset;
+   // }
 
-   // now traverse the sibling nodes
-   treeTraverse(syntree->sibling, symtab);
+   // // now traverse the sibling nodes
+   // treeTraverse(syntree->sibling, symtab);
 
-   if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
-   {
-      foffset = tempFoffset;
-   }
+   // if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
+   // {
+   //    foffset = tempFoffset;
+   // }
 
-   return;
+   // return;
 }
 
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
