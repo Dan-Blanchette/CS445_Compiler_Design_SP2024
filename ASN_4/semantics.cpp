@@ -209,7 +209,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
 
 void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
 {
-   TreeNode *c0,  *c1, *temp;
+   TreeNode *c0,  *c1, *c2, *temp;
    c0 = syntree->child[0];
    c1 = syntree->child[1];
    c2 = syntree->child[2];
