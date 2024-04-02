@@ -403,20 +403,20 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       // ExpK Switch End
       if (showAllocation)
       {
-         if (tree->kind.exp == ConstantK && tree->type == Char && tree->isArray || 
-            tree->kind.exp == IdK)
+         if (syntaxTree->kind.exp == ConstantK && syntaxTree->type == Char && syntaxTree->isArray || 
+            syntaxTree->kind.exp == IdK)
          {    
             fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
          }
       }
       if (showExpType)
       {
-         fprintf(out, " of %s", expTypeToStr(tree->type, tree->isArray, tree->isStatic));
+         fprintf(out, " of %s", expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
       }      
    }
    else
    {
-      fprintf(out, "hey I'm a node, say something here.", tree->nodekind);
+      fprintf(out, "hey I'm a node, say something here.", syntaxTree->nodekind);
    }
    fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
