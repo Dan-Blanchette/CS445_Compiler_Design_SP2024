@@ -2,6 +2,7 @@
 #include "scanType.h"
 #include "treeNodes.h"
 #include "treeUtils.h"
+#include "dot.h"
 #include <string>
 #include "parser.tab.h" // This has to be the last include
 
