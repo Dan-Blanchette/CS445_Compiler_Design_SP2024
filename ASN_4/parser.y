@@ -9,9 +9,10 @@
 #include "symbolTable.h"
 #include "scanType.h"
 #include "dot.h"
-// Assignment 4 in progress
+
 using namespace std;
 
+// Assignment 4 in progress...
 //for pushing
 
 extern "C" int yylex();
@@ -473,9 +474,9 @@ char *largerTokens[LASTTERM+1]; // used in the utils.cpp file printing routines
    if (type>LASTTERM) {
    return (char*)"UNKNOWN";
     }
-    else if (type>256) {
+    else if (type > 256) {
    return largerTokens[type];
-    }   else if ((type<32) || (type>127)) {
+    }   else if ((type < 32) || (type > 127)) {
   sprintf(tokenBuffer, "Token#%d", type);
     } else {
    tokenBuffer[0] = type;

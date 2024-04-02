@@ -16,6 +16,7 @@ symbolTable.cpp\
 
 HDRS =\
 scanType.h\
+dot.h\
 treeNodes.h\
 treeUtils.h\
 semantics.h\
@@ -24,6 +25,7 @@ symbolTable.h\
 OBJS = \
 $(PARSE).tab.o\
 lex.yy.o\
+dot.o\
 treeUtils.o\
 semantics.o\
 symbolTable.o\
