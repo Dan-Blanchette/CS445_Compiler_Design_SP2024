@@ -357,11 +357,13 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    {
       fprintf(out, "hey I'm a node, say something here.");
    }
+
    if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1))
    {
 
       fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
    }
+   
    fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
 }

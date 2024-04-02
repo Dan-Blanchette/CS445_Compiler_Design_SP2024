@@ -146,7 +146,7 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1
 char resultBuff[200];
 char *varkToStr(VarKind varK)
 {
-   char* strToReturn;
+   char *strToReturn;
    switch(varK)
    {   
       case VarKind::Global:
