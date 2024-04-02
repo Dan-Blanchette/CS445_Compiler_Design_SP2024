@@ -122,7 +122,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
    if (isNodeCompound == true)
    {
       char *newScope = strdup("{");
-      symtab->enter("new scope " + (string)newScope);
+      symtab->enter("new scope " + (char *)newScope);
    }
 
    // traverse the left child. Update symbol table 
