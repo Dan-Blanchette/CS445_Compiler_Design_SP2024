@@ -426,3 +426,29 @@ void printTree(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAlloc
    printTreeRecursive(out, syntaxTree, showExpType, showAllocation, 1);
    return;
 }
+
+char resultBuff[200];
+char *varkToStr(VarKind varK)
+{
+   char* strToReturn;
+   switch(varK)
+   {   
+      case VarKind::Global:
+         strToReturn = (char *) "Global";
+
+      case VarKind::LocalStatic:
+         strToReturn = (char *) "LocalStatic";
+      
+      case VarKind::Local:
+         strToReturn = (char *) "Local";
+
+      case VarKind::Parameter:
+         strToReturn = (char *) "Parameter";
+      
+      default:
+         strToReturn = (char *) "None";
+   }
+   /* END SWITCH */
+   sprintf(resultBuff, "%s", strToReturn);
+   return resultBuff;
+}
