@@ -69,18 +69,17 @@ TreeNode *loadIOLib(TreeNode *syntree)
    Func_outputB = newDeclNode(DeclKind::FuncK, ExpType::Void);
    Func_outputB->lineno = -1;
    Func_outputB->attr.name = strdup("outputb");
-   Func_outputB->type = ExpType::Boolean;
+   Func_outputB->type = ExpType::Void;
 
    Func_outputC = newDeclNode(DeclKind::FuncK, ExpType::Void);
    Func_outputC->lineno = -1;
    Func_outputC->attr.name = strdup("outputc");
-   Func_outputC->type = ExpType::Char;
+   Func_outputC->type = ExpType::Void;
 
    Func_outnl = newDeclNode(DeclKind::FuncK, ExpType::Void);
    Func_outnl->lineno = -1;
    Func_outnl->attr.name = strdup("outnl");
    Func_outnl->type = ExpType::Void;
-   Func_outnl->child[0] = NULL;
 
    // input connected to output
    Func_input->sibling = Func_output;
@@ -101,7 +100,7 @@ TreeNode *loadIOLib(TreeNode *syntree)
 
    // outnl connected to the sytnax tree nodes
    Func_outnl->sibling = syntree;
-   Func_outnl->child[0] = nullptr;
+   Func_outnl->child[0] = NULL;
 
    return Func_input;
 }
