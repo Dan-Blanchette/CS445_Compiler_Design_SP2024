@@ -18,7 +18,8 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
                            int &globalOffset            // return the offset past the globals
     )
 {
-   printf("Hello From semanticAnalysis");
+   syntree = loadIOLib(sytree);
+   return syntree;
 }
 
 // Generating 10 nodes as indicated by slide 4.
