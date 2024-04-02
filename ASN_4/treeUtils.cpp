@@ -276,6 +276,10 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          break;
       case DeclKind::ParamK:
          fprintf(out, "Parm: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         if (showAllocation)
+         {
+            fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+         }
          break;
       default:
          fprintf(out, "Decl Node Reporting for Duty!");
@@ -297,10 +301,18 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
 
       case StmtKind::ForK:
          fprintf(out, "For");
+         if (showAllocation)
+         {
+            fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+         }
          break;
 
       case StmtKind::CompoundK:
          fprintf(out, "Compound");
+         if (showAllocation)
+         {
+            fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+         }         
          break;
 
       case StmtKind::ReturnK:
@@ -385,14 +397,26 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          break;
 
       default:
-         fprintf(out, "I'm some sort of ExpK node.");
+         fprintf(out, "I'm some sort of ExpK node.", tree->kind.exp);
          break;
       }
       // ExpK Switch End
+      if (showAllocation)
+      {
+         if (tree->kind.exp == ConstantK && tree->type == Char && tree->isArray || 
+            tree->kind.exp == IdK)
+         {    
+            fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+         }
+      }
+      if (showExpType)
+      {
+         fprintf(out, " of %s", expTypeToStr(tree->type, tree->isArray, tree->isStatic));
+      }      
    }
    else
    {
-      fprintf(out, "hey I'm a node, say something here.");
+      fprintf(out, "hey I'm a node, say something here.", tree->nodekind);
    }
    fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
