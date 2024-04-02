@@ -219,7 +219,8 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
             {
                syntree->varKind = LocalStatic;
                syntree->offset = goffset;
-               goffset -= syntree->size//// remember to finish this
+               goffset -= syntree->size; 
+               //// remember to finish this
             }
             else
             {
