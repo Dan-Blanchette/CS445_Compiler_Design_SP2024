@@ -17,16 +17,16 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
                            int &globalOffset            // return the offset past the globals
     )
 {
-   syntree = IOLib(syntree);
+   syntree = loadIOLib(syntree);
    // traverse the tree while doing the sematic analysis
-   treeTraverse(syntree, symtabX);
-   // update and track globals
-   globalOffset = goffset;
+   // treeTraverse(syntree, symtabX);
+   // // update and track globals
+   // globalOffset = goffset;
    return syntree;
 }
 
 // Generating 10 nodes as indicated by slide 4.
-TreeNode *IOLib(TreeNode *syntree)
+TreeNode *loadIOLib(TreeNode *syntree)
 {
    // renamed node variables to reflect slide labels
    TreeNode *Func_input, *Func_inputB, *Func_inputC;

@@ -513,7 +513,7 @@ int main(int argc, char **argv) {
       }
    }
 
-   // initTokenStrings();
+   initTokenStrings();
    if ( optind == argc ) yyparse();
    for (index = optind; index < argc; index++) 
    {
