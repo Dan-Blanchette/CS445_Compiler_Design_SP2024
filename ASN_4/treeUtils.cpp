@@ -143,29 +143,30 @@ TreeNode *newExpNode(ExpKind kind, Token_Data *token, TreeNode *c0, TreeNode *c1
    return newNode;
 }
 
-char *varkToStr(int varKind)
+char resultBuff[200];
+char *varkToStr(VarKind varK)
 {
-   switch(varKind)
-   {
-      case None:
-         return (char *) "None";
+   char* strToReturn;
+   switch(varK)
+   {   
+      case VarKind::Global:
+         strToReturn = (char *) "Global";
 
-      case Global:
-         return (char *) "Global";
-
-      case LocalStatic:
-         return (char *) "LocalStatic";
+      case VarKind::LocalStatic:
+         strToReturn = (char *) "LocalStatic";
       
-      case Local:
-         return (char *) "Local";
+      case VarKind::Local:
+         strToReturn = (char *) "Local";
 
-      case Parameter:
-         return (char *) "Parameter";
+      case VarKind::Parameter:
+         strToReturn = (char *) "Parameter";
       
       default:
-         return (char *) "Unknown VarKind";
+         strToReturn = (char *) "None";
    }
    /* END SWITCH */
+   sprintf(resultBuff, "%s", strToReturn);
+   return resultBuff;
 }
 
 // The first parameter is an exp_type(void, integer, bool, char, or undefinedType)
