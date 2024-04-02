@@ -1,6 +1,3 @@
-#ifndef _SEMANTICS_H_
-#define _SEMANTICS_H_
-
 #include <string.h>
 #include "treeNodes.h"
 #include "treeUtils.h"
@@ -23,5 +20,3 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab);
 void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab);
 bool insertCheck(TreeNode *syntree, SymbolTable *symtab);
 bool compoundCheck(TreeNode *syntree);
-
-#endif
