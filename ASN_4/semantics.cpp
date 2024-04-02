@@ -15,7 +15,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
                            bool noDuplicateUndefsIn,    // SPECIAL OPTION: no duplicate undefines
                            SymbolTable *symtabX,       // pass in and return the symbol table
                            int &globalOffset            // return the offset past the globals
-    );
+    )
 {
    syntree = loadIOLib(syntree);
    // traverse the tree while doing the sematic analysis
