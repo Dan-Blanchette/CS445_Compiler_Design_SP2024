@@ -16,7 +16,7 @@ using namespace std;
 //for pushing
 
 extern "C" int yylex();
-extern "C" int yyparse();
+// extern "C" int yyparse();
 extern "C" FILE *yyin;
 
 
@@ -522,7 +522,7 @@ int main(int argc, char **argv) {
       yyparse();
       fclose (yyin);
    }
-   
+
    // create vars for slide code
    bool debugSymTab = false; 
    static int globalOffset = 0;
