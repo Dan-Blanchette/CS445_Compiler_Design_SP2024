@@ -270,13 +270,25 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       {
       case DeclKind::VarK:
          fprintf(out, "Var: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         if (showAllocation)
+         {
+            printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), tree->offset, tree->size);
+         }
          break;
 
       case DeclKind::FuncK:
          fprintf(out, "Func: %s returns %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         if (showAllocation)
+         {
+            printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), tree->offset, tree->size);
+         }
          break;
       case DeclKind::ParamK:
          fprintf(out, "Parm: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         if (showAllocation)
+         {
+            printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), tree->offset, tree->size);
+         }
          break;
       default:
          fprintf(out, "Decl Node Reporting for Duty!");
@@ -399,11 +411,6 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    else
    {
       fprintf(out, "hey I'm a node, say something here.", syntaxTree->nodekind);
-   }
-
-   if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1))
-   {
-      fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
    }
 
    fprintf(out, " [line: %d]", syntaxTree->lineno);
