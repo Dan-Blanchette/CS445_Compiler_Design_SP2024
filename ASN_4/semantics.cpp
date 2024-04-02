@@ -5,8 +5,8 @@
 // GLOBAL SCOPE VARS
 
 // memory offsets: ensure counts are updated until end of runtime
-static int foffset = 0;
-static int goffset = 0;
+static int foffset;
+static int goffset;
 
 // not sure if this is needed
 // static bool isNewScope = true;
@@ -31,55 +31,55 @@ TreeNode *loadIOLib(TreeNode *syntree)
    TreeNode *Param_output, *Param_outputB, *Param_outputC; 
    TreeNode *Func_outnl;
 
-   Func_input = newDeclNode(DeclKind::FuncK, Integer);
+   Func_input = newDeclNode(DeclKind::FuncK, ExpType::Integer);
    Func_input->lineno = -1;
    Func_input->attr.name = strdup("input");
-   Func_input->type = Integer;
+   Func_input->type = ExpType::Integer;
 
-   Func_inputB = newDeclNode(DeclKind::FuncK, Boolean);
+   Func_inputB = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
    Func_inputB->lineno = -1;
    Func_inputB->attr.name = strdup("inputb");
-   Func_inputB->type = Boolean;
+   Func_inputB->type = ExpType::Boolean;
 
-   Func_inputC = newDeclNode(DeclKind::FuncK, Boolean);
+   Func_inputC = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
    Func_inputC->lineno = -1;
    Func_inputC->attr.name = strdup("inputc");
-   Func_inputC->type = Char;
+   Func_inputC->type = ExpType::Char;
 
-   Param_output = newDeclNode(DeclKind::ParamK, Void);
+   Param_output = newDeclNode(DeclKind::ParamK, ExpType::Void);
    // Param_output->lineno = -1; Not Needed
    Param_output->attr.name = strdup("*dummy*");
-   Param_output->type = Integer;
+   Param_output->type = ExpType::Integer;
 
-   Param_outputB = newDeclNode(DeclKind::ParamK, Void);
+   Param_outputB = newDeclNode(DeclKind::ParamK, ExpType::Void);
    // Param_outputB->lineno = -1; Not Needed
    Param_outputB->attr.name = strdup("*dummy*");
-   Param_outputB->type = Boolean;
+   Param_outputB->type = ExpType::Boolean;
 
-   Param_outputC = newDeclNode(DeclKind::ParamK, Void);
+   Param_outputC = newDeclNode(DeclKind::ParamK, ExpType::Void);
     // Param_outputC->lineno = -1; Not Needed
    Param_outputC->attr.name = strdup("*dummy*");
-   Param_outputC->type = Char;
+   Param_outputC->type = ExpType::Char;
 
-   Func_output = newDeclNode(DeclKind::FuncK, Void);
+   Func_output = newDeclNode(DeclKind::FuncK, ExpType::Void);
    Func_output->lineno = -1;
    Func_output->attr.name = strdup("output");
-   Func_output->type = Integer;
+   Func_output->type = ExpType::Integer;
 
-   Func_outputB = newDeclNode(DeclKind::FuncK, Void);
+   Func_outputB = newDeclNode(DeclKind::FuncK, ExpType::Void);
    Func_outputB->lineno = -1;
    Func_outputB->attr.name = strdup("outputb");
-   Func_outputB->type = Boolean;
+   Func_outputB->type = ExpType::Boolean;
 
-   Func_outputC = newDeclNode(DeclKind::FuncK, Void);
+   Func_outputC = newDeclNode(DeclKind::FuncK, ExpType::Void);
    Func_outputC->lineno = -1;
    Func_outputC->attr.name = strdup("outputc");
-   Func_outputC->type = Char;
+   Func_outputC->type = ExpType::Char;
 
-   Func_outnl = newDeclNode(DeclKind::FuncK, Void);
+   Func_outnl = newDeclNode(DeclKind::FuncK, ExpType::Void);
    Func_outnl->lineno = -1;
    Func_outnl->attr.name = strdup("outnl");
-   Func_outnl->type = Void;
+   Func_outnl->type = ExpType::Void;
    Func_outnl->child[0] = NULL;
 
    // input connected to output
@@ -101,7 +101,7 @@ TreeNode *loadIOLib(TreeNode *syntree)
 
    // outnl connected to the sytnax tree nodes
    Func_outnl->sibling = syntree;
-   Func_outnl->child[0] = NULL;
+   Func_outnl->child[0] = nullptr;
 
    return Func_input;
 }
@@ -109,34 +109,30 @@ TreeNode *loadIOLib(TreeNode *syntree)
 
 void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
 {
-   int tempFoffset = foffset;
-   bool isNodeCompound;
    // if the syntree is empty, do nothing
-   if (syntree == NULL)
+   if (syntree != nullptr)
    {
-      return;
-   }
+      // check the left node kind
+      switch(syntree->nodekind)
+      {
+         case NodeKind::DeclK:
+            treeTraverseDecl(syntree, symtab);
+            break;
 
-   // check the left node kind
-   switch(syntree->nodekind)
-   {
-      case DeclK:
-         treeTraverseDecl(syntree, symtab);
-         break;
-
-      case StmtK:
-         treeTraverseStmt(syntree, symtab);
-         break;
-      
-      case ExpK:
-         treeTraverseExp(syntree, symtab);
-         break;
-      
-      default:
-         treeTraverse(syntree->sibling, symtab);
-         break;
-   }
+         case NodeKind::StmtK:
+            treeTraverseStmt(syntree, symtab);
+            break;
+         
+         case NodeKind::ExpK:
+            treeTraverseExp(syntree, symtab);
+            break;
+         
+         default:
+            treeTraverse(syntree->sibling, symtab);
+            break;
+      }
    // end switch
+   }
 }
 
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
@@ -220,7 +216,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          // tree traverse your left child
          treeTraverse(c0, symtab);
          // deal with your self
-         syntree->size = foffset;
+         syntree->size = foffset - 1;
          // traverse your right child
          treeTraverse(c1, symtab);
          break;
@@ -231,26 +227,25 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          treeTraverse(c2, symtab);
          break;
       case ReturnK:
+         treeTraverse(c0, symtab);
          break;
       case RangeK:
          treeTraverse(c0, symtab);
          treeTraverse(c1, symtab);
          treeTraverse(c2, symtab);
          break;
-      case BreakK:
-         treeTraverse(c0, symtab);
-         treeTraverse(c1, symtab);
-         treeTraverse(c2, symtab);         
+      case BreakK:         
          break;
       case WhileK:
          break;
       case ForK:
          treeTraverse(c0, symtab);
-         syntree->size = foffset - 1;
+         foffset--;
          treeTraverse(c1, symtab);
-         syntree->size = foffset - 1;
+         foffset--;
          treeTraverse(c2, symtab);
-         syntree->size = foffset - 1;
+         foffset--;
+         syntree->size = foffset;
          break;
       default:
          printf("unknow kind.stmt");
@@ -293,10 +288,10 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          {
             temp->isUsed = true;
             syntree->type = temp->type;
-            syntree->isArray = temp->isArray;
-            syntree->isStatic = temp->isStatic;
-            syntree->varKind = temp->varKind;
-            syntree->offset = temp->offset;
+            // syntree->isArray = temp->isArray;
+            // syntree->isStatic = temp->isStatic;
+            // syntree->varKind = temp->varKind;
+            // syntree->offset = temp->offset;
             syntree->size = temp->size;
          }
          else
@@ -307,12 +302,12 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
       case ConstantK:
          syntree->isConst = true;
          // case where string constant could be initialized in the global space.
-         if (syntree->type == syntree->isArray && ExpType::Char)
-         {
-            syntree->varKind = Global;
-            syntree->offset = (goffset - 1);
-            goffset -= syntree->size;
-         }
+         // if (syntree->type == syntree->isArray && ExpType::Char)
+         // {
+         //    syntree->varKind = Global;
+         //    syntree->offset = (goffset - 1);
+         //    goffset -= syntree->size;
+         // }
          break;
       case IdK:
          if (temp = (TreeNode *)(symtab->lookup(syntree->attr.name)))
