@@ -229,7 +229,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
             }
          }
          // no break statement needed here
-      case paramK:
+      case ParamK:
 
          if (insertCheck(syntree, symtab))
          {
