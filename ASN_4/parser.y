@@ -5,6 +5,8 @@
 #include "treeNodes.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "semantics.h"
+#include "symbolTable.h"
 #include "treeUtils.h"
 #include "scanType.h"
 #include "dot.h"
