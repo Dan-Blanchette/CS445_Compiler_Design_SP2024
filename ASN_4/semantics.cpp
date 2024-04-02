@@ -283,7 +283,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          // traverse your right child
          treeTraverse(c1, symtab);
          break;
-      case IfK;
+      case IfK:
          break;
       case ReturnK:
          break;
