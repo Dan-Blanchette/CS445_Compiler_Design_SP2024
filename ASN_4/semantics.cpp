@@ -11,19 +11,14 @@ static int goffset = 0;
 // not sure if this is needed
 // static bool isNewScope = true;
 
-
-TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an annotated syntax treebool shareCompoundSpaceIn,   // SPECIAL OPTION: make compound after a function share scope
+TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an annotated syntax tree
+                           bool shareCompoundSpaceIn,   // SPECIAL OPTION: make compound after a function share scope
                            bool noDuplicateUndefsIn,    // SPECIAL OPTION: no duplicate undefines
                            SymbolTable *symtabX,       // pass in and return the symbol table
                            int &globalOffset            // return the offset past the globals
     )
 {
-   syntree = loadIOLib(syntree);
-   // traverse the tree while doing the sematic analysis
-   // treeTraverse(syntree, symtabX);
-   // // update and track globals
-   // globalOffset = goffset;
-   return syntree;
+   printf("Hello From semanticAnalysis");
 }
 
 // Generating 10 nodes as indicated by slide 4.
