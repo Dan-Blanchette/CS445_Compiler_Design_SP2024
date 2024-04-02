@@ -397,7 +397,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          break;
 
       default:
-         fprintf(out, "I'm some sort of ExpK node.", tree->kind.exp);
+         fprintf(out, "I'm some sort of ExpK node.", syntaxTree->kind.exp);
          break;
       }
       // ExpK Switch End
