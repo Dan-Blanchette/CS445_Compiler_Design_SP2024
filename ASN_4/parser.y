@@ -1,13 +1,12 @@
 %{
 #include <cstdio>
-#include <stdio.h>
 #include <iostream>
-#include "treeNodes.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "treeNodes.h"
+#include "treeUtils.h"
 #include "semantics.h"
 #include "symbolTable.h"
-#include "treeUtils.h"
 #include "scanType.h"
 #include "dot.h"
 // Assignment 4 in progress
@@ -514,7 +513,7 @@ int main(int argc, char **argv) {
       }
    }
 
-   initTokenStrings();
+   // initTokenStrings();
    if ( optind == argc ) yyparse();
    for (index = optind; index < argc; index++) 
    {
