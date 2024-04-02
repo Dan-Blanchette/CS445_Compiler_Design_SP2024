@@ -89,14 +89,16 @@ TreeNode *loadIOLib(TreeNode *syntree)
    Func_output->child[0] = Param_output;
    // inputb connected to outputgb
    Func_inputB->sibling = Func_outputB;
-   Func_outputB->child[0] = Param_outputB;
    // outputb connected to inputc
    Func_outputB->sibling = Func_inputC;
+   Func_outputB->child[0] = Param_outputB;
+
    // inputc connected to outputc
    Func_inputC->sibling = Func_outputC;
-   Func_outputC->child[0] = Param_outputC;
    // outputc connected to outnl
    Func_outputC->sibling = Func_outnl;
+   Func_outputC->child[0] = Param_outputC;
+
    // outnl connected to the sytnax tree nodes
    Func_outnl->sibling = syntree;
    Func_outnl->child[0] = NULL;
@@ -135,40 +137,6 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
          break;
    }
    // end switch
-
-   // if (isNodeCompound == true)
-   // {
-   //    symtab->leave();
-   // }
-
-   // if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
-   // {
-   //    foffset -= 2;
-   // }
-   // // visit the right child. Update symbol table
-   // treeTraverse(syntree->child[1], symtab);
-   // treeTraverse(syntree->child[2], symtab);
-
-   // if (syntree->kind.stmt == ForK && syntree->nodekind == NodeKind::StmtK)
-   // {
-   //    syntree->size = foffset;
-   // }
-
-   // if( syntree->kind.stmt == CompoundK && syntree->nodekind == NodeKind::StmtK)
-   // {
-   //    syntree->size = foffset;
-   //    foffset = tempFoffset;
-   // }
-
-   // // now traverse the sibling nodes
-   // treeTraverse(syntree->sibling, symtab);
-
-   // if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
-   // {
-   //    foffset = tempFoffset;
-   // }
-
-   // return;
 }
 
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
@@ -182,12 +150,12 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
    {
       case FuncK:
          // debug goes here
-         foffset = -2;
+         foffset = -1;
          insertCheck(syntree, symtab);
          symtab->enter(syntree->attr.name);
          treeTraverse(c0, symtab);
          syntree->varKind = Global;
-         syntree->size = foffset;
+         syntree->size = foffset - 1;
          treeTraverse(c1, symtab);
          symtab->leave();
          break;
@@ -197,29 +165,8 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          if(c0 != NULL)
          {
             syntree->isAssigned = true;
+            syntree->varKind = Local;
             treeTraverse(c0, symtab);
-         }
-         if (insertCheck(syntree, symtab))
-         {
-            if (symtab->depth() == 1)
-            {
-               syntree->varKind = Global;
-               syntree->offset = goffset;
-               goffset -= syntree->size;
-            }
-            else if(syntree->isStatic)
-            {
-               syntree->varKind = LocalStatic;
-               syntree->offset = goffset;
-               goffset -= syntree->size; 
-               //// remember to finish this
-            }
-            else
-            {
-               syntree->varKind = Local;
-               syntree->offset = foffset;
-               foffset -= syntree->size;
-            }
          }
          // no break statement needed here
       case ParamK:
@@ -241,7 +188,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
             else
             {
                syntree->varKind = Local;
-               syntree->offset = foffset;
+               syntree->offset = foffset - 1;
                foffset -= syntree->size;
             }
          }
@@ -277,6 +224,10 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          treeTraverse(c1, symtab);
          break;
       case IfK:
+         treeTraverse(c0, symtab);
+         syntree->size = foffset -1;
+         treeTraverse(c1, symtab);
+         treeTraverse(c2, symtab);
          break;
       case ReturnK:
          break;
