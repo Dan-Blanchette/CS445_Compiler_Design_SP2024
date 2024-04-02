@@ -2,11 +2,13 @@
 
 
 // GLOBAL SCOPE VARS
-
+static ExpectType expType[LASTOP];
+static ReturnType retType[LASTOP];
 
 // memory offsets: ensure counts are updated until end of runtime
 static int foffset = 0;
 static int goffset = 0;
+static bool isNewScope = true;
 
 
 TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an annotated syntax treebool shareCompoundSpaceIn,   // SPECIAL OPTION: make compound after a function share scope
@@ -16,8 +18,11 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
     );
 {
    syntree = loadIOLib(syntree);
-
+   // traverse the tree while doing the sematic analysis
    treeTraverse(syntree, symtab);
+   // update and track globals
+   globalOffset = goffset;
+   return syntree;
 }
 
 // Generating 10 nodes as indicated by slide 4.
@@ -150,6 +155,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
    }
    // visit the right child. Update symbol table
    treeTraverse(syntree->child[1], symtab);
+   treeTraverse(syntree->child[2], symtab);
 
    if (syntree->kind.stmt == ForK && syntree->nodekind == StmtK)
    {
