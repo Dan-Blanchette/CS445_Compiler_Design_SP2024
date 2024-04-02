@@ -489,7 +489,8 @@ void yyerror (const char *msg)
    cout << "Error: " <<  msg << endl;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
    // these lines allow us to read information from the parser.l file
    yylval.Token_Data = (Token_Data*)malloc(sizeof(Token_Data));
    yylval.tree = (TreeNode*)malloc(sizeof(TreeNode));
@@ -540,12 +541,13 @@ int main(int argc, char **argv) {
       {
          // printTree(stdout, syntaxTree, false, false);
       }
+   }
    else 
    {
       printf("/****************\n");
       printf("Error: %d\n", numErrors);
       printf("*****************/\n");
-   };
+   }
    printf("Number of warnings: %i\n", numWarnings);
    printf("Number of errors: %i\n", numErrors);
    return 0;
