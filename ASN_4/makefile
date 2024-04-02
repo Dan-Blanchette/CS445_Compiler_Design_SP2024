@@ -11,7 +11,6 @@ $(PARSE).y\
 $(PARSE).l\
 main.cpp\
 treeUtils.cpp\
-dot.cpp\
 semantics.cpp\
 symbolTable.cpp\
 

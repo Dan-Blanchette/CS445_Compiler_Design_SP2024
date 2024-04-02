@@ -2,7 +2,6 @@
 #define _UTIL_H_
 #include "treeNodes.h"
 #include "scanType.h"
-#include "semantics.h"
 #include <string.h>
 #include <iostream>
 
