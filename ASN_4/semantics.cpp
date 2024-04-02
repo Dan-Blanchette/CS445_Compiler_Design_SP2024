@@ -2,8 +2,6 @@
 
 
 // GLOBAL SCOPE VARS
-static ExpectType expType[LASTOP];
-static ReturnType retType[LASTOP];
 
 // memory offsets: ensure counts are updated until end of runtime
 static int foffset = 0;
