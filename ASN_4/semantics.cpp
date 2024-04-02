@@ -8,7 +8,9 @@ static ReturnType retType[LASTOP];
 // memory offsets: ensure counts are updated until end of runtime
 static int foffset = 0;
 static int goffset = 0;
-static bool isNewScope = true;
+
+// not sure if this is needed
+// static bool isNewScope = true;
 
 
 TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an annotated syntax treebool shareCompoundSpaceIn,   // SPECIAL OPTION: make compound after a function share scope

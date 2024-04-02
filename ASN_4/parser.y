@@ -520,6 +520,17 @@ int main(int argc, char **argv) {
       yyparse();
       fclose (yyin);
    }
+   // create vars for slide code
+   bool debugSymTab = false; 
+   static int globalOffset = 0;
+
+   // from slides
+   SymbolTable *symtab;
+   symtab = new SymbolTable();
+   symtab->debug(debugSymTab);
+   syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, goffset);
+   treeTraverse(syntaxTree, symtab);
+
    if(numErrors == 0)
    {
       printTree(stdout, syntaxTree, true, true);
