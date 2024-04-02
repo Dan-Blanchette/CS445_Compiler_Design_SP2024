@@ -272,7 +272,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          fprintf(out, "Var: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
          if (showAllocation)
          {
-            printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), tree->offset, tree->size);
+            printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, tree->size);
          }
          break;
 
@@ -280,14 +280,14 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          fprintf(out, "Func: %s returns %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
          if (showAllocation)
          {
-            printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), tree->offset, tree->size);
+            printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, tree->size);
          }
          break;
       case DeclKind::ParamK:
          fprintf(out, "Parm: %s of %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
          if (showAllocation)
          {
-            printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), tree->offset, tree->size);
+            printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, tree->size);
          }
          break;
       default:
