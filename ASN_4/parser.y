@@ -522,6 +522,7 @@ int main(int argc, char **argv) {
       yyparse();
       fclose (yyin);
    }
+   
    // create vars for slide code
    bool debugSymTab = false; 
    static int globalOffset = 0;
