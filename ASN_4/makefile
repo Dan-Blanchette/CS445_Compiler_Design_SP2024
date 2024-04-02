@@ -18,6 +18,7 @@ HDRS =\
 scanType.h\
 treeNodes.h\
 treeUtils.h\
+dot.h\
 semantics.h\
 symbolTable.h\
 

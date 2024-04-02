@@ -50,17 +50,17 @@ TreeNode *IOLib(TreeNode *syntree)
    Func_inputC->type = Char;
 
    Param_output = newDeclNode(DeclKind::ParamK, Void);
-   Param_output->lineno = -1;
+   // Param_output->lineno = -1; Not Needed
    Param_output->attr.name = strdup("*dummy*");
    Param_output->type = Integer;
 
    Param_outputB = newDeclNode(DeclKind::ParamK, Void);
-   Param_outputB->lineno = -1;
+   // Param_outputB->lineno = -1; Not Needed
    Param_outputB->attr.name = strdup("*dummy*");
    Param_outputB->type = Boolean;
 
    Param_outputC = newDeclNode(DeclKind::ParamK, Void);
-   Param_outputC->lineno = -1;
+    // Param_outputC->lineno = -1; Not Needed
    Param_outputC->attr.name = strdup("*dummy*");
    Param_outpuC->type = Char;
 
@@ -89,16 +89,20 @@ TreeNode *IOLib(TreeNode *syntree)
    Func_input->sibling = Func_output;
    // output connect to inputb
    Func_output->sibling = Func_inputB;
+   Func_output->child[0] = Param_output;
    // inputb connected to outputgb
    Func_inputB->sibling = Func_outputB;
+   Func_outputB->child[0] = Param_outputB;
    // outputb connected to inputc
    Func_outputB->sibling = Func_inputC;
    // inputc connected to outputc
    Func_inputC->sibling = Func_outputC;
+   Func_outputC->child[0] = Param_outputC;
    // outputc connected to outnl
    Func_outputC->sibling = Func_outnl;
    // outnl connected to the sytnax tree nodes
    Func_outnl->sibling = syntree;
+   Func_outnl->child[0] = NULL;
 
    return Func_input;
 }

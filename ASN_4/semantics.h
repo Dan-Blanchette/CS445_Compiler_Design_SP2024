@@ -2,7 +2,7 @@
 #include "treeNodes.h"
 #include "treeUtils.h"
 #include "symbolTable.h"
-// #include "parser.tab.h" // Always put this last
+#include "parser.tab.h" // Always put this last
 
 TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an annotated syntax tree
                            bool shareCompoundSpaceIn,   // SPECIAL OPTION: make compound after a function share scope
