@@ -1,5 +1,4 @@
 #include "semantics.h"
-#include <string.h>
 
 
 // GLOBAL SCOPE VARS
@@ -117,13 +116,6 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
    if (syntree == NULL)
    {
       return;
-   }
-
-   isNodeCompound = compoundCheck(syntree);
-   if (isNodeCompound == true)
-   {
-      char *newScope = strdup("{");
-      symtab->enter("new scope " + (string)newScope);
    }
 
    // traverse the left child. Update symbol table 
