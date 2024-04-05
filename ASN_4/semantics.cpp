@@ -71,19 +71,19 @@ TreeNode *loadIOLib(TreeNode *syntree)
    outputB->attr.name = strdup("outputb");
    outputB->type = ExpType::Void;
    // child node as seen in slides
-   outputB->child[0] = Param_outputB;
+   outputB->child[0] = Param_output_b;
 
    outputC = newDeclNode(DeclKind::FuncK, ExpType::Void);
    outputC->lineno = -1; // all are -1
    outputC->attr.name = strdup("outputc");
    outputC->type = ExpType::Void;
    // child node as seen in slides
-   outputC->child[0] = Param_outputC;
+   outputC->child[0] = Param_output_c;
 
-   Func_outnl = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   Func_outnl->lineno = -1; // all are -1
-   Func_outnl->attr.name = strdup("outnl");
-   Func_outnl->type = ExpType::Void;
+   outnl = newDeclNode(DeclKind::FuncK, ExpType::Void);
+   outnl->lineno = -1; // all are -1
+   outnl->attr.name = strdup("outnl");
+   outnl->type = ExpType::Void;
    outnl->child[0] = NULL;
 
    // input connected to output
