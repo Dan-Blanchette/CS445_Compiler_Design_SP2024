@@ -529,11 +529,11 @@ int main(int argc, char **argv)
    static int globalOffset = 0;
 
    // from slides NOTE: this code doesn't print anything yet..for some reason...
-   SymbolTable *symtab;
-   symtab = new SymbolTable();
-   symtab->debug(debugSymTab);
-   syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
-   treeTraverse(syntaxTree, symtab);
+   // SymbolTable *symtab;
+   // symtab = new SymbolTable();
+   // symtab->debug(debugSymTab);
+   // syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
+   // treeTraverse(syntaxTree, symtab);
 
    if(numErrors == 0)
    {
