@@ -26,83 +26,81 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
 TreeNode *loadIOLib(TreeNode *syntree)
 {
    // renamed node variables to reflect slide labels
-   TreeNode *Func_input, *Func_inputB, *Func_inputC;
-   TreeNode *Func_output, *Func_outputB, *Func_outputC;
-   TreeNode *Param_output, *Param_outputB, *Param_outputC; 
-   TreeNode *Func_outnl;
+   TreeNode *input, *inputB, *inputC;
+   TreeNode *output, *outputB, *outputC;
+   TreeNode *Param_output, *Param_output_b, *Param_output_c; 
+   TreeNode *outnl;
 
-   Func_input = newDeclNode(DeclKind::FuncK, ExpType::Integer);
-   Func_input->lineno = -1;
-   Func_input->attr.name = strdup("input");
-   Func_input->type = ExpType::Integer;
+   input = newDeclNode(DeclKind::FuncK, ExpType::Integer);
+   input->lineno = -1; // all are -1
+   input->attr.name = strdup("input");
+   input->type = ExpType::Integer;
 
-   Func_inputB = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
-   Func_inputB->lineno = -1;
-   Func_inputB->attr.name = strdup("inputb");
-   Func_inputB->type = ExpType::Boolean;
+   inputB = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
+   inputB->lineno = -1;
+   inputB->attr.name = strdup("inputb");
+   inputB->type = ExpType::Boolean;
 
-   Func_inputC = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
-   Func_inputC->lineno = -1;
-   Func_inputC->attr.name = strdup("inputc");
-   Func_inputC->type = ExpType::Char;
+   inputC = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
+   inputC->lineno = -1;
+   inputC->attr.name = strdup("inputc");
+   inputC->type = ExpType::Char;
 
    Param_output = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   // Param_output->lineno = -1; Not Needed
+   // Param_output->lineno = -1; Not Needed?
    Param_output->attr.name = strdup("*dummy*");
    Param_output->type = ExpType::Integer;
 
-   Param_outputB = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   // Param_outputB->lineno = -1; Not Needed
-   Param_outputB->attr.name = strdup("*dummy*");
-   Param_outputB->type = ExpType::Boolean;
+   Param_output_b = newDeclNode(DeclKind::ParamK, ExpType::Void);
+   // Param_outputB->lineno = -1; Not Needed?
+   Param_output_b->attr.name = strdup("*dummy*");
+   Param_output_b->type = ExpType::Boolean;
 
-   Param_outputC = newDeclNode(DeclKind::ParamK, ExpType::Void);
-    // Param_outputC->lineno = -1; Not Needed
-   Param_outputC->attr.name = strdup("*dummy*");
-   Param_outputC->type = ExpType::Char;
+   Param_output_c = newDeclNode(DeclKind::ParamK, ExpType::Void);
+    // Param_outputC->lineno = -1; Not Needed?
+   Param_output_c->attr.name = strdup("*dummy*");
+   Param_output_c->type = ExpType::Char;
 
-   Func_output = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   Func_output->lineno = -1;
-   Func_output->attr.name = strdup("output");
-   Func_output->type = ExpType::Integer;
+   output = newDeclNode(DeclKind::FuncK, ExpType::Void);
+   output->lineno = -1;
+   output->attr.name = strdup("output");
+   output->type = ExpType::Integer;
 
-   Func_outputB = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   Func_outputB->lineno = -1;
-   Func_outputB->attr.name = strdup("outputb");
-   Func_outputB->type = ExpType::Void;
+   outputB = newDeclNode(DeclKind::FuncK, ExpType::Void);
+   outputB->lineno = -1;
+   outputB->attr.name = strdup("outputb");
+   outputB->type = ExpType::Void;
+   outputB->child[0] = Param_outputB;
 
-   Func_outputC = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   Func_outputC->lineno = -1;
-   Func_outputC->attr.name = strdup("outputc");
-   Func_outputC->type = ExpType::Void;
+   outputC = newDeclNode(DeclKind::FuncK, ExpType::Void);
+   outputC->lineno = -1;
+   outputC->attr.name = strdup("outputc");
+   outputC->type = ExpType::Void;
+   outputC->child[0] = Param_outputC;
 
    Func_outnl = newDeclNode(DeclKind::FuncK, ExpType::Void);
    Func_outnl->lineno = -1;
    Func_outnl->attr.name = strdup("outnl");
    Func_outnl->type = ExpType::Void;
+   outnl->child[0] = NULL;
 
    // input connected to output
-   Func_input->sibling = Func_output;
+   input->sibling = output;
    // output connect to inputb
-   Func_output->sibling = Func_inputB;
-   Func_output->child[0] = Param_output;
+   output->sibling = inputB;
    // inputb connected to outputgb
-   Func_inputB->sibling = Func_outputB;
+   inputB->sibling = outputB;
    // outputb connected to inputc
-   Func_outputB->sibling = Func_inputC;
-   Func_outputB->child[0] = Param_outputB;
-
+   outputB->sibling = inputC;
    // inputc connected to outputc
-   Func_inputC->sibling = Func_outputC;
+   inputC->sibling = outputC;
    // outputc connected to outnl
-   Func_outputC->sibling = Func_outnl;
-   Func_outputC->child[0] = Param_outputC;
-
+   outputC->sibling = outnl;
    // outnl connected to the sytnax tree nodes
-   Func_outnl->sibling = syntree;
-   Func_outnl->child[0] = NULL;
+   outnl->sibling = syntree;
+   
 
-   return Func_input;
+   return input;
 }
 
 
@@ -215,10 +213,11 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          // tree traverse your left child
          treeTraverse(c0, symtab);
          // deal with your self
-         syntree->size = foffset - 1;
+         syntree->size = foffset;
          // traverse your right child
          treeTraverse(c1, symtab);
          break;
+
       case IfK:
          treeTraverse(c0, symtab);
          syntree->size = foffset -1;
