@@ -37,49 +37,51 @@ TreeNode *loadIOLib(TreeNode *syntree)
    input->type = ExpType::Integer;
 
    inputB = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
-   inputB->lineno = -1;
+   inputB->lineno = -1; // all are -1
    inputB->attr.name = strdup("inputb");
    inputB->type = ExpType::Boolean;
 
    inputC = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
-   inputC->lineno = -1;
+   inputC->lineno = -1; // all are -1
    inputC->attr.name = strdup("inputc");
    inputC->type = ExpType::Char;
 
    Param_output = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   // Param_output->lineno = -1; Not Needed?
+   Param_output->lineno = -1; // all are -1
    Param_output->attr.name = strdup("*dummy*");
    Param_output->type = ExpType::Integer;
 
    Param_output_b = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   // Param_outputB->lineno = -1; Not Needed?
+   Param_outputB->lineno = -1; // all are -1
    Param_output_b->attr.name = strdup("*dummy*");
    Param_output_b->type = ExpType::Boolean;
 
    Param_output_c = newDeclNode(DeclKind::ParamK, ExpType::Void);
-    // Param_outputC->lineno = -1; Not Needed?
+   Param_outputC->lineno = -1; // all are -1
    Param_output_c->attr.name = strdup("*dummy*");
    Param_output_c->type = ExpType::Char;
 
    output = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   output->lineno = -1;
+   output->lineno = -1; // all are -1
    output->attr.name = strdup("output");
    output->type = ExpType::Integer;
 
    outputB = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   outputB->lineno = -1;
+   outputB->lineno = -1; // all are -1
    outputB->attr.name = strdup("outputb");
    outputB->type = ExpType::Void;
+   // child node as seen in slides
    outputB->child[0] = Param_outputB;
 
    outputC = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   outputC->lineno = -1;
+   outputC->lineno = -1; // all are -1
    outputC->attr.name = strdup("outputc");
    outputC->type = ExpType::Void;
+   // child node as seen in slides
    outputC->child[0] = Param_outputC;
 
    Func_outnl = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   Func_outnl->lineno = -1;
+   Func_outnl->lineno = -1; // all are -1
    Func_outnl->attr.name = strdup("outnl");
    Func_outnl->type = ExpType::Void;
    outnl->child[0] = NULL;
@@ -109,6 +111,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
    // if the syntree is empty, do nothing
    if (syntree != nullptr)
    {
+      treeTraverse(syntree->child[0], symtab);
       // check the left node kind
       switch(syntree->nodekind)
       {
