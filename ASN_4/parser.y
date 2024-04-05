@@ -528,7 +528,7 @@ int main(int argc, char **argv)
    bool debugSymTab = false; 
    static int globalOffset = 0;
 
-   // from slides
+   // from slides NOTE: this code doesn't print anything yet..for some reason...
    SymbolTable *symtab;
    symtab = new SymbolTable();
    symtab->debug(debugSymTab);
