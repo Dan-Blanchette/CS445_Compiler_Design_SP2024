@@ -462,12 +462,17 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    TreeNode *sibling = syntaxTree->sibling;
    if (sibling != NULL)
    {
-      // show . . depth
-      showDepth(out, (depth - 1));
-      // again two spaces at the end
-      fprintf(out, "Sibling: %d  ", siblingCount);
+      if(depth)
+      {
+         // show . . depth
+         showDepth(out, (depth - 1));
+         // again two spaces at the end
+         fprintf(out, "Sibling: %d  ", siblingCount);
+      }
       printTreeRecursive(out, sibling, showExpType, showAllocation, depth, (siblingCount + 1));
    }
+   // flush the output buffer maybe?
+   fflush(out);
 }
 
 
