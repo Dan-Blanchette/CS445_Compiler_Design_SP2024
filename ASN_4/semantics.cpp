@@ -140,7 +140,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
       // if there is a for loop, foffset is -2 (according to notes from class)
       if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
       {
-         foffset = -2;
+         foffset -= 2;
       }
 
       treeTraverse(syntree->child[1], symtab);
@@ -255,7 +255,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          // tree traverse your left child
          treeTraverse(c0, symtab);
          // deal with your self
-         syntree->size = foffset - 1;
+         syntree->size = foffset;
          // traverse your right child
          treeTraverse(c1, symtab);
          break;
