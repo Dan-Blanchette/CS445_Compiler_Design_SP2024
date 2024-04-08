@@ -100,6 +100,7 @@ TreeNode *loadIOLib(TreeNode *syntree)
    // outputC->sibling = outnl;
    // // outnl connected to the sytnax tree nodes
    // outnl->sibling = syntree;
+   input->sibling = syntree;
    
 
    return input;
