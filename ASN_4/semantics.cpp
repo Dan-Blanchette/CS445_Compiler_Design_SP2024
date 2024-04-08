@@ -112,11 +112,10 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
 {
    int tempOffset = foffset;
    bool isComp = false;
-   
-   treeTraverse(syntree->child[0], symtab);
    // if the syntree is empty, do nothing
    if (syntree != nullptr)
    {
+      // treeTraverse(syntree->child[0], symtab);
       // check the left node kind
       switch(syntree->nodekind)
       {
@@ -152,10 +151,8 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
          syntree->size = foffset;
       }
 
-      isComp = (compoundCheck(syntree));
-      // could be used to determine new scope in the future
       if (isComp)
-      {  
+      {
          symtab->leave();
       }
 
