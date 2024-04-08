@@ -80,15 +80,18 @@ TreeNode *newDeclNode(DeclKind kind, ExpType type, Token_Data *token, TreeNode *
    // Node Data
    newNode->type = type;
    newNode->nodeNum = nodeIdNum++;
-   newNode->lineno = token->linenum;
    
-   // update the rest of the node data
-   newNode->attr.op = token->tokenclass;
-   newNode->attr.value = token->nvalue;
-   newNode->attr.cvalue = token->cvalue;
-   newNode->attr.name = token->svalue;
-
-   if (token == NULL)
+   
+   if (token != NULL)
+   {
+      newNode->lineno = token->linenum;
+      // update the rest of the node data
+      newNode->attr.op = token->tokenclass;
+      newNode->attr.value = token->nvalue;
+      newNode->attr.cvalue = token->cvalue;
+      newNode->attr.name = token->svalue;
+   }
+   else
    {
       newNode->lineno = -1;
    }
