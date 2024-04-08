@@ -65,6 +65,7 @@ TreeNode *loadIOLib(TreeNode *syntree)
    output->lineno = -1; // all are -1
    output->attr.name = strdup("output");
    output->type = ExpType::Void;
+   output->child[0] = Param_output;
 
    outputB = newDeclNode(DeclKind::FuncK, ExpType::Void);
    outputB->lineno = -1; // all are -1
