@@ -31,10 +31,10 @@ TreeNode *loadIOLib(TreeNode *syntree)
    TreeNode *Param_output, *Param_output_b, *Param_output_c; 
    TreeNode *outnl;
 
-   // input = newDeclNode(DeclKind::FuncK, ExpType::Integer);
-   // input->lineno = -1; // all are -1
-   // input->attr.name = strdup("input");
-   // input->type = ExpType::Integer;
+   input = newDeclNode(DeclKind::FuncK, ExpType::Integer);
+   input->lineno = -1; // all are -1
+   input->attr.name = strdup("input");
+   input->type = ExpType::Integer;
 
    // inputB = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
    // inputB->lineno = -1; // all are -1
