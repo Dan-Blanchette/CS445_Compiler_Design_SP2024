@@ -49,22 +49,22 @@ TreeNode *loadIOLib(TreeNode *syntree)
    Param_output = newDeclNode(DeclKind::ParamK, ExpType::Void);
    Param_output->lineno = -1; // all are -1
    Param_output->attr.name = strdup("*dummy*");
-   Param_output->type = ExpType::Integer;
+   Param_output->type = ExpType::Void;
 
    Param_output_b = newDeclNode(DeclKind::ParamK, ExpType::Void);
    Param_output_b->lineno = -1; // all are -1
    Param_output_b->attr.name = strdup("*dummy*");
-   Param_output_b->type = ExpType::Boolean;
+   Param_output_b->type = ExpType::Void;
 
    Param_output_c = newDeclNode(DeclKind::ParamK, ExpType::Void);
    Param_output_c->lineno = -1; // all are -1
    Param_output_c->attr.name = strdup("*dummy*");
-   Param_output_c->type = ExpType::Char;
+   Param_output_c->type = ExpType::Void;
 
    output = newDeclNode(DeclKind::FuncK, ExpType::Void);
    output->lineno = -1; // all are -1
    output->attr.name = strdup("output");
-   output->type = ExpType::Integer;
+   output->type = ExpType::Void;
 
    outputB = newDeclNode(DeclKind::FuncK, ExpType::Void);
    outputB->lineno = -1; // all are -1
