@@ -151,6 +151,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          foffset = -1;
          insertCheck(syntree, symtab);
          symtab->enter(syntree->attr.name);
+
          treeTraverse(c0, symtab);
          syntree->varKind = Global;
          syntree->size = foffset - 1;
@@ -251,7 +252,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          syntree->size = foffset;
          break;
       default:
-         printf("unknow kind.stmt");
+         printf("unknown kind.stmt");
    }
 }
 
@@ -264,8 +265,8 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
    switch(syntree->kind.exp)
    {
       case OpK:
-         treeTraverse(c0, symtab);
-         treeTraverse(c1, symtab);
+         // treeTraverse(c0, symtab);
+         // treeTraverse(c1, symtab);
       case AssignK:
          treeTraverse(c0, symtab);
          treeTraverse(c1, symtab);
@@ -291,10 +292,10 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          {
             temp->isUsed = true;
             syntree->type = temp->type;
-            // syntree->isArray = temp->isArray;
-            // syntree->isStatic = temp->isStatic;
-            // syntree->varKind = temp->varKind;
-            // syntree->offset = temp->offset;
+            syntree->isArray = temp->isArray;
+            syntree->isStatic = temp->isStatic;
+            syntree->varKind = temp->varKind;
+            syntree->offset = temp->offset;
             syntree->size = temp->size;
          }
          else
