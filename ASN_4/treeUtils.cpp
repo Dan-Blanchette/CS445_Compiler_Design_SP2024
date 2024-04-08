@@ -173,7 +173,7 @@ char *varkToStr(VarKind varK)
    }
    else
    {
-      strToReturn = (char *)"None";
+      // strToReturn = (char *)"None";
    }
          
    sprintf(varBuff, "%s", strToReturn);
