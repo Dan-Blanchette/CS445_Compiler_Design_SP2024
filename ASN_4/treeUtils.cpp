@@ -155,7 +155,7 @@ char *varkToStr(VarKind varK)
 {
    char *strToReturn;
    // debug
-   printf("\nInside vark2Str\n");
+   // printf("Inside vark2Str\n");
    if (varK == VarKind::Global)
    {   
       strToReturn = (char *)"Global";
@@ -469,7 +469,7 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
       printTreeRecursive(out, sibling, showExpType, showAllocation, depth, (siblingCount + 1));
    }
    // flush the output buffer maybe?
-   fflush(out);
+   // fflush(out);
 }
 
 
