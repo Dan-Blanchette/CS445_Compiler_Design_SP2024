@@ -132,7 +132,14 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
             break;
          
          default:
-            printf("unknown nodekind\n");
+            if( syntree->sibling != nullptr)
+            {
+               treeTraverse(syntree->sibling, symtab);
+            }
+            else
+            {
+               printf("unknown nodekind\n");
+            }
             break;
       } 
       // end switch
