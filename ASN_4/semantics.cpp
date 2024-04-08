@@ -113,7 +113,6 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
    int tempOffset = foffset;
    bool isComp = false;
    
-   treeTraverse(syntree->child[0], symtab);
    // if the syntree is empty, do nothing
    if (syntree != nullptr)
    {
