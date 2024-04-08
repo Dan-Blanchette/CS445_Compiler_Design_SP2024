@@ -155,7 +155,7 @@ char *varkToStr(VarKind varK)
 {
    char *strToReturn;
    // debug
-   printf("Inside vark2Str\n");
+   printf("\nInside vark2Str\n");
    if (varK == VarKind::Global)
    {   
       strToReturn = (char *)"Global";
