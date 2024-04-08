@@ -132,14 +132,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
             break;
          
          default:
-            if( syntree->sibling != nullptr)
-            {
-               treeTraverse(syntree->sibling, symtab);
-            }
-            else
-            {
-               printf("unknown nodekind\n");
-            }
+            printf("unknown nodekind\n");
             break;
       } 
       // end switch
@@ -171,7 +164,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
          // not sure if this is needed
          foffset = tempOffset;
       }
-
+      // Be sure to traverse the siblings
       treeTraverse(syntree->sibling, symtab);
 
       if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
