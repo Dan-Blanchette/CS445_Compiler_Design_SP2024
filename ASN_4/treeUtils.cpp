@@ -154,7 +154,8 @@ char varBuff[200];
 char *varkToStr(VarKind varK)
 {
    char *strToReturn;
-
+   // debug
+   printf("Inside vark2Str\n");
    if (varK == VarKind::Global)
    {   
       strToReturn = (char *)"Global";
