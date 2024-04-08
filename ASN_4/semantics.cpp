@@ -113,7 +113,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
    // if the syntree is empty, do nothing
    if (syntree != nullptr)
    {
-      treeTraverse(syntree->child[0], symtab);
+      // treeTraverse(syntree->child[0], symtab);
       // check the left node kind
       switch(syntree->nodekind)
       {
@@ -130,7 +130,10 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
             break;
          
          default:
-            treeTraverse(syntree->sibling, symtab);
+            if (syntree->sibling != nullptr)
+            {
+               treeTraverse(syntree->sibling, symtab);
+            }
             break;
       }
    // end switch
