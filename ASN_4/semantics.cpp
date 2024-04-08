@@ -31,75 +31,75 @@ TreeNode *loadIOLib(TreeNode *syntree)
    TreeNode *Param_output, *Param_output_b, *Param_output_c; 
    TreeNode *outnl;
 
-   input = newDeclNode(DeclKind::FuncK, ExpType::Integer);
-   input->lineno = -1; // all are -1
-   input->attr.name = strdup("input");
-   input->type = ExpType::Integer;
+   // input = newDeclNode(DeclKind::FuncK, ExpType::Integer);
+   // input->lineno = -1; // all are -1
+   // input->attr.name = strdup("input");
+   // input->type = ExpType::Integer;
 
-   inputB = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
-   inputB->lineno = -1; // all are -1
-   inputB->attr.name = strdup("inputb");
-   inputB->type = ExpType::Boolean;
+   // inputB = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
+   // inputB->lineno = -1; // all are -1
+   // inputB->attr.name = strdup("inputb");
+   // inputB->type = ExpType::Boolean;
 
-   inputC = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
-   inputC->lineno = -1; // all are -1
-   inputC->attr.name = strdup("inputc");
-   inputC->type = ExpType::Char;
+   // inputC = newDeclNode(DeclKind::FuncK, ExpType::Boolean);
+   // inputC->lineno = -1; // all are -1
+   // inputC->attr.name = strdup("inputc");
+   // inputC->type = ExpType::Char;
 
-   Param_output = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   Param_output->lineno = -1; // all are -1
-   Param_output->attr.name = strdup("*dummy*");
-   Param_output->type = ExpType::Integer;
+   // Param_output = newDeclNode(DeclKind::ParamK, ExpType::Void);
+   // Param_output->lineno = -1; // all are -1
+   // Param_output->attr.name = strdup("*dummy*");
+   // Param_output->type = ExpType::Integer;
 
-   Param_output_b = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   Param_output_b->lineno = -1; // all are -1
-   Param_output_b->attr.name = strdup("*dummy*");
-   Param_output_b->type = ExpType::Boolean;
+   // Param_output_b = newDeclNode(DeclKind::ParamK, ExpType::Void);
+   // Param_output_b->lineno = -1; // all are -1
+   // Param_output_b->attr.name = strdup("*dummy*");
+   // Param_output_b->type = ExpType::Boolean;
 
-   Param_output_c = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   Param_output_c->lineno = -1; // all are -1
-   Param_output_c->attr.name = strdup("*dummy*");
-   Param_output_c->type = ExpType::Char;
+   // Param_output_c = newDeclNode(DeclKind::ParamK, ExpType::Void);
+   // Param_output_c->lineno = -1; // all are -1
+   // Param_output_c->attr.name = strdup("*dummy*");
+   // Param_output_c->type = ExpType::Char;
 
-   output = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   output->lineno = -1; // all are -1
-   output->attr.name = strdup("output");
-   output->type = ExpType::Integer;
+   // output = newDeclNode(DeclKind::FuncK, ExpType::Void);
+   // output->lineno = -1; // all are -1
+   // output->attr.name = strdup("output");
+   // output->type = ExpType::Integer;
 
-   outputB = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   outputB->lineno = -1; // all are -1
-   outputB->attr.name = strdup("outputb");
-   outputB->type = ExpType::Void;
-   // child node as seen in slides
-   outputB->child[0] = Param_output_b;
+   // outputB = newDeclNode(DeclKind::FuncK, ExpType::Void);
+   // outputB->lineno = -1; // all are -1
+   // outputB->attr.name = strdup("outputb");
+   // outputB->type = ExpType::Void;
+   // // child node as seen in slides
+   // outputB->child[0] = Param_output_b;
 
-   outputC = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   outputC->lineno = -1; // all are -1
-   outputC->attr.name = strdup("outputc");
-   outputC->type = ExpType::Void;
-   // child node as seen in slides
-   outputC->child[0] = Param_output_c;
+   // outputC = newDeclNode(DeclKind::FuncK, ExpType::Void);
+   // outputC->lineno = -1; // all are -1
+   // outputC->attr.name = strdup("outputc");
+   // outputC->type = ExpType::Void;
+   // // child node as seen in slides
+   // outputC->child[0] = Param_output_c;
 
-   outnl = newDeclNode(DeclKind::FuncK, ExpType::Void);
-   outnl->lineno = -1; // all are -1
-   outnl->attr.name = strdup("outnl");
-   outnl->type = ExpType::Void;
-   outnl->child[0] = NULL;
+   // outnl = newDeclNode(DeclKind::FuncK, ExpType::Void);
+   // outnl->lineno = -1; // all are -1
+   // outnl->attr.name = strdup("outnl");
+   // outnl->type = ExpType::Void;
+   // outnl->child[0] = NULL;
 
-   // input connected to output
-   input->sibling = output;
-   // output connect to inputb
-   output->sibling = inputB;
-   // inputb connected to outputgb
-   inputB->sibling = outputB;
-   // outputb connected to inputc
-   outputB->sibling = inputC;
-   // inputc connected to outputc
-   inputC->sibling = outputC;
-   // outputc connected to outnl
-   outputC->sibling = outnl;
-   // outnl connected to the sytnax tree nodes
-   outnl->sibling = syntree;
+   // // input connected to output
+   // input->sibling = output;
+   // // output connect to inputb
+   // output->sibling = inputB;
+   // // inputb connected to outputgb
+   // inputB->sibling = outputB;
+   // // outputb connected to inputc
+   // outputB->sibling = inputC;
+   // // inputc connected to outputc
+   // inputC->sibling = outputC;
+   // // outputc connected to outnl
+   // outputC->sibling = outnl;
+   // // outnl connected to the sytnax tree nodes
+   // outnl->sibling = syntree;
    
 
    return input;
