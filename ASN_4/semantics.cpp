@@ -19,7 +19,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
     )
 {
    syntree = loadIOLib(syntree);
-   globalOffset = goffset;
+   // globalOffset = goffset;
    treeTraverse(syntree, symtabX);
    return syntree;
 }
