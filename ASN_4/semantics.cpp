@@ -110,6 +110,8 @@ TreeNode *loadIOLib(TreeNode *syntree)
 
 void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
 {
+   int tempOffset = foffset;
+   bool isComp = false;
    // if the syntree is empty, do nothing
    if (syntree != nullptr)
    {
@@ -130,14 +132,45 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
             break;
          
          default:
-            if (syntree->sibling != nullptr)
-            {
-               treeTraverse(syntree->sibling, symtab);
-            }
+            printf("unknown nodekind\n");
             break;
+      } 
+      // end switch
+
+      // if there is a for loop, foffset is -2 (according to notes from class)
+      if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
+      {
+         foffset = -2;
       }
-   // end switch
+
+      treeTraverse(syntree->child[1], symtab);
+      treeTraverse(syntree->child[2], symtab);
+
+      if (syntree->nodekind == StmtK && current->kind.stmt == CompoundK)
+      {
+         syntree->size = foffset;
+         // not sure if this is needed
+         foffset = tempOffset;
+      }
+
+      if (syntree->nodekind == StmtK && current->kind.stmt == ForK)
+      {
+         current->size = foffset;
+      }
+
+      if (isComp)
+      {
+         symtab->leave();
+      }
+
+      treeTraverse(syntree->sibling, symtab);
+
+      if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
+      {
+         foffset = tempOffset;
+      }
    }
+   return;
 }
 
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
