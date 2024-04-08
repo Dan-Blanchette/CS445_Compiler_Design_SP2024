@@ -146,13 +146,6 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
       treeTraverse(syntree->child[1], symtab);
       treeTraverse(syntree->child[2], symtab);
 
-      if (syntree->nodekind == StmtK && syntree->kind.stmt == CompoundK)
-      {
-         syntree->size = foffset;
-         // not sure if this is needed
-         foffset = tempOffset;
-      }
-
       if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
       {
          syntree->size = foffset;
@@ -161,6 +154,13 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
       if (isComp)
       {
          symtab->leave();
+      }
+
+      if (syntree->nodekind == StmtK && syntree->kind.stmt == CompoundK)
+      {
+         syntree->size = foffset;
+         // not sure if this is needed
+         foffset = tempOffset;
       }
 
       treeTraverse(syntree->sibling, symtab);
@@ -255,7 +255,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          // tree traverse your left child
          treeTraverse(c0, symtab);
          // deal with your self
-         syntree->size = foffset;
+         syntree->size = foffset - 1;
          // traverse your right child
          treeTraverse(c1, symtab);
          break;
