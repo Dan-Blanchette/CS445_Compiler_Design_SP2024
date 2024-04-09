@@ -203,11 +203,11 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          break;
 
       case VarK:
-         // update VarK See slides about ParamK and Vark
+         // printf("VarK");
          if(c0 != NULL)
          {
             syntree->isAssigned = true;
-            syntree->varKind = LocalStatic;
+            syntree->varKind = Local;
             treeTraverse(c0, symtab);
          }
          // no break statement needed here
@@ -230,7 +230,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
             else
             {
                syntree->varKind = Local;
-               syntree->offset = foffset;
+               syntree->offset = foffset - 1;
                foffset -= syntree->size;
             }
          }
