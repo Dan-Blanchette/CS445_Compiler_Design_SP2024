@@ -394,7 +394,7 @@ bool compoundCheck(TreeNode *syntree)
       return false;
    }
 
-   if (syntree->kind.decl == FuncK && syntree->nodekind == DeclK)
+   if (syntree->nodekind == DeclK && syntree->kind.decl == FuncK)
    {
       foffset = -2;
       return true;
