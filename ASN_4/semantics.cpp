@@ -8,7 +8,15 @@
 static int foffset;
 static int goffset;
 
-// not sure if this is needed
+// Progress Apr 8th NOTE:
+/* 
+   I'm working on hunting down an incorrect size for the foffset
+   program shows -1 as part of the file output diffs when it should be -3.
+   There must be a place I'm missing adding -2 to the value but I'm not sure
+   where.
+*/
+
+// not sure if this is needed yet
 // static bool isNewScope = true;
 
 TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an annotated syntax tree
