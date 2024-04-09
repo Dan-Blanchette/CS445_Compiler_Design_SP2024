@@ -123,8 +123,6 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
    // if the syntree is empty, do nothing
    if (syntree != nullptr)
    {
-      // treeTraverse(syntree->child[0], symtab);
-      // check the left node kind
       switch(syntree->nodekind)
       {
          case NodeKind::DeclK:
@@ -170,6 +168,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
          // not sure if this is needed
          foffset = tempOffset;
       }
+
       // Be sure to traverse the siblings
       treeTraverse(syntree->sibling, symtab);
 
@@ -204,11 +203,11 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          break;
 
       case VarK:
-         // printf("VarK");
+         // update VarK See slides about ParamK and Vark
          if(c0 != NULL)
          {
             syntree->isAssigned = true;
-            syntree->varKind = Local;
+            syntree->varKind = LocalStatic;
             treeTraverse(c0, symtab);
          }
          // no break statement needed here
@@ -231,7 +230,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
             else
             {
                syntree->varKind = Local;
-               syntree->offset = foffset - 1;
+               syntree->offset = foffset;
                foffset -= syntree->size;
             }
          }
@@ -239,11 +238,12 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          {
             syntree->varKind = Parameter;
          }
-         else if(syntree->isArray)
-         {
-            syntree->offset--;
-         }
-         break;
+         // for VarK only!
+         // else if(syntree->isArray)
+         // {
+         //    syntree->offset--;
+         // }
+         // break;
 
       default:
          printf("Unknown kind.decl");         
@@ -358,7 +358,7 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          }
          break;
       case IdK:
-         if (temp = (TreeNode *)(symtab->lookup(syntree->attr.name)))
+         if ((temp = (TreeNode *)(symtab->lookup(syntree->attr.name))))
          {
             temp->isUsed = true;
             syntree->type = temp->type;
