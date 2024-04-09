@@ -238,12 +238,11 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          {
             syntree->varKind = Parameter;
          }
-         // for VarK only!
-         // else if(syntree->isArray)
-         // {
-         //    syntree->offset--;
-         // }
-         // break;
+         else if(syntree->isArray)
+         {
+            syntree->offset--;
+         }
+         break;
 
       default:
          printf("Unknown kind.decl");         
