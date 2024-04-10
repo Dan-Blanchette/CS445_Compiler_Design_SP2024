@@ -295,9 +295,9 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
       case WhileK:
          break;
       case ForK:
-         int newScopeOffset;
+         int newScopeOffset2;
          symtab->enter((char *)"For");
-         newScopeOffset = foffset;
+         newScopeOffset2 = foffset;
          // tree traverse your left child
          treeTraverse(c0, symtab);
          foffset -= 2;
@@ -307,7 +307,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          treeTraverse(c1, symtab);
          // traverse child 2
          treeTraverse(c2, symtab);
-         foffset = newScopeOffset;
+         foffset = newScopeOffset2;
          symtab->leave();
          break;
       default:
