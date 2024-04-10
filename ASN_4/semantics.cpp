@@ -289,7 +289,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
             newScope = true;
             treeTraverse(c0, symtab);
             syntree->size = foffset;
-            treeTraverse(c1, syntab);
+            treeTraverse(c1, symtab);
          }
          break;
 
