@@ -321,9 +321,9 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
                   syntree->attr.op == LEQ || syntree->attr.op == GEQ ||
                   syntree->attr.op == NOT || syntree->attr.op == int('<') ||
                   syntree->attr.op == int('>') || syntree->attr.op == EQ ||
-                  syntree->attr.op == NEQ || syntree->attr.op == int('==') ||
-                  syntree->attr.op == int('!=') || syntree->attr.op == int('<=') || 
-                  syntree->attr.op == int('>='))
+                  syntree->attr.op == NEQ || syntree->attr.op == stoi("==") ||
+                  syntree->attr.op == stoi("!=") || syntree->attr.op == stoi("<=") || 
+                  syntree->attr.op == stoi(">="))
          {
             syntree->type = ExpType::Boolean;
          }
