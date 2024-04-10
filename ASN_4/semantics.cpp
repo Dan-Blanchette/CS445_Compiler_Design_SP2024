@@ -232,7 +232,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
             }
             else
             {
-               printf("In ParamK else %d\n", foffset);
+               printf("In ParamK else %d %d\n", foffset, syntree->size);
                syntree->varKind = Local;
                syntree->offset = foffset;
                foffset -= syntree->size;
