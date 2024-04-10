@@ -8,6 +8,7 @@
 // memory offsets: ensure counts are updated until end of runtime
 static int foffset;
 static int goffset;
+static bool newScope = true;
 
 // Progress Apr 8th NOTE:
 /* 
@@ -181,6 +182,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
    return;
 }
 
+
 void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
 {
    // debug statement here
@@ -191,17 +193,19 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
    switch(syntree->kind.decl)
    {
       case FuncK:
+         newScope = false;
          // debug goes here
          foffset = -2;
          insertCheck(syntree, symtab);
          symtab->enter(syntree->attr.name);
-         printf("foffset before %d\n", foffset);
+         // printf("foffset before %d\n", foffset);
          treeTraverse(c0, symtab);
-         printf("foffset after %d\n", foffset);
+         // printf("foffset after %d\n", foffset);
          syntree->varKind = Global;
          syntree->size = foffset;
          treeTraverse(c1, symtab);
          symtab->leave();
+         newScope = true;
          break;
 
       case VarK:
@@ -237,7 +241,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
                syntree->varKind = Local;
                syntree->offset = foffset;
                foffset -= syntree->size;
-               printf("offset inside: %d\n", foffset);
+               // printf("offset inside: %d\n", foffset);
             }
          }
          if(syntree->kind.decl == ParamK)
@@ -262,20 +266,31 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
    c1 = syntree->child[1];
    c2 = syntree->child[2];
 
+   if (syntree->kind.stmt != CompoundK) newScope = true;
    switch(syntree->kind.stmt)
    {
       case CompoundK:
-         int newScopeOffset;
-         symtab->enter((char *)"compound statement");
-         newScopeOffset = foffset;
-         // tree traverse your left child
-         treeTraverse(c0, symtab);
-         // deal with your self
-         syntree->size = foffset;
-         // traverse your right child
-         treeTraverse(c1, symtab);
-         foffset = newScopeOffset;
-         symtab->leave();
+         if (newScope)
+         {
+            int newScopeOffset;
+            symtab->enter((char *)"compound statement");
+            newScopeOffset = foffset;
+            // tree traverse your left child
+            treeTraverse(c0, symtab);
+            // deal with your self
+            syntree->size = foffset;
+            // traverse your right child
+            treeTraverse(c1, symtab);
+            foffset = newScopeOffset;
+            symtab->leave();
+         }
+         else
+         {
+            newScope = true;
+            treeTraverse(c0, symtab);
+            syntree->size = foffset;
+            treeTraverse(c1, syntab);
+         }
          break;
 
       case IfK:
