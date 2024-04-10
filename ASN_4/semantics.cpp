@@ -261,7 +261,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
    {
       case CompoundK:
          int newScopeOffset;
-         symtab->enter(char *)"compound statement";
+         symtab->enter((char *)"compound statement");
          newScopeOffset = foffset;
          // tree traverse your left child
          treeTraverse(c0, symtab);
