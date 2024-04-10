@@ -213,23 +213,26 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          }
          // no break statement needed here
       case ParamK:
-
+         printf("In ParamK\n");
          if (insertCheck(syntree, symtab))
          {
             if (symtab->depth() == 1)
             {
+               printf("In ParamK depth check %d\n", goffset);
                syntree->varKind = Global;
                syntree->offset = goffset;
                goffset -= syntree->size;
             }
             else if(syntree->isStatic)
             {
+               printf("In ParamK is static %d\n", goffset);
                syntree->varKind = LocalStatic;
                syntree->offset = goffset;
                goffset -= syntree->size;
             }
             else
             {
+               printf("In ParamK else %d\n", foffset);
                syntree->varKind = Local;
                syntree->offset = foffset;
                foffset -= syntree->size;
