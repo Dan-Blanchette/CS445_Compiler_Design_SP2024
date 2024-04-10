@@ -192,13 +192,13 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
    {
       case FuncK:
          // debug goes here
-         foffset = -1;
+         foffset = -2;
          insertCheck(syntree, symtab);
          symtab->enter(syntree->attr.name);
 
          treeTraverse(c0, symtab);
          syntree->varKind = Global;
-         syntree->size = foffset - 1;
+         syntree->size = foffset;
          treeTraverse(c1, symtab);
          symtab->leave();
          break;
@@ -213,26 +213,26 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          }
          // no break statement needed here
       case ParamK:
-         printf("In ParamK\n");
+         // printf("In ParamK\n");
          if (insertCheck(syntree, symtab))
          {
             if (symtab->depth() == 1)
             {
-               printf("In ParamK depth check %d\n", goffset);
+               // printf("In ParamK depth check %d\n", goffset);
                syntree->varKind = Global;
                syntree->offset = goffset;
                goffset -= syntree->size;
             }
             else if(syntree->isStatic)
             {
-               printf("In ParamK is static %d\n", goffset);
+               // printf("In ParamK is static %d\n", goffset);
                syntree->varKind = LocalStatic;
                syntree->offset = goffset;
                goffset -= syntree->size;
             }
             else
             {
-               printf("In ParamK else %d %d\n", foffset, syntree->size);
+               // printf("In ParamK else %d %d\n", foffset, syntree->size);
                syntree->varKind = Local;
                syntree->offset = foffset;
                foffset -= syntree->size;
@@ -295,13 +295,20 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
       case WhileK:
          break;
       case ForK:
+         int newScopeOffset;
+         symtab->enter((char *)"For");
+         newScopeOffset = foffset;
+         // tree traverse your left child
          treeTraverse(c0, symtab);
-         foffset--;
-         treeTraverse(c1, symtab);
-         foffset--;
-         treeTraverse(c2, symtab);
-         foffset--;
+         foffset -= 2;
+         // deal with your self
          syntree->size = foffset;
+         // traverse your right child
+         treeTraverse(c1, symtab);
+         // traverse child 2
+         treeTraverse(c2, symtab);
+         foffset = newScopeOffset;
+         symtab->leave();
          break;
       default:
          printf("unknown kind.stmt");
