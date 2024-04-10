@@ -260,12 +260,17 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
    switch(syntree->kind.stmt)
    {
       case CompoundK:
+         int newScopeOffset;
+         symtab->enter(char *)"compound statement";
+         newScopeOffset = foffset;
          // tree traverse your left child
          treeTraverse(c0, symtab);
          // deal with your self
          syntree->size = foffset;
          // traverse your right child
          treeTraverse(c1, symtab);
+         foffset = newScopeOffset;
+         symtab->leave();
          break;
 
       case IfK:
