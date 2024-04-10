@@ -263,7 +263,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          // tree traverse your left child
          treeTraverse(c0, symtab);
          // deal with your self
-         syntree->size = foffset - 1;
+         syntree->size = foffset;
          // traverse your right child
          treeTraverse(c1, symtab);
          break;
