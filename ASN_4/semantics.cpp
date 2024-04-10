@@ -1,5 +1,5 @@
 #include "semantics.h"
-#include <string.h>
+#include <string>
 #include "parser.tab.h"
 
 
