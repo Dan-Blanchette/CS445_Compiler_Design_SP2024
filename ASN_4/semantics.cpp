@@ -287,9 +287,9 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          else
          {
             newScope = true;
-            printf("foffset before %d\n", foffset);
+            printf("CompK %s foffset before %d\n", syntree->attr.name, foffset);
             treeTraverse(c0, symtab);
-            printf("foffset after %d\n", foffset);
+            printf("CompK %s foffset after %d\n", syntree->attr.name, foffset);
             syntree->size = foffset;
             treeTraverse(c1, symtab);
          }
