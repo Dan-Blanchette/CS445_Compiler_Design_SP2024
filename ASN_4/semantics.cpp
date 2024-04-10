@@ -236,6 +236,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
                syntree->varKind = Local;
                syntree->offset = foffset;
                foffset -= syntree->size;
+               printf("offset: %d", foffset);
             }
          }
          if(syntree->kind.decl == ParamK)
