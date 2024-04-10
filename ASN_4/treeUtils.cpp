@@ -364,7 +364,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                // it's a string
                if (syntaxTree->isArray)
                {
-                  fprintf(out, " %s", syntaxTree->attr.name);
+                  fprintf(out, " \"%s\"", syntaxTree->attr.name);
                }
                // it's a char
                else
@@ -412,7 +412,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    {
       printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
    } 
-        
+
    fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
 }

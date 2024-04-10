@@ -155,8 +155,8 @@ varDeclInit : varDeclId      {$$ = $1;}
    ;
 
 // rule 9
-varDeclId : ID           {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = false; }
-   | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = true;}
+varDeclId : ID           {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = false; $$->size = 1;}
+   | ID '[' NUMCONST ']' {$$ = newDeclNode(DeclKind::VarK, UndefinedType, $1); $$->isArray = true; $$->size = $3->nvalue + 1;}
    ;
 
 // rule 10
@@ -203,9 +203,9 @@ parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3);}
 // rule 16
 
 parmId : ID    {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); 
-                 $$->isArray = false; $$->isStatic = false;}
+                 $$->isArray = false; $$->isStatic = false; $$->size = 1;}
    | ID '['']' {$$ = newDeclNode(DeclKind::ParamK, ExpType::UndefinedType, $1); 
-                 $$->isArray = true; $$->isStatic = false;}
+                 $$->isArray = true; $$->isStatic = false; $$->size = 1;}
    ;
 
 // rule 17
@@ -218,7 +218,10 @@ stmt : matched {$$ = $1;}
 matched : IF simpleExp THEN matched ELSE matched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
    | WHILE simpleExp DO matched                  {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
    | FOR ID '=' iterRange DO matched             {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6);
-                                                   $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
+                                                   $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);
+                                                   $$->child[0]->attr.name = $2->svalue;
+                                                   $$->child[0]->isArray = false;
+                                                   $$->child[0]->size = 1;}
    | expstmt      {$$ = $1;}
    | compoundstmt {$$ = $1;}
    | returnstmt   {$$ = $1;}
@@ -237,7 +240,10 @@ unmatched : IF simpleExp THEN stmt            {$$ = newStmtNode(StmtKind::IfK, $
    | IF simpleExp THEN matched ELSE unmatched {$$ = newStmtNode(StmtKind::IfK, $1, $2, $4, $6);}
    | WHILE simpleExp DO unmatched             {$$ = newStmtNode(StmtKind::WhileK, $1, $2, $4);}
    | FOR ID '=' iterRange DO unmatched        {$$ = newStmtNode(StmtKind::ForK, $1, nullptr, $4, $6);
-                                                $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);}
+                                                $$->child[0] = newDeclNode(DeclKind::VarK, ExpType::Integer, $2);
+                                                $$->child[0]->attr.name = $2->svalue;
+                                                $$->child[0]->isArray = false;
+                                                $$->child[0]->size = 1;}
    ;
 
 // rule 21
@@ -411,15 +417,18 @@ constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
    | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->type = ExpType::Char; 
    $$->attr.cvalue = $1->cvalue;
-   $$->isArray = false;}
+   $$->isArray = false;
+   $$->size = 1;}
 
    | STRINGCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->type = ExpType::Char;
-   $$->isArray = true; } 
+   $$->isArray = true;
+   $$->size = $1->nvalue + 1;} 
 
    | BOOLCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->type = ExpType::Boolean; 
-   $$->isArray = false; }
+   $$->isArray = false;
+   $$->size = 1; }
    ;
 
 %%
@@ -516,7 +525,7 @@ int main(int argc, char **argv)
    }
 
    initTokenStrings();
-   
+
    if ( optind == argc ) yyparse();
    for (index = optind; index < argc; index++) 
    {

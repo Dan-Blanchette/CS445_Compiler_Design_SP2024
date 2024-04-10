@@ -68,6 +68,9 @@ int setValue(int linenum, int tokenClass, char *svalue) {
             yylval.Token_Data->svalue = strdup(svalue);
             break;
       case STRINGCONST:
+            yylval.Token_Data->nvalue = strlen(svalue) - 2;
+            yylval.Token_Data->svalue = strdup(&svalue[1]);
+            yylval.Token_Data->svalue[yylval.Token_Data->nvalue] = '\0';
       case ADDASS:
       case MULASS:
       case DIVASS:
