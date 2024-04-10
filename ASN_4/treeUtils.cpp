@@ -416,7 +416,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    {
       fprintf(out, " [line: %d]", syntaxTree->lineno);
    }
-   fprintf(out, " [line: %d]", syntaxTree->lineno);
+   // fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
 }
 
