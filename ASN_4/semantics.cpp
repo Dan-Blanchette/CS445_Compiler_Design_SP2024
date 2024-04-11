@@ -262,7 +262,7 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
                syntree->varKind = Local;
                syntree->offset = foffset;
                foffset -= syntree->size;
-               printf("offset inside: %d\n", foffset);
+               // printf("offset inside: %d\n", foffset);
             }
          }
          if(syntree->kind.decl == ParamK)
@@ -308,9 +308,9 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          else
          {
             newScope = true;
-            printf("CompK %s foffset before %d\n", syntree->attr.name, foffset);
+            //printf("CompK %s foffset before %d\n", syntree->attr.name, foffset);
             treeTraverse(c0, symtab);
-            printf("CompK %s foffset after %d\n", syntree->attr.name, foffset);
+           // printf("CompK %s foffset after %d\n", syntree->attr.name, foffset);
             syntree->size = foffset;
             treeTraverse(c1, symtab);
          }
