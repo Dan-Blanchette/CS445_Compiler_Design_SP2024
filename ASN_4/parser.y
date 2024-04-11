@@ -392,7 +392,7 @@ immutable : '(' exp ')' {$$ = $2;}
 // We must also store the string name of the ID in the ExpKind struct
 // as part of the new node's information block.
 
-call : ID '(' args ')' {$$ = newExpNode(ExpKind::CallK, $1, $3); $$->attr.name = $svalue;}
+call : ID '(' args ')' {$$ = newExpNode(ExpKind::CallK, $1, $3); $$->attr.name = $1->svalue;}
    ;
 
 // rule 46
