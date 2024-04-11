@@ -364,7 +364,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                // it's a string
                if (syntaxTree->isArray)
                {
-                  fprintf(out, " \"%s\"", syntaxTree->attr.name);
+                  fprintf(out, " %s", syntaxTree->attr.name);
                }
                // it's a char
                else
@@ -385,11 +385,11 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
             break;
             // End ExpType struct value assignments
          case ExpKind::IdK:
-            fprintf(out, "Id: \"%s\"", syntaxTree->attr.name);
+            fprintf(out, "Id: %s", syntaxTree->attr.name);
             break;
 
          case ExpKind::OpK:
-            fprintf(out, "Op: \"%s\"", syntaxTree->attr.name);
+            fprintf(out, "Op: %s", syntaxTree->attr.name);
             break;
 
          default:
@@ -400,7 +400,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
 
       if (showExpType)
       {
-         fprintf(out, " of \"%s\"", expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         fprintf(out, " of %s", expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
       }      
    }
    else
