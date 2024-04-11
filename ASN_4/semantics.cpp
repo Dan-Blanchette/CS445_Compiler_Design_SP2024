@@ -120,64 +120,85 @@ TreeNode *loadIOLib(TreeNode *syntree)
 
 void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
 {
-   int tempOffset = foffset;
-   bool isComp = false;
-   // if the syntree is empty, do nothing
-   if (syntree != nullptr)
+   if (syntree == NULL) return;
+
+   switch(syntree->nodekind)
    {
-      switch(syntree->nodekind)
-      {
-         case NodeKind::DeclK:
-            treeTraverseDecl(syntree, symtab);
-            break;
+      case NodeKind::DeclK:
+         treeTraverseDecl(syntree, symtab);
+         break;
 
-         case NodeKind::StmtK:
-            treeTraverseStmt(syntree, symtab);
-            break;
+      case NodeKind::StmtK:
+         treeTraverseStmt(syntree, symtab);
+         break;
+      
+      case NodeKind::ExpK:
+         treeTraverseExp(syntree, symtab);
+         break;
+      
+      default:
+         printf("unknown nodekind\n");
+         break;
+   }
+   if(syntree->sibling) treeTraverse(syntree->sibling, symtab);
+   // int tempOffset = foffset;
+   // bool isComp = false;
+   // // if the syntree is empty, do nothing
+   // if (syntree != nullptr)
+   // {
+   //    switch(syntree->nodekind)
+   //    {
+   //       case NodeKind::DeclK:
+   //          treeTraverseDecl(syntree, symtab);
+   //          break;
+
+   //       case NodeKind::StmtK:
+   //          treeTraverseStmt(syntree, symtab);
+   //          break;
          
-         case NodeKind::ExpK:
-            treeTraverseExp(syntree, symtab);
-            break;
+   //       case NodeKind::ExpK:
+   //          treeTraverseExp(syntree, symtab);
+   //          break;
          
-         default:
-            printf("unknown nodekind\n");
-            break;
-      } 
-      // end switch
+   //       default:
+   //          printf("unknown nodekind\n");
+   //          break;
+   //    } 
+   //    // end switch
 
-      // if there is a for loop, foffset is -2 (according to notes from class)
-      if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
-      {
-         foffset -= 2;
-      }
+   //    // if there is a for loop, foffset is -2 (according to notes from class)
+   //    if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
+   //    {
+   //       foffset -= 2;
+   //    }
 
-      treeTraverse(syntree->child[1], symtab);
-      treeTraverse(syntree->child[2], symtab);
+   //    treeTraverse(syntree->child[1], symtab);
+   //    treeTraverse(syntree->child[2], symtab);
 
-      if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
-      {
-         syntree->size = foffset;
-      }
+   //    if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
+   //    {
+   //       syntree->size = foffset;
+   //    }
 
-      if (isComp)
-      {
-         symtab->leave();
-      }
+   //    if (isComp)
+   //    {
+   //       symtab->leave();
+   //    }
 
-      if (syntree->nodekind == StmtK && syntree->kind.stmt == CompoundK)
-      {
-         syntree->size = foffset;
-         // not sure if this is needed
-         foffset = tempOffset;
-      }
+   //    if (syntree->nodekind == StmtK && syntree->kind.stmt == CompoundK)
+   //    {
+   //       syntree->size = foffset;
+   //       // not sure if this is needed
+   //       // foffset = tempOffset;
+   //    }
 
-      // Be sure to traverse the siblings
-      treeTraverse(syntree->sibling, symtab);
+   //    // Be sure to traverse the siblings
+   //    treeTraverse(syntree->sibling, symtab);
 
-      if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
-      {
-         foffset = tempOffset;
-      }
+   //    if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
+   //    {
+   //       foffset = tempOffset;
+   //    }
    }
    return;
 }
