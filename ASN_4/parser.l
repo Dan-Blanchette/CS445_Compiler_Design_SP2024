@@ -67,6 +67,7 @@ int setValue(int linenum, int tokenClass, char *svalue) {
          else
             yylval.Token_Data->svalue = strdup(svalue);
             break;
+            
       case STRINGCONST:
             yylval.Token_Data->nvalue = strlen(svalue) - 2;
             yylval.Token_Data->svalue = strdup(&svalue[1]);
