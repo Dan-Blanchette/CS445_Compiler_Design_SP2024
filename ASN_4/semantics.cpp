@@ -207,26 +207,26 @@ void treeTraverse(TreeNode *currentNode, SymbolTable *symtab)
 }
 
 
-void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
+void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
 {
    // debug statement here
    TreeNode *c0,  *c1, *temp;
-   c0 = syntree->child[0];
-   c1 = syntree->child[1];
+   c0 = currentNode->child[0];
+   c1 = currentNode->child[1];
 
-   switch(syntree->kind.decl)
+   switch(currentNode->kind.decl)
    {
       case FuncK:
          newScope = false;
          // debug goes here
          foffset = -2;
-         insertCheck(syntree, symtab);
-         symtab->enter(syntree->attr.name);
+         insertCheck(currentNode, symtab);
+         symtab->enter(currentNode->attr.name);
          // printf("foffset before %d\n", foffset);
          treeTraverse(c0, symtab);
          // printf("foffset after %d\n", foffset);
-         syntree->varKind = Global;
-         syntree->size = foffset;
+         currentNode->varKind = Global;
+         currentNode->size = foffset;
          treeTraverse(c1, symtab);
          symtab->leave();
          newScope = true;
@@ -236,8 +236,8 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          // printf("VarK");
          if(c0 != NULL)
          {
-            syntree->isAssigned = true;
-            syntree->varKind = Local;
+            currentNode->isAssigned = true;
+            currentNode->varKind = Local;
             treeTraverse(c0, symtab);
          }
          // no break statement needed here
