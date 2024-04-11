@@ -375,9 +375,10 @@ factor : immutable {$$ = $1;}
 // rule 43
 // not sure about part 2 on this one
 mutable : ID {$$ = newExpNode(ExpKind::IdK, $1); 
-         $$->isArray = false;}
+         $$->isArray = false; $$->attr.name = $1->svalue; }
    | ID '[' exp ']' {$$ = newExpNode(ExpKind::OpK, $2, nullptr, $3); 
-         $$->child[0] = newExpNode(ExpKind::IdK, $1);} 
+         $$->child[0] = newExpNode(ExpKind::IdK, $1);
+         $$->child[0] = attr.name = $1->svalue;} 
    ;
 
 // rule 44
@@ -391,7 +392,7 @@ immutable : '(' exp ')' {$$ = $2;}
 // We must also store the string name of the ID in the ExpKind struct
 // as part of the new node's information block.
 
-call : ID '(' args ')' {$$ = newExpNode(ExpKind::CallK, $1, $3);}
+call : ID '(' args ')' {$$ = newExpNode(ExpKind::CallK, $1, $3); $$->attr.name = $svalue;}
    ;
 
 // rule 46
@@ -411,7 +412,8 @@ argList : argList ',' exp {$$ = addSibling($1, $3);}
 // rule 48
 constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->type = ExpType::Integer;
-   $$->isArray = false; 
+   $$->isArray = false;
+   $$->attr.value = $1->nvalue; 
    $$->size = 1;}
 
    | CHARCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
@@ -422,12 +424,14 @@ constant : NUMCONST {$$ = newExpNode(ExpKind::ConstantK, $1);
 
    | STRINGCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->type = ExpType::Char;
+   $$->attr.string = $1->svalue;
    $$->isArray = true;
    $$->size = $1->nvalue + 1;} 
 
    | BOOLCONST {$$ = newExpNode(ExpKind::ConstantK, $1); 
    $$->type = ExpType::Boolean; 
    $$->isArray = false;
+   $$->attr.value = $1->nvalue;
    $$->size = 1; }
    ;
 
