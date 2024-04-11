@@ -199,7 +199,7 @@ void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
    //    {
    //       foffset = tempOffset;
    //    }
-   }
+
    return;
 }
 
