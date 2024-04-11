@@ -9,6 +9,7 @@
 static int foffset;
 static int goffset;
 static bool newScope = true;
+static int varCounter = 0;
 
 // Progress Apr 8th NOTE:
 /* 
@@ -258,6 +259,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
                currentNode->varKind = LocalStatic;
                currentNode->offset = goffset;
                goffset -= currentNode->size;
+
             }
             else
             {
