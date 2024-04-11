@@ -378,7 +378,7 @@ mutable : ID {$$ = newExpNode(ExpKind::IdK, $1);
          $$->isArray = false; $$->attr.name = $1->svalue; }
    | ID '[' exp ']' {$$ = newExpNode(ExpKind::OpK, $2, nullptr, $3); 
          $$->child[0] = newExpNode(ExpKind::IdK, $1);
-         $$->child[0] = attr.name = $1->svalue;} 
+         $$->child[0]->attr.name = $1->svalue;} 
    ;
 
 // rule 44
