@@ -13,9 +13,9 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
 // need to make the 10 new nodes from slide 4 and generate the symbol table with default values?
 TreeNode *loadIOLib(TreeNode *syntree);
 
-void treeTraverse(TreeNode* syntree, SymbolTable *symtab);
-void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab);
-void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab);
-void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab);
-bool insertCheck(TreeNode *syntree, SymbolTable *symtab);
-bool compoundCheck(TreeNode *syntree);
+void treeTraverse(TreeNode* currentNode, SymbolTable *symtab);
+void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab);
+void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab);
+void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab);
+bool insertCheck(TreeNode *currentNode, SymbolTable *symtab);
+bool compoundCheck(TreeNode *currentNode);

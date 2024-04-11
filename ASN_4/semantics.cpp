@@ -118,29 +118,32 @@ TreeNode *loadIOLib(TreeNode *syntree)
 }
 
 
-void treeTraverse(TreeNode *syntree, SymbolTable *symtab)
+void treeTraverse(TreeNode *currentNode, SymbolTable *symtab)
 {
-   if (syntree == NULL) return;
+   if (currentNode == NULL) return;
 
-   switch(syntree->nodekind)
+   switch(currentNode->nodekind)
    {
       case NodeKind::DeclK:
-         treeTraverseDecl(syntree, symtab);
+         treeTraverseDecl(currentNode, symtab);
          break;
 
       case NodeKind::StmtK:
-         treeTraverseStmt(syntree, symtab);
+         treeTraverseStmt(currentNode, symtab);
          break;
       
       case NodeKind::ExpK:
-         treeTraverseExp(syntree, symtab);
+         treeTraverseExp(currentNode, symtab);
          break;
       
       default:
          printf("unknown nodekind\n");
          break;
    }
-   if(syntree->sibling) treeTraverse(syntree->sibling, symtab);
+   if(currentNode->sibling) 
+   {
+      treeTraverse(currentNode->sibling, symtab);
+   }
    // int tempOffset = foffset;
    // bool isComp = false;
    // // if the syntree is empty, do nothing
@@ -240,38 +243,38 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
          // no break statement needed here
       case ParamK:
          // printf("In ParamK\n");
-         if (insertCheck(syntree, symtab))
+         if (insertCheck(currentNode, symtab))
          {
             if (symtab->depth() == 1)
             {
                // printf("In ParamK depth check %d\n", goffset);
-               syntree->varKind = Global;
-               syntree->offset = goffset;
-               goffset -= syntree->size;
+               currentNode->varKind = Global;
+               currentNode->offset = goffset;
+               goffset -= currentNode->size;
             }
-            else if(syntree->isStatic)
+            else if(currentNode->isStatic)
             {
                // printf("In ParamK is static %d\n", goffset);
-               syntree->varKind = LocalStatic;
-               syntree->offset = goffset;
-               goffset -= syntree->size;
+               currentNode->varKind = LocalStatic;
+               currentNode->offset = goffset;
+               goffset -= currentNode->size;
             }
             else
             {
-               // printf("In ParamK else %d %d\n", foffset, syntree->size);
-               syntree->varKind = Local;
-               syntree->offset = foffset;
-               foffset -= syntree->size;
+               // printf("In ParamK else %d %d\n", foffset, currentNode->size);
+               currentNode->varKind = Local;
+               currentNode->offset = foffset;
+               foffset -= currentNode->size;
                // printf("offset inside: %d\n", foffset);
             }
          }
-         if(syntree->kind.decl == ParamK)
+         if(currentNode->kind.decl == ParamK)
          {
-            syntree->varKind = Parameter;
+            currentNode->varKind = Parameter;
          }
-         else if(syntree->isArray)
+         else if(currentNode->isArray)
          {
-            syntree->offset--;
+            currentNode->offset--;
          }
          break;
 
@@ -280,15 +283,15 @@ void treeTraverseDecl(TreeNode *syntree, SymbolTable *symtab)
    }   
 }
 
-void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
+void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
 {
    TreeNode *c0,  *c1, *c2, *temp;
-   c0 = syntree->child[0];
-   c1 = syntree->child[1];
-   c2 = syntree->child[2];
+   c0 = currentNode->child[0];
+   c1 = currentNode->child[1];
+   c2 = currentNode->child[2];
 
-   if (syntree->kind.stmt != CompoundK) newScope = true;
-   switch(syntree->kind.stmt)
+   if (currentNode->kind.stmt != CompoundK) newScope = true;
+   switch(currentNode->kind.stmt)
    {
       case CompoundK:
          if (newScope)
@@ -299,7 +302,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
             // tree traverse your left child
             treeTraverse(c0, symtab);
             // deal with your self
-            syntree->size = foffset;
+            currentNode->size = foffset;
             // traverse your right child
             treeTraverse(c1, symtab);
             foffset = newScopeOffset;
@@ -308,17 +311,17 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          else
          {
             newScope = true;
-            //printf("CompK %s foffset before %d\n", syntree->attr.name, foffset);
+            //printf("CompK %s foffset before %d\n", currentNode->attr.name, foffset);
             treeTraverse(c0, symtab);
-           // printf("CompK %s foffset after %d\n", syntree->attr.name, foffset);
-            syntree->size = foffset;
+           // printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
+            currentNode->size = foffset;
             treeTraverse(c1, symtab);
          }
          break;
 
       case IfK:
          treeTraverse(c0, symtab);
-         syntree->size = foffset - 1;
+         currentNode->size = foffset - 1;
          treeTraverse(c1, symtab);
          treeTraverse(c2, symtab);
          break;
@@ -342,7 +345,7 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
          treeTraverse(c0, symtab);
          foffset -= 2;
          // deal with your self
-         syntree->size = foffset;
+         currentNode->size = foffset;
          // traverse your right child
          treeTraverse(c1, symtab);
          // traverse child 2
@@ -355,13 +358,13 @@ void treeTraverseStmt(TreeNode *syntree, SymbolTable *symtab)
    }
 }
 
-void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
+void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
 {
    TreeNode *c0,  *c1, *temp;
-   c0 = syntree->child[0];
-   c1 = syntree->child[1];
+   c0 = currentNode->child[0];
+   c1 = currentNode->child[1];
 
-   switch(syntree->kind.exp)
+   switch(currentNode->kind.exp)
    {
       case OpK:
          // treeTraverse(c0, symtab);
@@ -369,33 +372,33 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
       case AssignK:
          treeTraverse(c0, symtab);
          treeTraverse(c1, symtab);
-         if(syntree->attr.op == int('+') || syntree->attr.op == int('['))
+         if(currentNode->attr.op == int('+') || currentNode->attr.op == int('['))
          {
-            syntree->type = c0->type;
+            currentNode->type = c0->type;
          }
-         else if(syntree->attr.op == AND || syntree->attr.op == OR || 
-                  syntree->attr.op == LEQ || syntree->attr.op == GEQ ||
-                  syntree->attr.op == NOT || syntree->attr.op == int('<') ||
-                  syntree->attr.op == int('>') || syntree->attr.op == EQ ||
-                  syntree->attr.op == NEQ)
+         else if(currentNode->attr.op == AND || currentNode->attr.op == OR || 
+                  currentNode->attr.op == LEQ || currentNode->attr.op == GEQ ||
+                  currentNode->attr.op == NOT || currentNode->attr.op == int('<') ||
+                  currentNode->attr.op == int('>') || currentNode->attr.op == EQ ||
+                  currentNode->attr.op == NEQ)
          {
-            syntree->type = ExpType::Boolean;
+            currentNode->type = ExpType::Boolean;
          }
          else
          {
-            syntree->type = ExpType::Integer;
+            currentNode->type = ExpType::Integer;
          }         
          break;
       case CallK:
-         if(temp = (TreeNode *)(symtab->lookup(syntree->attr.name)))
+         if(temp = (TreeNode *)(symtab->lookup(currentNode->attr.name)))
          {
             temp->isUsed = true;
-            syntree->type = temp->type;
-            syntree->isArray = temp->isArray;
-            syntree->isStatic = temp->isStatic;
-            syntree->varKind = temp->varKind;
-            syntree->offset = temp->offset;
-            syntree->size = temp->size;
+            currentNode->type = temp->type;
+            currentNode->isArray = temp->isArray;
+            currentNode->isStatic = temp->isStatic;
+            currentNode->varKind = temp->varKind;
+            currentNode->offset = temp->offset;
+            currentNode->size = temp->size;
          }
          else
          {
@@ -403,25 +406,25 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
          }
          break;      
       case ConstantK:
-         syntree->isConst = true;
+         currentNode->isConst = true;
          // case where string constant could be initialized in the global space.
-         if (syntree->type == syntree->isArray && ExpType::Char)
+         if (currentNode->type == currentNode->isArray && ExpType::Char)
          {
-            syntree->varKind = Global;
-            syntree->offset = (goffset - 1);
-            goffset -= syntree->size;
+            currentNode->varKind = Global;
+            currentNode->offset = (goffset - 1);
+            goffset -= currentNode->size;
          }
          break;
       case IdK:
-         if ((temp = (TreeNode *)(symtab->lookup(syntree->attr.name))))
+         if ((temp = (TreeNode *)(symtab->lookup(currentNode->attr.name))))
          {
             temp->isUsed = true;
-            syntree->type = temp->type;
-            syntree->isStatic = temp->isStatic;
-            syntree->isArray = temp->isArray;
-            syntree->size = temp->size;
-            syntree->varKind = temp->varKind;
-            syntree->offset = temp->offset;
+            currentNode->type = temp->type;
+            currentNode->isStatic = temp->isStatic;
+            currentNode->isArray = temp->isArray;
+            currentNode->size = temp->size;
+            currentNode->varKind = temp->varKind;
+            currentNode->offset = temp->offset;
          }
          else
          {
@@ -433,31 +436,31 @@ void treeTraverseExp(TreeNode *syntree, SymbolTable *symtab)
    }
 }
 
-bool insertCheck(TreeNode *syntree, SymbolTable *symtab)
+bool insertCheck(TreeNode *currentNode, SymbolTable *symtab)
 {
-   if (!symtab->insert(syntree->attr.name, syntree))
+   if (!symtab->insert(currentNode->attr.name, currentNode))
    {
       return false;
    }
    return true;
 }
 
-bool compoundCheck(TreeNode *syntree)
+bool compoundCheck(TreeNode *currentNode)
 {
-   if (syntree == NULL)
+   if (currentNode == NULL)
    {
       return false;
    }
 
-   if (syntree->kind.decl == FuncK && syntree->nodekind == DeclK)
+   if (currentNode->kind.decl == FuncK && currentNode->nodekind == DeclK)
    {
       foffset = -2;
       return true;
    }
 
-   if (syntree->nodekind == StmtK)
+   if (currentNode->nodekind == StmtK)
    {
-      if (syntree->kind.stmt == ForK || syntree->kind.stmt == CompoundK)
+      if (currentNode->kind.stmt == ForK || currentNode->kind.stmt == CompoundK)
       {
          return true;
       }
