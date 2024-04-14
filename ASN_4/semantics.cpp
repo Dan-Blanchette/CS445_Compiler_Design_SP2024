@@ -180,7 +180,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
          if(c0 != NULL)
          {
             currentNode->isAssigned = true;
-            currentNode->varKind = Local;
+            currentNode->varKind = Global;
             treeTraverse(c0, symtab);
          }
          // no break statement needed here
