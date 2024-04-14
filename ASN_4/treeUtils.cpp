@@ -406,9 +406,11 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    {
       fprintf(out, "hey I'm a node, say something here.", syntaxTree->nodekind);
    }
-   if ((syntaxTree->varKind != VarKind::None || syntaxTree->size != 1) && showAllocation)
+   // changed logic statement
+   if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1))
    {
-      printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+      // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
+      fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
    } 
 
    fprintf(out, " [line: %d]", syntaxTree->lineno);

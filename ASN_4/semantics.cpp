@@ -430,7 +430,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
       case IdK:
          if ((temp = (TreeNode *)(symtab->lookup(currentNode->attr.name))))
          {
-            // temp->isUsed = true;
+            temp->isUsed = true;
             currentNode->type = temp->type;
             currentNode->isStatic = temp->isStatic;
             currentNode->isArray = temp->isArray;
@@ -444,6 +444,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          }
          break;
       default:
+      // another error?
          printf("unknown kind.exp");    
    }
 }
