@@ -442,7 +442,7 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    }
 
    // Draw enough . . . for this node
-   printTreeNode(out, syntaxTree, showExpType, showAllocation, 1);
+   printTreeNode(out, syntaxTree, showExpType, showAllocation);
    fprintf(out, "\n");
    
    
