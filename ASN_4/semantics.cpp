@@ -390,6 +390,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          }
          else
          {
+            printf("An Error Occured\n");
             // probably an error w06
          }
          break;
