@@ -30,7 +30,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
     )
 {
    syntree = loadIOLib(syntree);
-   // globalOffset = goffset;
+
    treeTraverse(syntree, symtabX);
    return syntree;
 }
@@ -145,64 +145,6 @@ void treeTraverse(TreeNode *currentNode, SymbolTable *symtab)
    {
       treeTraverse(currentNode->sibling, symtab);
    }
-   // int tempOffset = foffset;
-   // bool isComp = false;
-   // // if the syntree is empty, do nothing
-   // if (syntree != nullptr)
-   // {
-   //    switch(syntree->nodekind)
-   //    {
-   //       case NodeKind::DeclK:
-   //          treeTraverseDecl(syntree, symtab);
-   //          break;
-
-   //       case NodeKind::StmtK:
-   //          treeTraverseStmt(syntree, symtab);
-   //          break;
-         
-   //       case NodeKind::ExpK:
-   //          treeTraverseExp(syntree, symtab);
-   //          break;
-         
-   //       default:
-   //          printf("unknown nodekind\n");
-   //          break;
-   //    } 
-   //    // end switch
-
-   //    // if there is a for loop, foffset is -2 (according to notes from class)
-   //    if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
-   //    {
-   //       foffset -= 2;
-   //    }
-
-   //    treeTraverse(syntree->child[1], symtab);
-   //    treeTraverse(syntree->child[2], symtab);
-
-   //    if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
-   //    {
-   //       syntree->size = foffset;
-   //    }
-
-   //    if (isComp)
-   //    {
-   //       symtab->leave();
-   //    }
-
-   //    if (syntree->nodekind == StmtK && syntree->kind.stmt == CompoundK)
-   //    {
-   //       syntree->size = foffset;
-   //       // not sure if this is needed
-   //       // foffset = tempOffset;
-   //    }
-
-   //    // Be sure to traverse the siblings
-   //    treeTraverse(syntree->sibling, symtab);
-
-   //    if (syntree->nodekind == StmtK && syntree->kind.stmt == ForK)
-   //    {
-   //       foffset = tempOffset;
-   //    }
 
    return;
 }
@@ -298,7 +240,10 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
    c1 = currentNode->child[1];
    c2 = currentNode->child[2];
 
-   if (currentNode->kind.stmt != CompoundK) newScope = true;
+   if (currentNode->kind.stmt != CompoundK) 
+   {
+      newScope = true;
+   }
    switch(currentNode->kind.stmt)
    {
       case CompoundK:
