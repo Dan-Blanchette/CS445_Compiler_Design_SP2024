@@ -403,7 +403,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          treeTraverse(c1, symtab);
          if(temp = (TreeNode *)(symtab->lookup(currentNode->attr.name)))
          {
-            // temp->isUsed = true;
+            temp->isUsed = true;
             currentNode->type = temp->type;
             currentNode->isArray = temp->isArray;
             currentNode->isStatic = temp->isStatic;
@@ -425,6 +425,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
             currentNode->offset = (goffset - 1);
             goffset -= currentNode->size;
          }
+         currentNode->isConst = true;
          break;
       case IdK:
          if ((temp = (TreeNode *)(symtab->lookup(currentNode->attr.name))))
