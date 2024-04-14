@@ -189,7 +189,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
          printf("%d %s\n", symtab->depth(), currentNode->attr.name);
          if (insertCheck(currentNode, symtab))
          {
-            
+            printf("Check Succeeded\n");
             if (symtab->depth() == 1)
             {
                printf("In ParamK depth check %d\n", goffset);
@@ -222,7 +222,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
          }
          else 
            printf("input check has failed\n");
-           
+
          if(currentNode->kind.decl == ParamK)
          {
             currentNode->varKind = Parameter;
