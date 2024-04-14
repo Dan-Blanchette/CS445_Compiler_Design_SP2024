@@ -380,6 +380,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
       case AssignK:
          treeTraverse(c0, symtab);
          treeTraverse(c1, symtab);
+
          if(currentNode->attr.op == int('+') || currentNode->attr.op == int('['))
          {
             currentNode->type = c0->type;
@@ -398,6 +399,8 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          }         
          break;
       case CallK:
+         treeTraverse(c0, symtab);
+         treeTraverse(c1, symtab);
          if(temp = (TreeNode *)(symtab->lookup(currentNode->attr.name)))
          {
             // temp->isUsed = true;

@@ -397,7 +397,6 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
             break;
       }
       // ExpK Switch End
-
       if (showExpType)
       {
          fprintf(out, " of %s", expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
@@ -407,7 +406,6 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    {
       fprintf(out, "hey I'm a node, say something here.", syntaxTree->nodekind);
    }
-   // Trying one logic statment for the memory printing
    if ((syntaxTree->varKind != VarKind::None || syntaxTree->size != 1) && showAllocation)
    {
       printf(" [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
