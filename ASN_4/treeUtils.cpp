@@ -409,11 +409,11 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    // changed logic statement
    if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1))
    {
-      printf("Entered MemeAllloc\n");
+      // printf("Entered MemeAllloc\n");
       // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
       fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
    } 
-   printf("After MemAlloc Logic\n");
+   // printf("After MemAlloc Logic\n");
    fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
 }
