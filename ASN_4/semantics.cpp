@@ -220,6 +220,9 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
                // printf("offset inside: %d\n", foffset);
             }
          }
+         else 
+           printf("input check has failed\n");
+           
          if(currentNode->kind.decl == ParamK)
          {
             currentNode->varKind = Parameter;
