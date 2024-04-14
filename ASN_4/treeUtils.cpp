@@ -364,7 +364,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                // it's a string
                if (syntaxTree->isArray)
                {
-                  fprintf(out, " %s", syntaxTree->attr.string);
+                  fprintf(out, "\"%s\"", syntaxTree->attr.string);
                }
                // it's a char
                else
