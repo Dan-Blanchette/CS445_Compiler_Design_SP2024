@@ -192,7 +192,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
             
             if (symtab->depth() == 1)
             {
-               // printf("In ParamK depth check %d\n", goffset);
+               printf("In ParamK depth check %d\n", goffset);
                currentNode->varKind = Global;
                currentNode->offset = goffset;
                goffset -= currentNode->size;
