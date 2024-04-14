@@ -292,7 +292,8 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    }
    // Statement Kind printing
    else if (syntaxTree->nodekind == NodeKind::StmtK)
-   { // Sub Kinds of Statements
+   {  
+      // Sub Kinds of Statements
       switch (syntaxTree->kind.stmt)
       {
          case StmtKind::IfK:
@@ -331,7 +332,8 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    }
    // ExpKind printing
    else if (syntaxTree->nodekind == NodeKind::ExpK)
-   { // ExpK Switch Start
+   {  
+      // ExpK Switch Start
       switch (syntaxTree->kind.exp)
       {
          case ExpKind::AssignK:
@@ -406,13 +408,13 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    {
       fprintf(out, "hey I'm a node, say something here.", syntaxTree->nodekind);
    }
-   // changed logic statement
+
    if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1))
    {
       // printf("Entered MemeAllloc\n");
       // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
       fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
-   } 
+   }
    // printf("After MemAlloc Logic\n");
    fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
@@ -440,7 +442,7 @@ void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool 
    }
 
    // Draw enough . . . for this node
-   printTreeNode(out, syntaxTree, showExpType, showAllocation);
+   printTreeNode(out, syntaxTree, showExpType, showAllocation, 1);
    fprintf(out, "\n");
    
    
