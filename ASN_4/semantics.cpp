@@ -202,12 +202,12 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
                currentNode->offset = goffset;
                goffset -= currentNode->size;
 
-               char *newName;
-               newName = new char[strlen(currentNode->attr.name) + 10];
-               sprintf(newName, "%s-%d", currentNode->attr.name, ++varCounter);
-               symtab->insertGlobal(newName, currentNode);
+               // char *newName;
+               // newName = new char[strlen(currentNode->attr.name) + 10];
+               // sprintf(newName, "%s-%d", currentNode->attr.name, ++varCounter);
+               // symtab->insertGlobal(newName, currentNode);
 
-               delete [] newName;
+               // delete [] newName;
             }
             else
             {
