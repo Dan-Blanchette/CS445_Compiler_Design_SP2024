@@ -60,17 +60,17 @@ TreeNode *loadIOLib(TreeNode *syntree)
    inputC->type = ExpType::Char;
 
    Param_output = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   Param_output->lineno = -1; // all are -1
+   // Param_output->lineno = -1; // all are -1
    Param_output->attr.name = strdup("*dummy*");
    Param_output->type = ExpType::Integer;
 
    Param_output_b = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   Param_output_b->lineno = -1; // all are -1
+   // Param_output_b->lineno = -1; // all are -1
    Param_output_b->attr.name = strdup("*dummy*");
    Param_output_b->type = ExpType::Boolean;
 
    Param_output_c = newDeclNode(DeclKind::ParamK, ExpType::Void);
-   Param_output_c->lineno = -1; // all are -1
+   // Param_output_c->lineno = -1; // all are -1
    Param_output_c->attr.name = strdup("*dummy*");
    Param_output_c->type = ExpType::Char;
 
@@ -239,6 +239,8 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
          {
             currentNode->isAssigned = true;
             currentNode->varKind = Local;
+            currentNode->offset = goffset;
+            goffset -= currentNode->size;
             treeTraverse(c0, symtab);
          }
          // no break statement needed here
@@ -400,7 +402,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
       case CallK:
          if(temp = (TreeNode *)(symtab->lookup(currentNode->attr.name)))
          {
-            temp->isUsed = true;
+            // temp->isUsed = true;
             currentNode->type = temp->type;
             currentNode->isArray = temp->isArray;
             currentNode->isStatic = temp->isStatic;
@@ -426,7 +428,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
       case IdK:
          if ((temp = (TreeNode *)(symtab->lookup(currentNode->attr.name))))
          {
-            temp->isUsed = true;
+            // temp->isUsed = true;
             currentNode->type = temp->type;
             currentNode->isStatic = temp->isStatic;
             currentNode->isArray = temp->isArray;
