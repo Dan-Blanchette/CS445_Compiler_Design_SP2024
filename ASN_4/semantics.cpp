@@ -403,7 +403,7 @@ bool insertCheck(TreeNode *currentNode, SymbolTable *symtab)
 {
    if (!symtab->insert(currentNode->attr.name, currentNode))
    {
-      printf("symbol %s already declared at line %d", currentNode->lineno, currentNode->attr.name);
+      // printf("symbol %s already declared at line %d", currentNode->lineno, currentNode->attr.name);
       return false;
    }
    return true;
