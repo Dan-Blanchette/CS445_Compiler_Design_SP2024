@@ -239,8 +239,6 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
          {
             currentNode->isAssigned = true;
             currentNode->varKind = Local;
-            currentNode->offset = goffset;
-            goffset -= currentNode->size;
             treeTraverse(c0, symtab);
          }
          // no break statement needed here
@@ -418,7 +416,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
       case ConstantK:
          currentNode->isConst = true;
          // case where string constant could be initialized in the global space.
-         if (currentNode->type == currentNode->isArray && ExpType::Char)
+         if (currentNode->type == ExpType::Char && currentNode->isArray)
          {
             currentNode->varKind = Global;
             currentNode->offset = (goffset - 1);
