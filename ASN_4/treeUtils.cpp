@@ -257,7 +257,9 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
       break;
    }
    
-   sprintf(expBuff, "%s%s%s%s", (isStatic && isArray ? (char*)"static " : ""), (isArray && isStatic ? (char *)"static " : ""), (isArray ? (char *)"array of " : ""), exp_type_name);
+   sprintf(expBuff, "%s%s%s%s", (isStatic && isArray ? (char*)"static " : ""), 
+          (isArray && isStatic ? (char *)"static " : ""), (isArray ? (char *)"array of " : ""), 
+           exp_type_name);
    return expBuff; 
 }
 

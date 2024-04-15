@@ -56,7 +56,7 @@ TreeNode *addSibling(TreeNode *t, TreeNode *s)
 // pass the static type attribute to the sibling list
 void setType(TreeNode *t, ExpType type, bool isStatic)
 {
-   while(t != nullptr)
+   while(t != NULL)
    {
       // set t->type and t->isStatic
       t->type = type;
