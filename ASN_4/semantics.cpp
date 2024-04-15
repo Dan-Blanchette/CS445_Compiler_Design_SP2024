@@ -265,8 +265,8 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
             currentNode->size = foffset;
             // traverse your right child
             treeTraverse(c1, symtab);
-            foffset = newScopeOffset;
             symtab->leave();
+            foffset = newScopeOffset;
          }
          else
          {
