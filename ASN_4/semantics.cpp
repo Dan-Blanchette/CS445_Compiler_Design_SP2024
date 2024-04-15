@@ -186,7 +186,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
          // no break statement needed here
       case ParamK:
          // printf("In ParamK\n");
-         // printf("%d %s\n", symtab->depth(), currentNode->attr.name);
+         printf("%d %s %d\n", symtab->depth(), currentNode->attr.name, goffset);
          if (insertCheck(currentNode, symtab))
          {
             // printf("Check Succeeded\n");
