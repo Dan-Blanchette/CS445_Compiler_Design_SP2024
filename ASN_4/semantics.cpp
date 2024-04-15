@@ -333,7 +333,8 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          treeTraverse(c0, symtab);
          treeTraverse(c1, symtab);
 
-         if(currentNode->attr.op == int('+') || currentNode->attr.op == int('['))
+         if(currentNode->attr.op == int('+') || currentNode->attr.op == int('[') || 
+            currentNode->attr.op == int('='))
          {
             currentNode->type = c0->type;
          }
