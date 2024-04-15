@@ -7,7 +7,7 @@
 
 // memory offsets: ensure counts are updated until end of runtime
 static int foffset;
-static int goffset;
+static int goffset = 0;
 static bool newScope = true;
 static int varCounter = 0;
 
