@@ -556,7 +556,7 @@ int main(int argc, char **argv)
       printTree(stdout, syntaxTree, true, true);
       if (dotAST)
       {
-         // printTree(stdout, syntaxTree, true, false);
+         printTree(stdout, syntaxTree, true, false);
       }
    }
    else 
