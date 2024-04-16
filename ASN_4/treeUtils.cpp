@@ -411,7 +411,8 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       fprintf(out, "hey I'm a node, say something here.", syntaxTree->nodekind);
    }
 
-   if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1 || !ExpKind::CallK))
+   if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1 || !ExpKind::CallK
+                           || StmtKind::CompoundK))
    {
       // printf("Entered MemeAllloc\n");
       // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
