@@ -1,0 +1,8 @@
+#DRBC all production rule test case
+main() {
+}
+//parmID, parmList, parms, parmIdListm, funDecl
+//int foo(int a, b[]; bool c, d; int e;
+//}
+int foo( bool d;){
+}
