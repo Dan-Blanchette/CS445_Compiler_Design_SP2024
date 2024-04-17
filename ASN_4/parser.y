@@ -546,9 +546,15 @@ int main(int argc, char **argv)
    // to print anything yet..for some reason...
 
    SymbolTable *symtab;
+
+   // Initialize symbol table
    symtab = new SymbolTable();
    symtab->debug(debugSymTab);
+
+   // Initialize Syntax Tree and Symbol Table for semantic analysis
    syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
+
+   // TreeTraverse Call
    treeTraverse(syntaxTree, symtab);
 
    if(numErrors == 0)
