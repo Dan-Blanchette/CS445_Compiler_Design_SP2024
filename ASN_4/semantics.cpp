@@ -417,27 +417,3 @@ bool insertCheck(TreeNode *currentNode, SymbolTable *symtab)
    }
    return true;
 }
-
-// bool compoundCheck(TreeNode *currentNode)
-// {
-//    if (currentNode == NULL)
-//    {
-//       return false;
-//    }
-
-//    if (currentNode->kind.decl == FuncK && currentNode->nodekind == DeclK)
-//    {
-//       foffset = -2;
-//       return true;
-//    }
-
-//    if (currentNode->nodekind == StmtK)
-//    {
-//       if (currentNode->kind.stmt == ForK || currentNode->kind.stmt == CompoundK)
-//       {
-//          return true;
-//       }
-//    }
-
-//    return false;
-// }
