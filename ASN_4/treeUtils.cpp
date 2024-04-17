@@ -258,8 +258,10 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
    }
    
    sprintf(expBuff, "%s%s%s%s", (isStatic && isArray ? (char*)"static " : ""), 
-          (isArray && isStatic ? (char *)"static " : ""), (isArray ? (char *)"array of " : ""), 
-           exp_type_name);
+            (isArray && isStatic ? (char *)"static " : ""), 
+            (isArray ? (char *)"array of " : ""), 
+             exp_type_name);
+
    return expBuff; 
 }
 
@@ -288,7 +290,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          // Assignment 4 additional Print Statement
          break;
       default:
-         fprintf(out, "Decl Node Reporting for Duty!");
+         fprintf(out, "Unknown Decl Node");
          break;
       }
    }
@@ -327,7 +329,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
             break;
 
          default:
-            fprintf(out, "Statment node reporting for duty!");
+            fprintf(out, "Unknow Stmt Node");
             break;
       }
       // End Stmnt Switch
@@ -397,7 +399,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
             break;
 
          default:
-            fprintf(out, "I'm some sort of ExpK node.", syntaxTree->kind.exp);
+            fprintf(out, "Unknow Exp Node", syntaxTree->kind.exp);
             break;
       }
       // ExpK Switch End
@@ -408,7 +410,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    }
    else
    {
-      fprintf(out, "hey I'm a node, say something here.", syntaxTree->nodekind);
+      fprintf(out, "Unknow Node Type", syntaxTree->nodekind);
    }
 
    if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1 || !ExpKind::CallK))
@@ -416,6 +418,10 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       // printf("Entered MemeAllloc\n");
       // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
       fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+   }
+   else
+   {
+      fprintf(out, " [line: %d]", syntaxTree->lineno);
    }
    // printf("After MemAlloc Logic\n");
    fprintf(out, " [line: %d]", syntaxTree->lineno);
