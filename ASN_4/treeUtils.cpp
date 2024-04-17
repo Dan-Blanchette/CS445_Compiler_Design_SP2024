@@ -418,7 +418,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       // printf("Entered MemeAllloc\n");
       // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
       fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
-   }
+   }  
    // printf("After MemAlloc Logic\n");
    fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
@@ -436,7 +436,7 @@ void showDepth(FILE *out, int depth)
 
 
 void printTreeRecursive(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showAllocation,
-                        int depth, int siblingCount = 1)
+                           int depth, int siblingCount = 1)
 {
    // pre-order depth first search start at the first node and print it out
    if (syntaxTree == NULL)

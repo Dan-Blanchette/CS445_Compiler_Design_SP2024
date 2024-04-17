@@ -327,8 +327,8 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
    switch(currentNode->kind.exp)
    {
       case OpK:
-         // treeTraverse(c0, symtab);
-         // treeTraverse(c1, symtab);
+         treeTraverse(c0, symtab);
+         treeTraverse(c1, symtab);
          if (currentNode->attr.op == int('<') || currentNode->attr.op == int('>'))
          {
             currentNode->type = ExpType::Boolean;
