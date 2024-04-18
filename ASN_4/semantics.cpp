@@ -260,6 +260,8 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
             int newScopeOffset;
             symtab->enter((char *)"compound statement");
             newScopeOffset = foffset;
+            printf("NewScopeOffset %d\n", newScopeOffset);
+            printf("current size: %d\n", currentNode->size);
             // tree traverse your left child
             treeTraverse(c0, symtab);
             // deal with your self
@@ -267,7 +269,7 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
             // traverse your right child
             treeTraverse(c1, symtab);
             symtab->leave();
-            // foffset = newScopeOffset;
+            foffset = newScopeOffset;
          }
          else
          {
