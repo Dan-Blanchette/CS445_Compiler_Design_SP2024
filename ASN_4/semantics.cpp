@@ -270,7 +270,7 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
          }
          else
          {
-            newScope = false;
+            newScope = true;
             //printf("CompK %s foffset before %d\n", currentNode->attr.name, foffset);
             treeTraverse(c0, symtab);
            // printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
