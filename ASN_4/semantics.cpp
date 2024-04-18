@@ -32,6 +32,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
    syntree = loadIOLib(syntree);
 
    treeTraverse(syntree, symtabX); // This fixed the location errors not sure why
+
    return syntree;
 }
 
@@ -266,7 +267,7 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
             // traverse your right child
             treeTraverse(c1, symtab);
             symtab->leave();
-            foffset = newScopeOffset;
+            // foffset = newScopeOffset;
          }
          else
          {
