@@ -420,10 +420,6 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
       fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
    }  
-   if (syntaxTree->kind.exp == ExpKind::CallK)
-   {
-      fprintf(out, " [line: %d]", syntaxTree->lineno);
-   }
    // printf("After MemAlloc Logic\n");
    fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
