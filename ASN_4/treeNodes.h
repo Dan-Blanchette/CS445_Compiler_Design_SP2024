@@ -71,15 +71,15 @@ struct TreeNode
       char *string;                      // used when ConstantK: string
     } attr;                                 
     ExpType type;		                       // used when ExpK for type checking
-    bool isStatic;                         // is staticly allocated?
-    bool isArray;                          // is this an array?
-    bool isConst;                          // can be computed at compile time?
-    bool isUsed;                           // is this variable used?
-    bool isAssigned;                       // has the variable been given a value?
+    bool isStatic = false;                         // is staticly allocated?
+    bool isArray = false;                          // is this an array?
+    bool isConst = false;                          // can be computed at compile time?
+    bool isUsed = false;                           // is this variable used?
+    bool isAssigned = false;                       // has the variable been given a value?
 
     // extra stuff inferred about the node
     VarKind varKind;                       // global, local, localStatic, parameter
-    int offset;                            // offset for address of object
-    int size;                              // used for size of array
+    int offset = 0;                            // offset for address of object
+    int size = 1;                              // used for size of array
 };
 #endif

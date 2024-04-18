@@ -270,6 +270,7 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
             treeTraverse(c1, symtab);
             symtab->leave();
             foffset = newScopeOffset;
+            printf("foffset  at end of if statement %d\n", foffset);
          }
          else
          {
