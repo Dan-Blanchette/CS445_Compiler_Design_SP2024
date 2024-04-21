@@ -12,7 +12,7 @@
 
 using namespace std;
 
-// Assignment 4 in progress...
+// Assignment 5 in progress...
 //for pushing
 
 extern "C" int yylex();
@@ -552,7 +552,7 @@ int main(int argc, char **argv)
 
    // Initialize Syntax Tree and Symbol Table for semantic analysis
    syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
-
+   codegen(stdout, argv[1], syntaxTree, symtab, globalOffset, false);
    // TreeTraverse Call
    treeTraverse(syntaxTree, symtab);
 
