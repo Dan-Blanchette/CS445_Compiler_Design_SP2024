@@ -282,7 +282,8 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          break;
 
       case DeclKind::FuncK:
-         fprintf(out, "Func: %s returns %s", syntaxTree->attr.name, expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));
+         fprintf(out, "Func: %s", syntaxTree->attr.name,);
+         fprintf(out, " returns %s",expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));   
          // Assignment 4 additional Print Statement
          break;
       case DeclKind::ParamK:
@@ -408,7 +409,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    }
 
    if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1 
-       || syntaxTree->kind.stmt == StmtKind::CompoundK))
+       || syntaxTree->kind.stmt == StmtKind::CompoundK ))
    {
       // printf("Entered MemeAllloc\n");
       // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
