@@ -303,6 +303,8 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
       case BreakK:         
          break;
       case WhileK:
+         treeTraverse(c0, symtab);
+         treeTraverse(c1, symtab);
          break;
       case ForK:
          int newScopeOffset2;
