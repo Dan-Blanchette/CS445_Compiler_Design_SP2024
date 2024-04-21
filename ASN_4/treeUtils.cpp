@@ -187,7 +187,7 @@ char *varkToStr(VarKind varK)
 char expBuff[100];
 char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
 {
-   // char *exp_type_name;
+   char *exp_type_name;
    // // how do I convert the listed exp types to become a string value?
    // // how does this tie into the yacc file and it's functionality?
    // if (isStatic)
