@@ -275,7 +275,7 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
          }
          else
          {
-            printf("Entered Else of CompoundK\n");
+            // printf("Entered Else of CompoundK\n");
             newScope = true;
             //printf("CompK %s foffset before %d\n", currentNode->attr.name, foffset);
             treeTraverse(c0, symtab);
