@@ -188,52 +188,52 @@ char expBuff[100];
 char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
 {
    char *exp_type_name;
-   // // how do I convert the listed exp types to become a string value?
-   // // how does this tie into the yacc file and it's functionality?
-   // if (isStatic)
-   // {
-   //    if (isArray)
-   //    {
-   //       switch(type)
-   //       {
-   //          case ExpType::Boolean:
-   //             return (char *)"static array of type bool";
-   //             break;
-   //          case ExpType::Char:
-   //             return (char *)"static array of type char";
-   //             break;
-   //          case ExpType::Integer:
-   //             return (char *)"static array of type int";
-   //             break;
-   //          case ExpType::UndefinedType:
-   //             return (char *)"static array of type UNDEFINED";
-   //             break;
-   //          case ExpType::Void:
-   //             return (char *)"static array of type void";
-   //             break;
-   //       }         
-   //    }
-   //    switch(type)
-   //    {
-   //       case ExpType::Boolean:
-   //          return (char *)"static type bool";
-   //          break;
-   //       case ExpType::Char:
-   //          return (char *)"static type char";
-   //          break;
-   //       case ExpType::Integer:
-   //          return (char *)"static type int";
-   //          break;
-   //       case ExpType::UndefinedType:
-   //          return (char *)"static type UNDEFINED";
-   //          break;
-   //       case ExpType::Void:
-   //          return (char *)"static type void";
-   //          break;
-   //    }
-   // }
+   // how do I convert the listed exp types to become a string value?
+   // how does this tie into the yacc file and it's functionality?
+   if (isStatic)
+   {
+      if (isArray)
+      {
+         switch(type)
+         {
+            case ExpType::Boolean:
+               return (char *)"static array of type bool";
+               break;
+            case ExpType::Char:
+               return (char *)"static array of type char";
+               break;
+            case ExpType::Integer:
+               return (char *)"static array of type int";
+               break;
+            case ExpType::UndefinedType:
+               return (char *)"static array of type UNDEFINED";
+               break;
+            case ExpType::Void:
+               return (char *)"static array of type void";
+               break;
+         }         
+      }
+      switch(type)
+      {
+         case ExpType::Boolean:
+            return (char *)"static type bool";
+            break;
+         case ExpType::Char:
+            return (char *)"static type char";
+            break;
+         case ExpType::Integer:
+            return (char *)"static type int";
+            break;
+         case ExpType::UndefinedType:
+            return (char *)"static type UNDEFINED";
+            break;
+         case ExpType::Void:
+            return (char *)"static type void";
+            break;
+      }
+   }
 
- 
+   
    switch (type)
    {
    case ExpType::Boolean:
@@ -290,7 +290,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
          // Assignment 4 additional Print Statement
          break;
       default:
-         fprintf(out, "Unknown Decl Node");
+         fprintf(out, "DeclK Node");
          break;
       }
    }
@@ -329,7 +329,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
             break;
 
          default:
-            fprintf(out, "Unknow Stmt Node");
+            fprintf(out, "StmtK Node");
             break;
       }
       // End Stmnt Switch
@@ -350,7 +350,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
 
          case ExpKind::ConstantK:
             // bool variable to string
-            char *boolVal;
+            char *boolVal = false;
 
             fprintf(out, "Const");
             // ExpTypes If Statment Start
@@ -377,19 +377,13 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                   fprintf(out, " '%c'",  syntaxTree->attr.cvalue);
 
             }
-            else if (syntaxTree->type == ExpType::Integer)
+            else 
             {
                fprintf(out, " %d", syntaxTree->attr.value);
             }
-            else 
-            {
-               if (syntaxTree->type == ExpType::Void)
-               {
-                  // Do Nothing
-               }    
-            }
             break;
-            // End ExpType struct value assignments
+      
+
          case ExpKind::IdK:
             fprintf(out, "Id: %s", syntaxTree->attr.name);
             break;
@@ -399,7 +393,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
             break;
 
          default:
-            fprintf(out, "Unknow Exp Node", syntaxTree->kind.exp);
+            fprintf(out, "ExpK Node", syntaxTree->kind.exp);
             break;
       }
       // ExpK Switch End
@@ -410,7 +404,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    }
    else
    {
-      fprintf(out, "Unknow Node Type", syntaxTree->nodekind);
+      fprintf(out, "I'm a node, I should say something here...", syntaxTree->nodekind);
    }
 
    if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1 
