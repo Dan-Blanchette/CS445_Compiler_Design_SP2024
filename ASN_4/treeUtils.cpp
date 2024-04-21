@@ -408,14 +408,29 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       fprintf(out, "I'm a node, I should say something here...", syntaxTree->nodekind);
    }
 
-   if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1 
-       || syntaxTree->kind.decl == DeclKind::VarK 
-       || syntaxTree->kind.stmt == StmtKind::CompoundK))
+   // if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1 
+   //     || syntaxTree->kind.decl == DeclKind::VarK 
+   //     || syntaxTree->kind.stmt == StmtKind::CompoundK))
+   // {
+   //    // printf("Entered MemeAllloc\n");
+   //    // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
+   //    fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
+   // }  
+
+   
+   if (showAllocation && (
+          syntaxTree->kind.decl == DeclKind::VarK 
+       || syntaxTree->kind.decl == DeclKind::FunK
+       || syntaxTree->kind.decl == DeclKind::ParamK  
+       || syntaxTree->kind.stmt == StmtKind::CompoundK
+       || syntaxTree->kind.stmt == StmtKind::ForK
+       // || syntaxTree->nodekind == ExpK
+      ))
    {
       // printf("Entered MemeAllloc\n");
       // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
       fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
-   }  
+   } 
    // printf("After MemAlloc Logic\n");
    fprintf(out, " [line: %d]", syntaxTree->lineno);
    return;
