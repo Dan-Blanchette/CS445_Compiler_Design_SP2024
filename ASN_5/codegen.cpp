@@ -4,7 +4,7 @@
 // For function nodes the offset is defined to be the position of the
 // function in the code space! This is accessible via the symbol table.
 // remember where this function is:
-  currnode->offset = emitSkip(0); // offset holds the instruction address!!
+  currentNode->offset = emitSkip(0); // offset holds the instruction address!!
 
   // Store return address
    emitRM((char *)"ST", AC, RETURNOFFSET, FP, (char *)"Store return address");
@@ -42,9 +42,9 @@ void codegen(FILE *codeIn,          // where the code should be written
 {
    int initJump;
 
-   code = codeln;
+   code = codeIn;
    globals = globalsIn;
-   linumFlag = linumFlagIn;
+   linenumFlag = linenumFlagIn;
    breakloc = 0;
 
    initJump = emitSkip(1);
@@ -158,34 +158,34 @@ void codegenLibraryFun(TreeNode *currentNode)
    emitRM((char *)"ST", AC, RETURNOFFSET, FP, (char *)"Store return address");
 
    // NEXT SLIDES HERE
-   if (strcmp(currnode->attr.name, (char *)"input") == 0)
+   if (strcmp(currentNode->attr.name, (char *)"input") == 0)
    {
       emitRO((char *)"IN", RT, RT, RT, (char *)"Grab int input");
    }
-   else if (strcmp(currnode->attr.name, (char *)"inputb") == 0)
+   else if (strcmp(currentNode->attr.name, (char *)"inputb") == 0)
    {
       emitRO((char *)"INB", RT, RT, RT, (char *)"Grab bool input");
    }
-   else if (strcmp(currnode->attr.name, (char *)"inputc") == 0)
+   else if (strcmp(currentNode->attr.name, (char *)"inputc") == 0)
    {
       emitRO((char *)"INC", RT, RT, RT, (char *)"Grab char input");
    }
-   else if (strcmp(currnode->attr.name, (char *)"output") == 0)
+   else if (strcmp(currentNode->attr.name, (char *)"output") == 0)
    {
       emitRM((char *)"LD", AC, -2, FP, (char *)"Load parameter");
       emitRO((char *)"OUT", AC, AC, AC, (char *)"Output integer");
    }
-   else if (strcmp(currnode->attr.name, (char *)"outputb") == 0)
+   else if (strcmp(currentNode->attr.name, (char *)"outputb") == 0)
    {
       emitRM((char *)"LD", AC, -2, FP, (char *)"Load parameter");
       emitRO((char *)"OUTB", AC, AC, AC, (char *)"Output bool");
    }
-   else if (strcmp(currnode->attr.name, (char *)"outputc") == 0)
+   else if (strcmp(currentNode->attr.name, (char *)"outputc") == 0)
    {
       emitRM((char *)"LD", AC, -2, FP, (char *)"Load parameter");
       emitRO((char *)"OUTC", AC, AC, AC, (char *)"Output char");
    }
-   else if (strcmp(currnode->attr.name, (char *)"outnl") == 0)
+   else if (strcmp(currentNode->attr.name, (char *)"outnl") == 0)
    {
       emitRO((char *)"OUTNL", AC, AC, AC, (char *)"Output a newline");
    }
