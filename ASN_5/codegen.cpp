@@ -151,10 +151,10 @@ void codegenGeneral(TreeNode *currentNode)
    }
 }
 // generation of initialization for run
-int codegenInit(int initJump, int globalOffset)
-{
-   return;
-}
+// int codegenInit(int initJump, int globalOffset)
+// {
+//    return;
+// }
 
 void codegenLibraryFun(TreeNode *currentNode)
 {
