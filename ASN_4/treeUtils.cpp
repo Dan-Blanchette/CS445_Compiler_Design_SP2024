@@ -20,6 +20,7 @@ TreeNode *cloneNode(TreeNode *currnode)
    // and siblings if there are any.
    int num = 0;
    // copy children and sibling data
+   // need new submit
    for (num; num < MAXCHILDREN; num++)
    {
       copyNode->child[num] = currnode->child[num];

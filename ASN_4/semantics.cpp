@@ -200,6 +200,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
             }
             else if(currentNode->isStatic)
             {
+               // need new submit
                // printf("In ParamK is static %d\n", goffset);
                currentNode->varKind = LocalStatic;
                currentNode->offset = goffset;
