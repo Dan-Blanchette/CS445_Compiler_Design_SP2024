@@ -206,12 +206,12 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
                goffset -= currentNode->size;
                
                {
-                  // char *newName;
-                  // newName = new char[strlen(currentNode->attr.name) + 10];
-                  // sprintf(newName, "%s-%d", currentNode->attr.name, ++varCounter);
-                  symtab->insertGlobal(currentNode->attr.name, currentNode);
+                  char *newName;
+                  newName = new char[strlen(currentNode->attr.name) + 10];
+                  sprintf(newName, "%s-%d", currentNode->attr.name, ++varCounter);
+                  symtab->insertGlobal(newName, currentNode);
 
-                  // delete [] newName;
+                  delete [] newName;
                }
             }
             else
@@ -363,6 +363,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
             currentNode->type = ExpType::Integer;
          }         
          break;
+
       case CallK:
          treeTraverse(c0, symtab);
          treeTraverse(c1, symtab);
@@ -380,7 +381,8 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          {
            // This looks like an error condition symbol table value is not there w06
          }
-         break;      
+         break;
+
       case ConstantK:
          currentNode->isConst = true;
          // case where string constant could be initialized in the global space.
@@ -392,6 +394,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          }
          currentNode->isConst = true;
          break;
+
       case IdK:
          if ((temp = (TreeNode *)(symtab->lookup(currentNode->attr.name))))
          {
@@ -409,6 +412,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
             // probably an error w06
          }
          break;
+
       default:
       // another error?
          printf("unknown kind.exp");    
