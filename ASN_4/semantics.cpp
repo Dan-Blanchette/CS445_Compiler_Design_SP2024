@@ -257,11 +257,12 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
       case CompoundK:
          if (newScope)
          {
+            printf("Inside the if CompK\n");
             int newScopeOffset;
             symtab->enter((char *)"compound statement");
             newScopeOffset = foffset;
-            printf("NewScopeOffset %d\n", newScopeOffset);
-            printf("current size: %d\n", currentNode->size);
+            // printf("NewScopeOffset %d\n", newScopeOffset);
+            // printf("current size: %d\n", currentNode->size);
             // tree traverse your left child
             treeTraverse(c0, symtab);
             // deal with your self
@@ -270,15 +271,17 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
             treeTraverse(c1, symtab);
             symtab->leave();
             foffset = newScopeOffset;
-            printf("foffset  at end of if statement %d\n", foffset);
+            //printf("foffset  at end of if statement %d\n", foffset); //- 11
          }
          else
          {
+            printf("Entered Else of CompoundK\n");
             newScope = true;
-            //printf("CompK %s foffset before %d\n", currentNode->attr.name, foffset);
+            printf("CompK %s foffset before %d\n", currentNode->attr.name, foffset);
             treeTraverse(c0, symtab);
-           // printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
+            printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
             currentNode->size = foffset;
+            printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
             treeTraverse(c1, symtab);
          }
          break;
