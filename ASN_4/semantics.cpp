@@ -202,7 +202,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
             {
                // printf("In ParamK is static %d\n", goffset);
                currentNode->varKind = LocalStatic;
-               currentNode->offset = goffset;
+               currentNode->offset = foffset;
                goffset -= currentNode->size;
                
                {
