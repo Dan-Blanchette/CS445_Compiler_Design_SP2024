@@ -28,7 +28,7 @@ int toffset; // next available temporary space
 
 FILE *code;
 
-static bool linumFlag;
+static bool linenumFlag;
 static int breakloc;
 static SymbolTable *globals;
 
