@@ -350,7 +350,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
 
          case ExpKind::ConstantK:
             // bool variable to string
-            char *boolVal = false;
+            char *boolVal = "false";
 
             fprintf(out, "Const");
             // ExpTypes If Statment Start
