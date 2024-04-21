@@ -418,13 +418,12 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    // }  
 
    
-   if (showAllocation && ( false
-      //    syntaxTree->kind.decl == DeclKind::VarK 
-      //  || syntaxTree->kind.decl == DeclKind::FuncK
-      //  || syntaxTree->kind.decl == DeclKind::ParamK  
-      //  || syntaxTree->kind.stmt == StmtKind::CompoundK
-      //  || syntaxTree->kind.stmt == StmtKind::ForK
-       // || syntaxTree->nodekind == ExpK
+   if (showAllocation && ( 
+          (syntaxTree->nodekind == DeclKind && syntaxTree->kind.decl == DeclKind::VarK) 
+        || (syntaxTree->nodekind == DeclKind && syntaxTree->kind.decl == DeclKind::FuncK)
+        || (syntaxTree->nodekind == DeclKind && syntaxTree->kind.decl == DeclKind::ParamK)  
+        || (syntaxTree->nodekind == StmtKind && syntaxTree->kind.stmt == StmtKind::CompoundK)
+        || ( syntaxTree->nodekind == StmtKind && syntaxTree->kind.stmt == StmtKind::ForK)
       ))
    {
       // printf("Entered MemeAllloc\n");
