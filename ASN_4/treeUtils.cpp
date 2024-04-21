@@ -425,6 +425,8 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
         || ((syntaxTree->nodekind == StmtK) && (syntaxTree->kind.stmt == StmtKind::CompoundK))
         || ((syntaxTree->nodekind == StmtK) && (syntaxTree->kind.stmt == StmtKind::ForK))
         || ((syntaxTree->nodekind == ExpK)  &&  (syntaxTree->kind.exp == ExpKind::IdK))
+        || ((syntaxTree->nodekind == ExpK)  &&  (syntaxTree->kind.exp == ExpKind::ConstantK) && (syntaxTree->type == Char)
+             && (syntaxTree->isArray))
       ))
    {
       // printf("Entered MemeAllloc\n");
