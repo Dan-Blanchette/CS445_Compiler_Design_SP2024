@@ -283,7 +283,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
 
       case DeclKind::FuncK:
          fprintf(out, "Func: %s", syntaxTree->attr.name);
-         fprintf(out, " returns %s",expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));   
+         fprintf(out, " returns %s", expTypeToStr(syntaxTree->type, syntaxTree->isArray, syntaxTree->isStatic));   
          // Assignment 4 additional Print Statement
          break;
       case DeclKind::ParamK:
