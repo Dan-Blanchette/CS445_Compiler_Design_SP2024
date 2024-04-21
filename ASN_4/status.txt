@@ -1,5 +1,0 @@
-I've gotten 8 marks so far.
-As part of my diff, I have a foffset size variable on a compound statement that is reporting -1
-as part of my compiler when the value should be -3.
-
-I'm trying to track down where the miscalculation is happening.
