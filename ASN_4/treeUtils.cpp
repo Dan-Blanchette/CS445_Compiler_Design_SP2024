@@ -420,7 +420,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    
    if (showAllocation && (
           syntaxTree->kind.decl == DeclKind::VarK 
-       || syntaxTree->kind.decl == DeclKind::FunK
+       || syntaxTree->kind.decl == DeclKind::FuncK
        || syntaxTree->kind.decl == DeclKind::ParamK  
        || syntaxTree->kind.stmt == StmtKind::CompoundK
        || syntaxTree->kind.stmt == StmtKind::ForK
