@@ -340,7 +340,6 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          {
             currentNode->type = ExpType::Boolean;
          }
-         break;
 
       case AssignK:
          treeTraverse(c0, symtab);
