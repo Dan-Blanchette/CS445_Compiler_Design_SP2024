@@ -370,11 +370,11 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          {
             temp->isUsed = true;
             currentNode->type = temp->type;
-            currentNode->isArray = temp->isArray;
-            currentNode->isStatic = temp->isStatic;
-            currentNode->varKind = temp->varKind;
-            currentNode->offset = temp->offset;
-            currentNode->size = temp->size;
+            // currentNode->isArray = temp->isArray;
+            // currentNode->isStatic = temp->isStatic;
+            // currentNode->varKind = temp->varKind;
+            // currentNode->offset = temp->offset;
+            // currentNode->size = temp->size;
          }
          else
          {
