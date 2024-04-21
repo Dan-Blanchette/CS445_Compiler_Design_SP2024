@@ -57,7 +57,7 @@ void commentLineNum(TreeNode *currentNode)
 {
    char buf[16];
 
-   if (linumFlag)
+   if (linenumFlag)
    {
       sprintf(buf, "%d", currentNode->lineno);
       emitComment((char *)"Line:", buf);
