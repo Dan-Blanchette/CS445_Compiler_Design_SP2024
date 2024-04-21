@@ -69,27 +69,38 @@ void codegenStatment(TreeNode *currentNode)
    switch(currentNode->kind.stmt)
    {
       case StmtKind::IfK:
+         break;
       case StmtKind::WhileK:
+         break;
       case StmtKind::ForK:
+         break;
       case StmtKind::CompoundK:
+         break;
       case StmtKind::ReturnK:
+         break;
       case StmtKind::BreakK:
+         break;
       case StmtKind::RangeK:
-      default:
+         break;
    }
 }
 void codegenExpression(TreeNode *currentNode)
 {
-   switch(currentNode->kind.exp)
+   switch (currentNode->kind.exp)
    {
       case ExpKind::AssignK:
+         break;
       case ExpKind::CallK:
+         break;
       case ExpKind::ConstantK:
+         break;
       case ExpKind::IdK:
+         break;
       case ExpKind::OpK:
-      default:
+         break;
    }
 }
+
 void codegenDecl(TreeNode *currentNode)
 {
    switch(currentNode->kind.decl)
@@ -142,7 +153,7 @@ void codegenGeneral(TreeNode *currentNode)
 // generation of initialization for run
 int codegenInit(int initJump, int globalOffset)
 {
-
+   return;
 }
 
 void codegenLibraryFun(TreeNode *currentNode)
