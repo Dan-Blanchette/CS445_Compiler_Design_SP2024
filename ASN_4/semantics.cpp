@@ -270,7 +270,7 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
             // traverse your right child
             treeTraverse(c1, symtab);
             symtab->leave();
-            foffset = newScopeOffset;
+            foffset = newScopeOffset; 
             printf("foffset  at end of if statement %d\n", foffset); //- 11
          }
          else
@@ -281,14 +281,14 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
             treeTraverse(c0, symtab);
             printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
             currentNode->size = foffset;
-            printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
+            printf("CompK %s foffset end %d\n", currentNode->attr.name, foffset);
             treeTraverse(c1, symtab);
          }
          break;
 
       case IfK:
          treeTraverse(c0, symtab);
-         currentNode->size = foffset - 1;
+         // currentNode->size = foffset - 1;
          treeTraverse(c1, symtab);
          treeTraverse(c2, symtab);
          break;
