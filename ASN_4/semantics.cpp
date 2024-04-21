@@ -31,7 +31,7 @@ TreeNode *semanticAnalysis(TreeNode *syntree,          // pass in and return an 
 {
    syntree = loadIOLib(syntree);
 
-   treeTraverse(syntree, symtabX); // This fixed the location errors not sure why
+   // treeTraverse(syntree, symtabX); 
 
    return syntree;
 }
@@ -142,7 +142,7 @@ void treeTraverse(TreeNode *currentNode, SymbolTable *symtab)
          printf("unknown nodekind\n");
          break;
    }
-   if(currentNode->sibling) 
+   if(currentNode->sibling != NULL) 
    {
       treeTraverse(currentNode->sibling, symtab);
    }
@@ -181,7 +181,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
          if(c0 != NULL)
          {
             currentNode->isAssigned = true;
-            // currentNode->varKind = Global; // Local
+            currentNode->varKind = Local; // Local
             treeTraverse(c0, symtab);
          }
          // no break statement needed here
@@ -206,12 +206,12 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
                goffset -= currentNode->size;
                
                {
-                  char *newName;
-                  newName = new char[strlen(currentNode->attr.name) + 10];
-                  sprintf(newName, "%s-%d", currentNode->attr.name, ++varCounter);
-                  symtab->insertGlobal(newName, currentNode);
+                  // char *newName;
+                  // newName = new char[strlen(currentNode->attr.name) + 10];
+                  // sprintf(newName, "%s-%d", currentNode->attr.name, ++varCounter);
+                  symtab->insertGlobal(currentNode->attr.name, currentNode);
 
-                  delete [] newName;
+                  // delete [] newName;
                }
             }
             else
@@ -257,7 +257,7 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
       case CompoundK:
          if (newScope)
          {
-            printf("Inside the if CompK\n");
+            // printf("Inside the if CompK\n");
             int newScopeOffset;
             symtab->enter((char *)"compound statement");
             newScopeOffset = foffset;
@@ -275,13 +275,13 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
          }
          else
          {
-            printf("Entered Else of CompoundK\n");
+            // printf("Entered Else of CompoundK\n");
             newScope = true;
-            printf("CompK %s foffset before %d\n", currentNode->attr.name, foffset);
+            // printf("CompK %s foffset before %d\n", currentNode->attr.name, foffset);
             treeTraverse(c0, symtab);
-            printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
+            // printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
             currentNode->size = foffset;
-            printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
+            // printf("CompK %s foffset after %d\n", currentNode->attr.name, foffset);
             treeTraverse(c1, symtab);
          }
          break;

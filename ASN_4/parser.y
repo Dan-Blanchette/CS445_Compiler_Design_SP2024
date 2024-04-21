@@ -554,14 +554,14 @@ int main(int argc, char **argv)
    syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
 
    // TreeTraverse Call
-   // treeTraverse(syntaxTree, symtab);
+   treeTraverse(syntaxTree, symtab);
 
    if(numErrors == 0)
    {
       printTree(stdout, syntaxTree, true, true);
       if (dotAST)
       {
-         printTree(stdout, syntaxTree, true, false);
+        // printTree(stdout, syntaxTree, true, false);
       }
    }
    else 
