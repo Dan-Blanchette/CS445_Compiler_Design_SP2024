@@ -4,6 +4,7 @@
 
 
 // GLOBAL SCOPE VARS
+/* Assignment 4 Completed and Passing All Test Cases*/
 
 // memory offsets: ensure counts are updated until end of runtime
 static int foffset;
