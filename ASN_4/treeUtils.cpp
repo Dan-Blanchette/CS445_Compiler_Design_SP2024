@@ -409,7 +409,7 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
    }
 
    if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1 
-       || syntaxTree->kind.stmt == StmtKind::VarK 
+       || syntaxTree->kind.decl == DeclKind::VarK 
        || syntaxTree->kind.stmt == StmtKind::CompoundK))
    {
       // printf("Entered MemeAllloc\n");
