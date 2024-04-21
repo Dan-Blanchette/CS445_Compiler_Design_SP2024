@@ -187,51 +187,51 @@ char *varkToStr(VarKind varK)
 char expBuff[100];
 char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
 {
-   char *exp_type_name;
-   // how do I convert the listed exp types to become a string value?
-   // how does this tie into the yacc file and it's functionality?
-   if (isStatic)
-   {
-      if (isArray)
-      {
-         switch(type)
-         {
-            case ExpType::Boolean:
-               return (char *)"static array of type bool";
-               break;
-            case ExpType::Char:
-               return (char *)"static array of type char";
-               break;
-            case ExpType::Integer:
-               return (char *)"static array of type int";
-               break;
-            case ExpType::UndefinedType:
-               return (char *)"static array of type UNDEFINED";
-               break;
-            case ExpType::Void:
-               return (char *)"static array of type void";
-               break;
-         }         
-      }
-      switch(type)
-      {
-         case ExpType::Boolean:
-            return (char *)"static type bool";
-            break;
-         case ExpType::Char:
-            return (char *)"static type char";
-            break;
-         case ExpType::Integer:
-            return (char *)"static type int";
-            break;
-         case ExpType::UndefinedType:
-            return (char *)"static type UNDEFINED";
-            break;
-         case ExpType::Void:
-            return (char *)"static type void";
-            break;
-      }
-   }
+   // char *exp_type_name;
+   // // how do I convert the listed exp types to become a string value?
+   // // how does this tie into the yacc file and it's functionality?
+   // if (isStatic)
+   // {
+   //    if (isArray)
+   //    {
+   //       switch(type)
+   //       {
+   //          case ExpType::Boolean:
+   //             return (char *)"static array of type bool";
+   //             break;
+   //          case ExpType::Char:
+   //             return (char *)"static array of type char";
+   //             break;
+   //          case ExpType::Integer:
+   //             return (char *)"static array of type int";
+   //             break;
+   //          case ExpType::UndefinedType:
+   //             return (char *)"static array of type UNDEFINED";
+   //             break;
+   //          case ExpType::Void:
+   //             return (char *)"static array of type void";
+   //             break;
+   //       }         
+   //    }
+   //    switch(type)
+   //    {
+   //       case ExpType::Boolean:
+   //          return (char *)"static type bool";
+   //          break;
+   //       case ExpType::Char:
+   //          return (char *)"static type char";
+   //          break;
+   //       case ExpType::Integer:
+   //          return (char *)"static type int";
+   //          break;
+   //       case ExpType::UndefinedType:
+   //          return (char *)"static type UNDEFINED";
+   //          break;
+   //       case ExpType::Void:
+   //          return (char *)"static type void";
+   //          break;
+   //    }
+   // }
 
  
    switch (type)

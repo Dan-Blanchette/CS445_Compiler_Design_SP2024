@@ -363,22 +363,21 @@ unaryExp : unaryop unaryExp {$$ = newExpNode(ExpKind::OpK,$1, $2);}
 
 // rule 41
 unaryop : '-' {$$ = $1; $$->svalue = (char *)"chsign";}
-   | '*' {$$ = $1; $$->svalue = (char *)"sizeof";}
-   | '?' {$$ = $1;}
+   | '*'      {$$ = $1; $$->svalue = (char *)"sizeof";}
+   | '?'      {$$ = $1;}
    ;
 
 // rule 42
 factor : immutable {$$ = $1;}
-   | mutable {$$ = $1;}
+   |     mutable   {$$ = $1;}
    ;
 
 // rule 43
 // not sure about part 2 on this one
-mutable : ID {$$ = newExpNode(ExpKind::IdK, $1); 
-         $$->isArray = false; $$->attr.name = $1->svalue; }
-   | ID '[' exp ']' {$$ = newExpNode(ExpKind::OpK, $2, nullptr, $3); 
-         $$->child[0] = newExpNode(ExpKind::IdK, $1);
-         $$->child[0]->attr.name = $1->svalue;} 
+mutable : ID {$$ = newExpNode(ExpKind::IdK, $1); $$->isArray = false; $$->attr.name = $1->svalue;}
+   | ID '[' exp ']' { $$ = newExpNode(ExpKind::OpK, $2, nullptr, $3); 
+                      $$->child[0] = newExpNode(ExpKind::IdK, $1);
+                      $$->child[0]->attr.name = $1->svalue;} 
    ;
 
 // rule 44
