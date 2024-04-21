@@ -9,6 +9,8 @@
 #include "symbolTable.h"
 #include "scanType.h"
 #include "dot.h"
+#include "codegen.h"
+#include "emitcode.h"
 
 using namespace std;
 
