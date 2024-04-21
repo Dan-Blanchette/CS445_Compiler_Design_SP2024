@@ -334,12 +334,12 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
    switch(currentNode->kind.exp)
    {
       case OpK:
-         treeTraverse(c0, symtab);
-         treeTraverse(c1, symtab);
-         if (currentNode->attr.op == int('<') || currentNode->attr.op == int('>'))
-         {
-            currentNode->type = ExpType::Boolean;
-         }
+         // treeTraverse(c0, symtab);
+         // treeTraverse(c1, symtab);
+         // if (currentNode->attr.op == int('<') || currentNode->attr.op == int('>'))
+         // {
+         //    currentNode->type = ExpType::Boolean;
+         // }
 
       case AssignK:
          treeTraverse(c0, symtab);
