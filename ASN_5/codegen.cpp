@@ -74,12 +74,9 @@ void codegenStatment(TreeNode *currentNode)
    switch(currentNode->kind.stmt)
    {
       case StmtKind::IfK:
-      {
          emitComment((char *)"IF");
-      }
-      break;
+         break;
       case StmtKind::WhileK:
-      {
          int skiploc =0, skiploc2 = 0, currloc =0;
          emitComment((char *)"WHILE");
          currloc = emitSkip(0); // return here to do the test
@@ -97,14 +94,11 @@ void codegenStatment(TreeNode *currentNode)
          backPatchAJumpToHere(breakloc, (char *)"Jump past loop[backpatch]");
          breakloc = skiploc;
          emitComment((char *)"END WHILE");
-      }
-      break;
+         break;
 
       case StmtKind::ForK:
-      {
          emitComment((char *)"FOR");
-      }
-      break;
+         break;
 
       case StmtKind::CompoundK:
          int savedToffset;
@@ -120,26 +114,19 @@ void codegenStatment(TreeNode *currentNode)
          emitComment((char *)"END COMPOUND");  
          break;
 
-      case StmtKind::ReturnK:
-      {
+      case StmtKind::ReturnK: 
          emitComment((char *)"RETURN");
-      }
-      break;
+         break;
 
       case StmtKind::BreakK:
-      {
          emitComment((char *)"BREAK");
-      }
-      break;
+         break;
 
       case StmtKind::RangeK:
-      {
          emitComment((char *)"RANGE");
-      }
-      break;
-
+         break;
       default:
-      break;
+         break;
    }
 }
 void codegenExpression(TreeNode *currentNode)
