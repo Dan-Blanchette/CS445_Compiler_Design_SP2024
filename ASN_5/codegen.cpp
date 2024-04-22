@@ -142,7 +142,7 @@ void codegenExpression(TreeNode *currentNode)
                 // if it's a string
                 if (currentNode->isArray)
                 {
-                  emitStrLit(currentNode->offset, currentNode->string);
+                  emitStrLit(currentNode->offset, currentNode->attr.string);
                   emitRM((char *)"LDA", AC, int(currentNode->offset), 0, (char *)"Load address of string");
                 }
                 else
