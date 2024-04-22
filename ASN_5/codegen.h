@@ -25,6 +25,9 @@ void codegenLibraryFun(TreeNode *currnode);
 void codegenFun(TreeNode *currnode);
 void codegenHeader(char *srcFile); // nice comments describing what is compiled
 void codegenGeneral(TreeNode *syntaxTree); // general code generation including I/O library
-int codegenInit(int initJump, int globalOffset); // generation of initialization for run
+void codegenInit(int initJump, int globalOffset); // generation of initialization for run
+void initGlobalArraySizes();
+void initAGlobalSymbol();
+int offsetRegister(VarKind v);
 
 #endif

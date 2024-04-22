@@ -140,12 +140,12 @@ varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false);}
 // UPDATE; set isStatic value to false.
 // has typeSpec in production which needs the setType function as part of node creation
 
-scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true;}
-   | typeSpec varDeclList ';'                   {$$ = $2; setType($2, $1, false); $$->isStatic=false;}
+scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true; yyerrok;}
+   | typeSpec varDeclList ';'                   {$$ = $2; setType($2, $1, false); $$->isStatic=false; yyerrok;}
    ;
 
 // rule 7
-varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3);}
+varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3); yyerrok;}
    | varDeclInit                          {$$ = $1;}
    ;
 
@@ -196,7 +196,7 @@ parmTypeList : typeSpec parmIdList {$$ = $2; setType($2, $1, false);}
 // we don't want the ',' to become a node so $2 aka ',' is of no use to us.
 // and $3 parmId is a sibling to $1 parmIdList.
 
-parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3);}
+parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3); yyerrok;}
    | parmId                         {$$ = $1;}
    ;
 
@@ -253,7 +253,7 @@ expstmt : exp ';' {$$ = $1;}
    ;
 
 // rule 22
-compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3);}
+compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3); yyerrok;}
    | compoundstmt ';' {$$ = $1;}
    ;
 
@@ -273,7 +273,8 @@ stmtList : stmtList stmt { $$ = addSibling($1, $2);}
 
 // rule 25
 returnstmt : RETURN ';' {$$ = newStmtNode(StmtKind::ReturnK, $1);}
-   | RETURN exp ';'     {$$ = newStmtNode(StmtKind::ReturnK, $1, $2);}
+   | RETURN exp ';'     {$$ = newStmtNode(StmtKind::ReturnK, $1, $2); yyerrok;}
+   | RETURN error ';'   {$$ = NULL; yyerrok; /*printf("ERR221\n");*/}
    ;
 
 //rule 26
@@ -404,7 +405,7 @@ args : argList {$$ = $1;}
 // we use $1 because arglist is a treeType and also the 3rd entry exp is as well
 // ',' is not and we will not need to make a new node for it.
 
-argList : argList ',' exp {$$ = addSibling($1, $3);}
+argList : argList ',' exp {$$ = addSibling($1, $3); yyerrok;}
    | exp {$$ = $1;}
    ;
 

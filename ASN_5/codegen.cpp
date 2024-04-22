@@ -50,7 +50,7 @@ void codegen(FILE *codeIn,          // where the code should be written
    initJump = emitSkip(1);
    codegenHeader(srcFile);
    codegenGeneral(syntaxTree);
-   // codegenInit(initJump, globalOffset);
+   codegenInit(initJump, globalOffset);
 }
 
 void commentLineNum(TreeNode *currentNode)
@@ -133,30 +133,31 @@ void codegenExpression(TreeNode *currentNode)
    switch (currentNode->kind.exp)
    {
       case ExpKind::AssignK:
-      
-         emitComment((char *)"ASSIGNMENT");
-      
-      break;
+         emitComment((char *)"ASSIGN");
+         break;
       case ExpKind::CallK:
-      
          emitComment((char *)"CALL");
-      
       break;
       case ExpKind::ConstantK:
-      
          emitComment((char *)"CONSTANT");
-      
       break;
       case ExpKind::IdK:
-      
          emitComment((char *)"ID");
-      
       break;
       case ExpKind::OpK:
-      
          emitComment((char *)"OP");
-      
-      break;
+         if (currentNode->child[1])
+         {
+            emitRM((char *)"ST", AC, toffset, FP, (char *)"Push left side");
+            toffset--;
+            emitComment((char *)"TOFF dec:", toffset);
+            codegenExpression(currentNode->child[1]);
+            toffset++;
+            emitComment((char *)"TOFF inc:", toffset);
+            emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop left into ac1");
+         }
+         // more code goes here
+         break;
    }
 }
 
@@ -209,11 +210,88 @@ void codegenGeneral(TreeNode *currentNode)
       currentNode = currentNode->sibling;
    }
 }
-// generation of initialization for run
-// int codegenInit(int initJump, int globalOffset)
-// {
-//    return;
-// }
+
+void initAGlobalSymbol(std::string sym, void *ptr)
+{
+   TreeNode *currentNode;
+   // printf("Symbol: %s\n", sym.c_str()); // dump the symbol table
+   currnode = (TreeNode *)ptr;
+   // printf("lineno: %d\n", currnode->lineno); // dump the symbol table
+   if (currnode->lineno != -1)
+   {
+      if (currnode->isArray)
+      {
+         emitRM((char *)"LDC", AC, currnode->size - 1, 6, (char *)"load size of array", currnode->attr.name);
+         emitRM((char *)"ST", AC, currnode->offset + 1, GP, (char *)"save size of array", currnode->attr.name);
+      }
+      if (currnode->kind.decl == VarK &&
+          (currnode->varKind == Global || currnode->varKind == LocalStatic))
+      {
+         if (currnode->child[0])
+         {
+            // compute rhs -> AC;
+            codegenExpression(currnode->child[0]);
+            // save it
+            emitRM((char *)"ST", AC, currnode->offset, GP,
+                   (char *)"Store variable", currnode->attr.name);
+         }
+      }
+   }
+}
+
+void initGlobalArraySizes()
+{
+   emitComment((char *)"INIT GLOBAL AND STATICS");
+   globals->applyToAllGlobal(initAGlobalSymbol());
+   emitComment((char *)"END INIT GLOBAL AND STATICS");
+}
+
+// generate init code
+void codegenInit(int initJump, int globalOffset)
+{
+   backPatchAJumpToHere(initJump, (char *)"Jump to init [backpatch]");
+   emitComment((char *)"INIT");
+   emitRM((char *)"LDA", FP, globalOffset, GP, (char *)"set first fram at the end of globals");
+   emitRM((char *)"ST", FP, 0, FP, (char *)"store old fp (point to self)");
+
+   // initGlobalArraySizes(); // needs defined
+
+   emitRM((char *)"LDA", AC, 1, PC, (char *)"Return address in ac");
+
+   TreeNode *funcNode;
+
+   funcNode = (TreeNode *)(globals->lookup((char *)"main"));
+   if(funcNode)
+   {
+      emitGotoAbs(funcNode->offset, (char *)"Jump to main");
+   }
+   else
+   {
+      printf((char *)"ERROR(LINKER): Procedure main is not defined.\n");
+      numErrors++;
+   }
+   emitRO((char *)"HALT", 0, 0, 0, (char *)"DONE!");
+   emitComment((char *)"END INIT");
+}
+
+// helper function for IdK, AssignK, & VarK
+int offsetRegister(VarKind v)
+{
+   switch(v):
+   {
+      case Local:
+         return FP;
+      case Parameter:
+         return FP;
+      case Global:
+         return GP;
+      case LocalStatic:
+         return GP;
+      default:
+         printf((char *)"ERROR(codegen):looking up offset register for a variable of type %d\n", v);
+         return 666;
+   }
+}
 
 void codegenLibraryFun(TreeNode *currentNode)
 {
