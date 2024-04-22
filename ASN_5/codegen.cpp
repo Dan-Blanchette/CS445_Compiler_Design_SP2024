@@ -66,22 +66,80 @@ void commentLineNum(TreeNode *currentNode)
 
 void codegenStatment(TreeNode *currentNode)
 {
+   // local state to remember stuff
+   int skiploc =0, skiploc2 = 0, currloc =0;
+   TreeNode *loopindex = NULL;
+   commentLineNum(currentNode);
+
    switch(currentNode->kind.stmt)
    {
       case StmtKind::IfK:
-         break;
+      {
+         emitComment((char *)"IF");
+      }
+      break;
       case StmtKind::WhileK:
-         break;
+      {
+         int skiploc =0, skiploc2 = 0, currloc =0;
+         emitComment((char *)"WHILE");
+         currloc = emitSkip(0); // return here to do the test
+         codegenExpression(currentNode->child[0]); // test expression
+
+         emitRM((char *)"JNZ", AC, 1, PC, (char *)"Jump to while part");
+         emitComment((char *)"DO");
+
+         skiploc = breakloc;   // save the old break statement return point
+         breakloc = emitSkip(1) // addr of instr that jumps to the end of the loop
+                                // this is also the backpatch point
+         codegenGeneral(currentNode->child[1]); // do body of loop
+         emitGotoAbs(currloc, (char *)"go to beginning of loop");
+         // backpatch jump to the end of the loop
+         backPatchAJumpToHere(breakloc, (char *)"Jump past loop[backpatch]");
+         breakloc = skiploc;
+         emitComment((char *)"END WHILE");
+      }
+      break;
+
       case StmtKind::ForK:
-         break;
+      {
+         emitComment((char *)"FOR");
+      }
+      break;
+
       case StmtKind::CompoundK:
+         int savedToffset;
+         savedToffset = toffset;
+         toffset = currentNode->size; // recover the end of activation record
+         emitComment((char *)"COMPOUND");
+         emitComment((char *)"TOFF set:", toffset);
+         codegenGeneral(currentNode->child[0]); // process inits
+         emitComment((char *)"Compound Body");
+         codegenGeneral(currentNode->child[1]); // process the body
+         toffset = savedToffset;
+         emitComment((char *)"TOFF set:", toffset);
+         emitComment((char *)"END COMPOUND");  
          break;
+
       case StmtKind::ReturnK:
-         break;
+      {
+         emitComment((char *)"RETURN");
+      }
+      break;
+
       case StmtKind::BreakK:
-         break;
+      {
+         emitComment((char *)"BREAK");
+      }
+      break;
+
       case StmtKind::RangeK:
-         break;
+      {
+         emitComment((char *)"RANGE");
+      }
+      break;
+
+      default:
+      break;
    }
 }
 void codegenExpression(TreeNode *currentNode)
@@ -89,15 +147,30 @@ void codegenExpression(TreeNode *currentNode)
    switch (currentNode->kind.exp)
    {
       case ExpKind::AssignK:
-         break;
+      {
+         emitComment((char *)"ASSIGNMENT");
+      }
+      break;
       case ExpKind::CallK:
-         break;
+      {
+         emitComment((char *)"CALL");
+      }
+      break;
       case ExpKind::ConstantK:
-         break;
+      {
+         emitComment((char *)"CONSTANT");
+      }
+      break;
       case ExpKind::IdK:
-         break;
+      {
+         emitComment((char *)"ID");
+      }
+      break;
       case ExpKind::OpK:
-         break;
+      {
+         emitComment((char *)"OP");
+      }
+      break;
    }
 }
 
@@ -221,4 +294,22 @@ void codegenFun(TreeNode *currentNode)
    emitComment((char *)"FUNCTION", currentNode->attr.name);
    toffset = currentNode->size; // recover the end of activation record
    emitComment((char *)"TOFF set:",toffset);
+
+   currentNode->offset = emitSkip(0); // offset holds the instruction address
+
+   // Store return address
+   emitRM((char *)"ST", AC, RETURNOFFSET, FP, (char *)"Store return address");
+
+   // Generate code for the statements..
+   codegenFun(currentNode->child[1]);
+   
+   //In case there was no return statement
+   // set return register to 0 and return
+   emitComment((char *)"Add standard closing in case there is no return statement");
+   emitRM((char *)"LDC", RT, 0, 6, (char *)"Set return value to 0");
+   emitRM((char *)"LD", AC, RETURNOFFSET, FP, (char *)"Load return address");
+   emitRM((char *)"LD", FP, OFPOFF, FP, (char *)"Adjust fp");
+   emitGoto(0, AC, (char *)"Return");
+
+   emitComment((char *)"END FUNCTION", currentNode->attr.name);
 }
