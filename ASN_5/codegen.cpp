@@ -134,29 +134,29 @@ void codegenExpression(TreeNode *currentNode)
    switch (currentNode->kind.exp)
    {
       case ExpKind::AssignK:
-      {
+      
          emitComment((char *)"ASSIGNMENT");
-      }
+      
       break;
       case ExpKind::CallK:
-      {
+      
          emitComment((char *)"CALL");
-      }
+      
       break;
       case ExpKind::ConstantK:
-      {
+      
          emitComment((char *)"CONSTANT");
-      }
+      
       break;
       case ExpKind::IdK:
-      {
+      
          emitComment((char *)"ID");
-      }
+      
       break;
       case ExpKind::OpK:
-      {
+      
          emitComment((char *)"OP");
-      }
+      
       break;
    }
 }
