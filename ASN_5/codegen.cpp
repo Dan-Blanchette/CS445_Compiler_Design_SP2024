@@ -77,7 +77,6 @@ void codegenStatment(TreeNode *currentNode)
          emitComment((char *)"IF");
          break;
       case StmtKind::WhileK:
-         int skiploc =0, skiploc2 = 0, currloc =0;
          emitComment((char *)"WHILE");
          currloc = emitSkip(0); // return here to do the test
          codegenExpression(currentNode->child[0]); // test expression
