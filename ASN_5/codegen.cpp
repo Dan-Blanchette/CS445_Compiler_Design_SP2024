@@ -363,25 +363,25 @@ void initAGlobalSymbol(std::string sym, void *ptr)
 {
    TreeNode *currentNode;
    // printf("Symbol: %s\n", sym.c_str()); // dump the symbol table
-   currnode = (TreeNode *)ptr;
-   // printf("lineno: %d\n", currnode->lineno); // dump the symbol table
-   if (currnode->lineno != -1)
+   currentNode = (TreeNode *)ptr;
+   // printf("lineno: %d\n", currentNode->lineno); // dump the symbol table
+   if (currentNode->lineno != -1)
    {
-      if (currnode->isArray)
+      if (currentNode->isArray)
       {
-         emitRM((char *)"LDC", AC, currnode->size - 1, 6, (char *)"load size of array", currnode->attr.name);
-         emitRM((char *)"ST", AC, currnode->offset + 1, GP, (char *)"save size of array", currnode->attr.name);
+         emitRM((char *)"LDC", AC, currentNode->size - 1, 6, (char *)"load size of array", currentNode->attr.name);
+         emitRM((char *)"ST", AC, currentNode->offset + 1, GP, (char *)"save size of array", currentNode->attr.name);
       }
-      if (currnode->kind.decl == VarK &&
-          (currnode->varKind == Global || currnode->varKind == LocalStatic))
+      if (currentNode->kind.decl == VarK &&
+          (currentNode->varKind == Global || currentNode->varKind == LocalStatic))
       {
-         if (currnode->child[0])
+         if (currentNode->child[0])
          {
             // compute rhs -> AC;
-            codegenExpression(currnode->child[0]);
+            codegenExpression(currentNode->child[0]);
             // save it
-            emitRM((char *)"ST", AC, currnode->offset, GP,
-                   (char *)"Store variable", currnode->attr.name);
+            emitRM((char *)"ST", AC, currentNode->offset, GP,
+                   (char *)"Store variable", currentNode->attr.name);
          }
       }
    }
