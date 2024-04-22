@@ -225,7 +225,10 @@ void codegenDecl(TreeNode *currentNode)
                   // Do Nothing Here
                case VarKind::None:
                   // Error condition
+               default:
+                  break;
             }
+
             if (currentNode->child[0])
             {
                codegenExpression(currentNode->child[0]);
@@ -235,6 +238,7 @@ void codegenDecl(TreeNode *currentNode)
                emitRO((char *)"SWP", AC2, AC3, 6, (char *)"pick smallest size");
                emitRO((char *)"MOV", AC1, AC, AC2, (char *)"array op =");
             }
+
             else
             {
                // !currentNode->isArray
@@ -275,7 +279,7 @@ void codegenDecl(TreeNode *currentNode)
          }
       case DeclKind::ParamK:
       // IMPORTANT: no instructions need to be allocated for parameters here
-      break;
+         break;
    }
 }
 
