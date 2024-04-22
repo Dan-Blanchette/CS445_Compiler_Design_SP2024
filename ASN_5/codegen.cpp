@@ -53,7 +53,6 @@ void codegen(FILE *codeIn,          // where the code should be written
    codegenInit(initJump, globalOffset);
 }
 
-
 void codegenStatment(TreeNode *currentNode)
 {
    // local state to remember stuff
@@ -87,6 +86,21 @@ void codegenStatment(TreeNode *currentNode)
 
       case StmtKind::ForK:
          emitComment((char *)"FOR");
+         currloc = emitSkip(0); // return here to do the test
+         codegenExpression(currentNode->child[0]); // test expression
+
+         emitRM((char *)"JNZ", AC, 1, PC, (char *)"Jump to for part");
+         emitComment((char *)"DO");
+
+         skiploc = breakloc;   // save the old break statement return point
+         breakloc = emitSkip(1); // addr of instr that jumps to the end of the loop
+                                // this is also the backpatch point
+         codegenGeneral(currentNode->child[1]); // do body of loop
+         emitGotoAbs(currloc, (char *)"go to beginning of loop");
+         // backpatch jump to the end of the loop
+         backPatchAJumpToHere(breakloc, (char *)"Jump past loop[backpatch]");
+         breakloc = skiploc;
+         emitComment((char *)"END FOR");
          break;
 
       case StmtKind::CompoundK:
@@ -118,6 +132,7 @@ void codegenStatment(TreeNode *currentNode)
          break;
    }
 }
+
 void codegenExpression(TreeNode *currentNode)
 {
    switch (currentNode->kind.exp)
@@ -173,7 +188,17 @@ void codegenExpression(TreeNode *currentNode)
             emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop left into ac1");
          }
          // more code goes here
+         switch (currentNode->attr.op)
+         {
+            case '+':
+               emitRO((char *)"ADD", AC, AC1, AC, (char *)"Op +");
+               // break out the case '+' statment
+               break;
+         }
+         // OpK switch statement break
          break;
+      // currentNode->kind.exp switch statement break
+      break;
    }
 }
 
@@ -183,6 +208,15 @@ void codegenDecl(TreeNode *currentNode)
    {
       case DeclKind::VarK:
          // You have a lot to do here!!!!
+         if (currentNode->isArray)
+         {
+            emitRM((char *)"LDC", 3, (currentNode->size - 1), 6, (char *)"load size of array", currentNode->attr.name);
+            emitRM((char *)"ST", AC, -2, FP, (char *)"save size of array", currentNode->attr.name);
+         }
+         if (currentNode->child[1])
+         {
+            // do more stuff here not sure what yet
+         }
          break;
       case DeclKind::FuncK:
          if (currentNode->lineno == -1)
