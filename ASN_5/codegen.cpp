@@ -86,7 +86,7 @@ void codegenStatment(TreeNode *currentNode)
          emitComment((char *)"DO");
 
          skiploc = breakloc;   // save the old break statement return point
-         breakloc = emitSkip(1) // addr of instr that jumps to the end of the loop
+         breakloc = emitSkip(1); // addr of instr that jumps to the end of the loop
                                 // this is also the backpatch point
          codegenGeneral(currentNode->child[1]); // do body of loop
          emitGotoAbs(currloc, (char *)"go to beginning of loop");
