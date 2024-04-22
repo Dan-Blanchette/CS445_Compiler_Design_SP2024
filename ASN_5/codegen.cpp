@@ -50,7 +50,7 @@ void codegen(FILE *codeIn,          // where the code should be written
    initJump = emitSkip(1);
    codegenHeader(srcFile);
    codegenGeneral(syntaxTree);
-   codegenInit(initJump, globalOffset);
+   // codegenInit(initJump, globalOffset);
 }
 
 void commentLineNum(TreeNode *currentNode)
