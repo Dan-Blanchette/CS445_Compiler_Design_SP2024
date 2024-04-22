@@ -16,18 +16,24 @@ void codegen(FILE *codeIn,          // where the code should be written
 	          int globalOffset,      // size of the global frame
              bool linenumFlagIn);   // comment with line numbers
 
+// Node Type Switch Case Functions
 void codegenStatment(TreeNode *currentNode);
 void codegenExpression(TreeNode *currentNode);
 void codegenDecl(TreeNode *currentNode);
 
 void commentLineNum(TreeNode *currnode);
+
 void codegenLibraryFun(TreeNode *currnode);
 void codegenFun(TreeNode *currnode);
-void codegenHeader(char *srcFile); // nice comments describing what is compiled
-void codegenGeneral(TreeNode *syntaxTree); // general code generation including I/O library
-void codegenInit(int initJump, int globalOffset); // generation of initialization for run
+
+// nice comments describing what is compiled
+void codegenHeader(char *srcFile); 
+// general code generation including I/O library
+void codegenGeneral(TreeNode *syntaxTree); 
+// generation of initialization for run
+void codegenInit(int initJump, int globalOffset); 
 void initGlobalArraySizes();
-void initAGlobalSymbol();
+void initAGlobalSymbol(std::string sym, void *ptr);
 int offsetRegister(VarKind v);
 
 #endif
