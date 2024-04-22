@@ -391,7 +391,7 @@ void initAGlobalSymbol(std::string sym, void *ptr)
 // helper function for IdK, AssignK, & VarK
 int offsetRegister(VarKind v)
 {
-   switch(v):
+   switch (v)
    {
       case Local:
          return FP;
