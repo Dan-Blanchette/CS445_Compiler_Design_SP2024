@@ -176,7 +176,8 @@ void codegenExpression(TreeNode *currentNode)
          emitComment((char *)"ID");
          break;
       case ExpKind::OpK:
-         emitComment((char *)"OP");
+         // process the lhs of the operation
+         codegenExpression(currentNode->child[0]);
          if (currentNode->child[1])
          {
             emitRM((char *)"ST", AC, toffset, FP, (char *)"Push left side");
@@ -208,14 +209,59 @@ void codegenDecl(TreeNode *currentNode)
    {
       case DeclKind::VarK:
          // You have a lot to do here!!!!
-         if (currentNode->isArray)
+         if(currentNode->isArray)
          {
-            emitRM((char *)"LDC", 3, (currentNode->size - 1), 6, (char *)"load size of array", currentNode->attr.name);
-            emitRM((char *)"ST", AC, -2, FP, (char *)"save size of array", currentNode->attr.name);
-         }
-         if (currentNode->child[1])
-         {
-            // do more stuff here not sure what yet
+            switch (currentNode->varKind)
+            {
+               case VarKind::Local:
+                  emitRM((char *)"LDC", AC, (currentNode->size-1), 6, 
+                         (char *)"load size of array", currentNode->attr.name);
+                  emitRM((char *)"ST", AC, currentNode->offset+1, offsetRegister(currentNode->varKind),
+                         (char *)"save size of array", currentNode->attr.name);
+                  break;
+               case VarKind::LocalStatic:
+               case VarKind::Parameter:
+               case VarKind::Global:
+                  // Do Nothing Here
+               case VarKind::None:
+                  // Error condition
+            }
+            if (currentNode->child[0])
+            {
+               codegenExpression(currentNode->child[0]);
+               emitRM((char *)"LDA", AC1, currentNode->offset, offsetRegister(currentNode->varKind),(char *)"address of lhs");
+               emitRM((char *)"LD", AC2, 1, AC, (char *)"size of rhs");
+               emitRM((char *)"LD", AC3, 1, AC1, (char *)"size of lhs");
+               emitRO((char *)"SWP", AC2, AC3, 6, (char *)"pick smallest size");
+               emitRO((char *)"MOV", AC1, AC, AC2, (char *)"array op =");
+            }
+            else
+            {
+               // !currentNode->isArray
+               // SCALAR VALUE initialization
+               if (currentNode->child[0])
+               {
+                  switch(currentNode->varKind)
+                  {
+                     case VarKind::Local:
+                     // compute rhs -> AC
+                     codegenExpression(currentNode->child[0]);
+                     // save it
+                     emitRM((char *)"ST", AC, currentNode->offset, FP, (char *)"Store variable", currentNode->attr.name);
+                        break;
+                     case VarKind::LocalStatic:
+                        break;
+                     case VarKind::Parameter:
+                        break;
+                     case VarKind::Global:
+                        // Do Nothing Here
+                        break;
+                     case VarKind::None:
+                        // Error condition
+                        break;
+                  }
+               }
+            }
          }
          break;
       case DeclKind::FuncK:
