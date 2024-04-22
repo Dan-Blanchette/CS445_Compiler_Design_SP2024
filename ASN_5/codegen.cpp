@@ -332,7 +332,7 @@ void codegenInit(int initJump, int globalOffset)
    emitRM((char *)"LDA", FP, globalOffset, GP, (char *)"set first fram at the end of globals");
    emitRM((char *)"ST", FP, 0, FP, (char *)"store old fp (point to self)");
 
-   // initGlobalArraySizes(); // needs defined
+   initGlobalArraySizes(); // needs defined
 
    emitRM((char *)"LDA", AC, 1, PC, (char *)"Return address in ac");
 
@@ -355,7 +355,7 @@ void codegenInit(int initJump, int globalOffset)
 void initGlobalArraySizes()
 {
    emitComment((char *)"INIT GLOBAL AND STATICS");
-   globals->applyToAllGlobal(initAGlobalSymbol());
+   globals->applyToAllGlobal(initAGlobalSymbol);
    emitComment((char *)"END INIT GLOBAL AND STATICS");
 }
 
