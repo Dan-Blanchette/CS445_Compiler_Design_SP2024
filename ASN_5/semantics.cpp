@@ -339,7 +339,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
    switch(currentNode->kind.exp)
    {
       case OpK:
-         // We fall through because OpK and AssignK traverse similarly
+         // We fall through because OpK and AssignK traverse similarly  
 
       case AssignK:
          treeTraverse(c0, symtab);
