@@ -143,7 +143,7 @@ void codegenExpression(TreeNode *currentNode)
          emitComment((char *)"ASSIGN");
          if (currentNode->child[0]->attr.op == '[')
          {
-            if (!currentNode->child[1] && currentnode->child[0]->varKind == Global)
+            if (!currentNode->child[1] && currentNode->child[0]->varKind == Global)
             {
                if (currentNode->attr.op == "++")
                {
