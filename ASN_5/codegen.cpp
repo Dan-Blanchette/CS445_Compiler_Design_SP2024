@@ -199,11 +199,36 @@ void codegenExpression(TreeNode *currentNode)
                switch (currentNode->attr.op)
                {
                   case ADDASS:
-                     printf("test");
-                  // case DEC:
-                  // case DIVASS:
-                  // case MULASS:
+                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currnode->child[0]->attr.name);
+                       emitRO((char *)"ADD", 3, 4, 3, (char *)"op +=");
+                       break;
+
+                  case DEC:
+                       emitRM((char*)"LD", AC1, int(currnode->child[0]->offset), 1, (char*)"load lhs variable", currnode->child[0]->attr.name);
+                       emitRO((char *)"LDA", AC, -1, 3, (char *)"decrement value of", currentNode->child[0]->attr.name);
+                       break;
+
+                  case DIVASS:
+                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currnode->child[0]->attr.name);
+                       emitRO((char *)"DIV", 3, 4, 3, (char *)"op /=");
+                       break;   
+
+                  case MULASS:
+                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currnode->child[0]->attr.name);
+                       emitRO((char *)"MUL", 3, 4, 3, (char *)"op *=");
+                       break;
+
+                  case SUBASS:
+                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currnode->child[0]->attr.name);
+                       emitRO((char *)"SUB", 3, 4, 3, (char *)"op -=");
+                       break;
+
+                  case INC:
+                       emitRM((char*)"LD", AC1, int(currnode->child[0]->offset), 1, (char*)"load lhs variable", currnode->child[0]->attr.name);
+                       emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
+                       break;
                }
+               emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
             }
          }
          break;
@@ -241,6 +266,7 @@ void codegenExpression(TreeNode *currentNode)
          break;
       case ExpKind::IdK:
          emitComment((char *)"ID");
+         emitRM((char *)"LD", AC, int(currentNode->offset), 1, (char *)"Load variable", currentNode->attr.name);
          break;
       case ExpKind::OpK:
          // process the lhs of the operation
@@ -272,6 +298,7 @@ void codegenExpression(TreeNode *currentNode)
 
 void codegenDecl(TreeNode *currentNode)
 {
+   commentLineNum(currentNode);
    switch(currentNode->kind.decl)
    {
       case DeclKind::VarK:
@@ -281,7 +308,7 @@ void codegenDecl(TreeNode *currentNode)
             switch (currentNode->varKind)
             {
                case VarKind::Local:
-                  emitRM((char *)"LDC", AC, (currentNode->size-1), 6, 
+                  emitRM((char *)"LDC", 3, (currentNode->size-1), 6, 
                          (char *)"load size of array", currentNode->attr.name);
                   emitRM((char *)"ST", AC, currentNode->offset+1, offsetRegister(currentNode->varKind),
                          (char *)"save size of array", currentNode->attr.name);
