@@ -66,7 +66,7 @@ void codegenStatment(TreeNode *currentNode)
    switch(currentNode->kind.stmt)
    {
       case StmtKind::IfK:
-         emitComment((char *)"IF");
+         //emitComment((char *)"IF");
          break;
       
       case StmtKind::WhileK:
@@ -120,6 +120,7 @@ void codegenStatment(TreeNode *currentNode)
          break;
 
       case StmtKind::CompoundK:
+         printf("Inside CompoundK\n");
          int savedToffset;
          savedToffset = toffset;
          toffset = currentNode->size; // recover the end of activation record
@@ -134,15 +135,15 @@ void codegenStatment(TreeNode *currentNode)
          break;
 
       case StmtKind::ReturnK: 
-         emitComment((char *)"RETURN");
+         //emitComment((char *)"RETURN");
          break;
 
       case StmtKind::BreakK:
-         emitComment((char *)"BREAK");
+         //emitComment((char *)"BREAK");
          break;
 
       case StmtKind::RangeK:
-         emitComment((char *)"RANGE");
+        // emitComment((char *)"RANGE");
          break;
       default:
          break;
