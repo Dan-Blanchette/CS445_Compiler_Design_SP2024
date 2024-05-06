@@ -70,7 +70,7 @@ void setType(TreeNode *t, ExpType type, bool isStatic)
 // the syntax tree goes here
 TreeNode *syntaxTree;
 
-// void yyerror(const char *msg);
+void yyerror(const char *msg);
 
 %}
 
@@ -499,10 +499,11 @@ char *largerTokens[LASTTERM+1]; // used in the utils.cpp file printing routines
     return tokenBuffer;
 }
 
-void yyerror (const char *msg)
+/* void yyerror (const char *msg)
 { 
    cout << "Error: " <<  msg << endl;
 }
+*/
 
 int main(int argc, char **argv) 
 {
