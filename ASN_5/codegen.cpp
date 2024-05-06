@@ -1,10 +1,5 @@
 #include "codegen.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "symbolTable.h"
-#include "emitcode.h"
-#include "parser.tab.h"
+#include "semantics.h"
 
 /*IMPORTANT NOTES:
 // For function nodes the offset is defined to be the position of the
