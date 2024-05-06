@@ -8,8 +8,7 @@
 #include "treeUtils.h"
 #include "symbolTable.h"
 #include "emitcode.h"
-#include "parser.l"
-#include "parser.y"
+#include "parser.tab.h"
 
 void codegen(FILE *codeIn,          // where the code should be written
              char *srcFile,         // name of file compiled
