@@ -154,12 +154,12 @@ void codegenExpression(TreeNode *currentNode)
    switch (currentNode->kind.exp)
    {
       case ExpKind::AssignK:
-         emitComment((char *)"ASSIGN");
+         // emitComment((char *)"ASSIGN");
          if (currentNode->child[0]->attr.op == '[')
          {
             if (!currentNode->child[1] && currentNode->child[0]->varKind == Global)
             {
-               if (currentNode->attr.op)
+               switch (currentNode->attr.op)
                {
                   case INC:
                      emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
@@ -245,8 +245,8 @@ void codegenExpression(TreeNode *currentNode)
             }
             emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
          }
-      // AssignK case break
-      break;
+         // AssignK case break
+         break;
 
       case ExpKind::CallK:
          emitComment((char *)"CALL");
@@ -282,7 +282,10 @@ void codegenExpression(TreeNode *currentNode)
          break;
       case ExpKind::IdK:
          emitComment((char *)"ID");
-         emitRM((char *)"LD", AC, int(currentNode->offset), 1, (char *)"Load variable", currentNode->attr.name);
+         if (currentNode->isArray != true)
+         {
+            emitRM((char *)"LD", AC, int(currentNode->offset), 1, (char *)"Load variable", currentNode->attr.name);
+         }
          break;
       case ExpKind::OpK:
          // process the lhs of the operation
@@ -297,7 +300,7 @@ void codegenExpression(TreeNode *currentNode)
             emitComment((char *)"TOFF inc:", toffset);
             emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop left into ac1");
          }
-         // more code goes here
+      
          switch (currentNode->attr.op)
          {
             case '+':
