@@ -119,7 +119,7 @@ void codegenStatment(TreeNode *currentNode)
       break;
 
    case StmtKind::CompoundK:
-      printf("Inside CompoundK\n");
+      // printf("Inside CompoundK\n");
       int savedToffset;
       savedToffset = toffset;
       toffset = currentNode->size; // recover the end of activation record
@@ -370,6 +370,7 @@ void codegenDecl(TreeNode *currentNode)
       {
          codegenFun(currentNode);
       }
+      break;
    case DeclKind::ParamK:
       // IMPORTANT: no instructions need to be allocated for parameters here
       break;
