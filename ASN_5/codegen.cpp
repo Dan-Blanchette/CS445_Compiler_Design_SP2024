@@ -167,6 +167,7 @@ void codegenExpression(TreeNode *currentNode)
                }
             }
          }
+
          if (currentNode->attr.op == '=')
          {
             if (currentNode->isArray)
@@ -249,10 +250,10 @@ void codegenExpression(TreeNode *currentNode)
          break;
 
       case ExpKind::CallK:
-         emitComment((char *)"CALL");
+         //emitComment((char *)"CALL");
          break;
       case ExpKind::ConstantK:
-         emitComment((char *)"CONSTANT");
+         // emitComment((char *)"CONSTANT");
          switch(currentNode->type)
          {
             case ExpType::Integer:
@@ -281,8 +282,12 @@ void codegenExpression(TreeNode *currentNode)
 
          break;
       case ExpKind::IdK:
-         emitComment((char *)"ID");
-         if (currentNode->isArray != true)
+         // emitComment((char *)"ID");
+         if (currentNode->isArray)
+         {
+            // do nothing
+         }
+         else
          {
             emitRM((char *)"LD", AC, int(currentNode->offset), 1, (char *)"Load variable", currentNode->attr.name);
          }
@@ -290,6 +295,7 @@ void codegenExpression(TreeNode *currentNode)
       case ExpKind::OpK:
          // process the lhs of the operation
          codegenExpression(currentNode->child[0]);
+
          if (currentNode->child[1])
          {
             emitRM((char *)"ST", AC, toffset, FP, (char *)"Push left side");
@@ -333,16 +339,12 @@ void codegenDecl(TreeNode *currentNode)
             }
             if (currentNode->child[1])
             {
-               
-               if (currentNode->child[0])
-               {
-                  codegenExpression(currentNode->child[0]);
-                  emitRM((char *)"LDA", AC1, currentNode->offset, offsetRegister(currentNode->varKind),(char *)"address of lhs");
-                  emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
-                  emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
-                  emitRO((char *)"SWP", 5, 6, 6, (char *)"pick smallest size");
-                  emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
-               }
+               codegenExpression(currentNode->child[0]);
+               emitRM((char *)"LDA", AC1, currentNode->offset, offsetRegister(currentNode->varKind),(char *)"address of lhs");
+               emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
+               emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
+               emitRO((char *)"SWP", 5, 6, 6, (char *)"pick smallest size");
+               emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
             }
 
          }
