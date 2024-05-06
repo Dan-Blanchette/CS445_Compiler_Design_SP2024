@@ -148,7 +148,7 @@ void codegenExpression(TreeNode *currentNode)
             {
                if (currentNode->attr.op)
                {
-                  case attr.op->INC:
+                  case INC:
                      emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
                      emitRM((char *)"LDA", 5, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
                }
