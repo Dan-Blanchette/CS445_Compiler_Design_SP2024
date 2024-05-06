@@ -68,6 +68,7 @@ void codegenStatment(TreeNode *currentNode)
       case StmtKind::IfK:
          emitComment((char *)"IF");
          break;
+      
       case StmtKind::WhileK:
          emitComment((char *)"WHILE");
          currloc = emitSkip(0); // return here to do the test
@@ -86,6 +87,18 @@ void codegenStatment(TreeNode *currentNode)
          breakloc = skiploc;
          emitComment((char *)"END WHILE");
          break;
+
+         OpK:
+            if (currentNode->child[1])
+            {
+               emitRM((char *)"ST", AC, toffset, FP, (char *)"Push left side");
+               toffset--;
+               emitComment((char *)"TOFF dec:", toffset);
+               codegenExpression(currentNode->child[1]);
+               toffset++;
+               emitComment((char *)"TOFF inc:", toffset);
+               emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop left into ac1");
+            }
 
       case StmtKind::ForK:
          emitComment((char *)"FOR");
