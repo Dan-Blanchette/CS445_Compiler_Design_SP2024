@@ -70,7 +70,7 @@ void setType(TreeNode *t, ExpType type, bool isStatic)
 // the syntax tree goes here
 TreeNode *syntaxTree;
 
-void yyerror(const char *msg);
+// void yyerror(const char *msg);
 
 %}
 
