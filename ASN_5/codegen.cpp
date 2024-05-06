@@ -1,6 +1,5 @@
 #include "codegen.h"
-#include "stdio.h"
-#include "string.h
+#include "parser.tab.h"
 
 /*IMPORTANT NOTES:
 // For function nodes the offset is defined to be the position of the
@@ -199,7 +198,7 @@ void codegenExpression(TreeNode *currentNode)
 
                switch (currentNode->attr.op)
                {
-                  case stoi("+="):
+                  case ADDASS:
                      printf("test");
                   // case DEC:
                   // case DIVASS:
