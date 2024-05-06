@@ -181,57 +181,59 @@ void codegenExpression(TreeNode *currentNode)
                   emitRO((char *)"SWP", AC2, AC3, AC3, (char *)"pick smallest size");
                   emitRO((char *)"MOV", AC1, AC, AC2, (char *)"array op =");
                }
-
-               else
-               {
-                  emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, AC3, (char *)"Load integer constant");
-                  emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);                  
-               }
             }
 
             else
             {
-               if (currentNode->child[1])
-               {
-                  emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, AC3, (char *)"Load integer constant");
-               }
-
-               switch (currentNode->attr.op)
-               {
-                  case ADDASS:
-                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                       emitRO((char *)"ADD", AC, AC1, AC, (char *)"op +=");
-                       break;
-
-                  case DEC:
-                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                       emitRO((char *)"LDA", AC, -1, AC, (char *)"decrement value of", currentNode->child[0]->attr.name);
-                       break;
-
-                  case DIVASS:
-                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                       emitRO((char *)"DIV", AC, AC1, AC, (char *)"op /=");
-                       break;   
-
-                  case MULASS:
-                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                       emitRO((char *)"MUL", AC, AC1, AC, (char *)"op *=");
-                       break;
-
-                  case SUBASS:
-                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                       emitRO((char *)"SUB", AC, AC1, AC, (char *)"op -=");
-                       break;
-
-                  case INC:
-                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                       emitRO((char *)"LDA", AC, 1, AC, (char *)"increment value of", currentNode->child[0]->attr.name);
-                       break;
-               }
-               emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, AC3, (char *)"Load integer constant");
+               emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);                  
             }
+            
+
+         else
+         {
+            if (currentNode->child[1])
+            {
+               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, AC3, (char *)"Load integer constant");
+            }
+
+            switch (currentNode->attr.op)
+            {
+               case ADDASS:
+                     emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
+                     emitRO((char *)"ADD", AC, AC1, AC, (char *)"op +=");
+                     break;
+
+               case DEC:
+                     emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
+                     emitRO((char *)"LDA", AC, -1, AC, (char *)"decrement value of", currentNode->child[0]->attr.name);
+                     break;
+
+               case DIVASS:
+                     emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
+                     emitRO((char *)"DIV", AC, AC1, AC, (char *)"op /=");
+                     break;   
+
+               case MULASS:
+                     emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
+                     emitRO((char *)"MUL", AC, AC1, AC, (char *)"op *=");
+                     break;
+
+               case SUBASS:
+                     emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
+                     emitRO((char *)"SUB", AC, AC1, AC, (char *)"op -=");
+                     break;
+
+               case INC:
+                     emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
+                     emitRO((char *)"LDA", AC, 1, AC, (char *)"increment value of", currentNode->child[0]->attr.name);
+                     break;
+            }
+            emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
          }
-         break;
+      // AssignK case break
+      break;
+
       case ExpKind::CallK:
          emitComment((char *)"CALL");
          break;
