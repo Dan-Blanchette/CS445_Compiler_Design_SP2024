@@ -1,5 +1,5 @@
 #include "codegen.h"
-#include "semantics.h"
+#include "parser.tab.h"
 
 /*IMPORTANT NOTES:
 // For function nodes the offset is defined to be the position of the

@@ -1,7 +1,7 @@
 #include "semantics.h"
 #include <string.h>
 #include "codegen.h"
-
+#include "parser.tab.h"
 
 // GLOBAL SCOPE VARS
 /* Assignment 4 Completed and Passing All Test Cases*/
