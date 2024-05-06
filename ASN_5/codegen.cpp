@@ -17,7 +17,7 @@
 // Globals
 extern int numErrors;
 extern int numWarnings;
-extern void yyparse();
+// extern void yyparse();
 extern int yydebug;
 extern TreeNode *syntaxTree;
 extern char **largerTokens;
