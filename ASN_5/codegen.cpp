@@ -196,13 +196,14 @@ void codegenExpression(TreeNode *currentNode)
                   emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
                }
 
-               // switch (currentNode->attr.op)
-               // {
-               //    case ADDASS:
-               //    // case DEC:
-               //    // case DIVASS:
-               //    // case MULASS:
-               // }
+               switch (currentNode->attr.op)
+               {
+                  case int("+="):
+                     printf("test");
+                  // case DEC:
+                  // case DIVASS:
+                  // case MULASS:
+               }
             }
          }
          break;
