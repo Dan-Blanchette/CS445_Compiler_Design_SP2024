@@ -188,6 +188,7 @@ void codegenExpression(TreeNode *currentNode)
                   emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);                  
                }
             }
+
             else
             {
                if (currentNode->child[1])
@@ -197,7 +198,7 @@ void codegenExpression(TreeNode *currentNode)
 
                switch (currentNode->attr.op)
                {
-                  case OpKind::ADDASS:
+                  case ADDASS:
                   // case DEC:
                   // case DIVASS:
                   // case MULASS:
