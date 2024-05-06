@@ -12,6 +12,8 @@ static int goffset = 0;
 static bool newScope = false;
 static int varCounter = 0;
 
+extern int numErrors;
+extern int numWarnings;
 // Progress Apr 8th NOTE:
 /* 
    I'm working on hunting down an incorrect size for the foffset
@@ -288,12 +290,22 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
          break;
 
       case IfK:
+         if (currentNode->child[0]->type != Boolean)
+         {
+            printf("SEMANTIC ERROR(%d): Symbol \'%s\' is not declared.\n", currentNode->lineno, currentNode->attr.name);
+            numErrors++;
+         }
          treeTraverse(c0, symtab);
          // currentNode->size = foffset - 1;
          treeTraverse(c1, symtab);
          treeTraverse(c2, symtab);
          break;
       case ReturnK:
+         if( currentNode->child[0]->isArray)
+         {
+            printf("SEMANTIC ERROR(%d): Symbol \'%s\' is not declared.\n", currentNode->lineno, currentNode->attr.name);
+            numErrors++;
+         }
          treeTraverse(c0, symtab);
          break;
       case RangeK:
@@ -380,6 +392,8 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          else
          {
            // This looks like an error condition symbol table value is not there w06
+           printf("SEMANTIC ERROR(%d): Symbol \'%s\' is not declared.\n", currentNode->lineno, currentNode->attr.name);
+           numErrors++;
          }
          break;
 
@@ -408,14 +422,15 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          }
          else
          {
-            printf("An Error Occured\n");
-            // probably an error w06
+            // printf("An Error Occured\n");
+            printf("SEMANTIC ERROR(%d): Symbol \'%s\' is not declared.\n", currentNode->lineno, currentNode->attr.name);
+            numErrors++;
          }
          break;
 
       default:
       // another error?
-         printf("unknown kind.exp");    
+      printf("unknown kind.exp");    
    }
 }
 
