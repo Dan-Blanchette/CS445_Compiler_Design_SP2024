@@ -135,15 +135,15 @@ decl : varDecl {$$ = $1;}
    ;
 
 //rule 5
-varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false);}
+varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false); yyerrok;}
    ;
 
 // rule 6
 // UPDATE; set isStatic value to false.
 // has typeSpec in production which needs the setType function as part of node creation
 
-scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true;}
-   | typeSpec varDeclList ';'                   {$$ = $2; setType($2, $1, false); $$->isStatic=false;}
+scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true; yyerrok;}
+   | typeSpec varDeclList ';'                   {$$ = $2; setType($2, $1, false); $$->isStatic=false; yyerrok;}
    ;
 
 // rule 7
@@ -255,7 +255,7 @@ expstmt : exp ';' {$$ = $1;}
    ;
 
 // rule 22
-compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3);}
+compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3); yyerrok;}
    | compoundstmt ';' {$$ = $1;}
    ;
 
