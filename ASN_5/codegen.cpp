@@ -460,7 +460,7 @@ void codegenFun(TreeNode *currentNode)
    //In case there was no return statement
    // set return register to 0 and return
    emitComment((char *)"Add standard closing in case there is no return statement");
-   emitRM((char *)"LDC", RT, 0, AC3, (char *)"Set return value to 0");
+   emitRM((char *)"LDC", RT, 0, 6, (char *)"Set return value to 0");
    emitRM((char *)"LD", AC, RETURNOFFSET, FP, (char *)"Load return address");
    emitRM((char *)"LD", FP, OFPOFF, FP, (char *)"Adjust fp");
    emitGoto(0, AC, (char *)"Return");
@@ -508,18 +508,19 @@ void codegenInit(int initJump, int globalOffset)
    initGlobalArraySizes(); // needs defined
 
    emitRM((char *)"LDA", AC, 1, PC, (char *)"Return address in ac");
-
-   TreeNode *funcNode;
-
-   funcNode = (TreeNode *)(globals->lookup((char *)"main"));
-   if(funcNode)
    {
-      emitGotoAbs(funcNode->offset, (char *)"Jump to main");
-   }
-   else
-   {
-      printf((char *)"ERROR(LINKER): Procedure main is not defined.\n");
-      numErrors++;
+      TreeNode *funcNode;
+
+      funcNode = (TreeNode *)(globals->lookup((char *)"main"));
+      if(funcNode)
+      {
+         emitGotoAbs(funcNode->offset, (char *)"Jump to main");
+      }
+      else
+      {
+         printf((char *)"ERROR(LINKER): Procedure main is not defined.\n");
+         numErrors++;
+      }
    }
    emitRO((char *)"HALT", 0, 0, 0, (char *)"DONE!");
    emitComment((char *)"END INIT");
