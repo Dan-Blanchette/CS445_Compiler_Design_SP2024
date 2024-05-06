@@ -188,6 +188,21 @@ void codegenExpression(TreeNode *currentNode)
                   emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);                  
                }
             }
+            else
+            {
+               if (currentNode->child[1])
+               {
+                  emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
+               }
+
+               switch (currentNode->attr.op)
+               {
+                  case OpKind::ADDASS:
+                  // case DEC:
+                  // case DIVASS:
+                  // case MULASS:
+               }
+            }
          }
          break;
       case ExpKind::CallK:
