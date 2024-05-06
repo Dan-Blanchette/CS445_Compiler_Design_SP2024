@@ -1,5 +1,6 @@
 #include "codegen.h"
 
+
 /*IMPORTANT NOTES:
 // For function nodes the offset is defined to be the position of the
 // function in the code space! This is accessible via the symbol table.
