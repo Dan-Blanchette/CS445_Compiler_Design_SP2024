@@ -204,7 +204,7 @@ void codegenExpression(TreeNode *currentNode)
                        break;
 
                   case DEC:
-                       emitRM((char*)"LD", AC1, int(currnode->child[0]->offset), 1, (char*)"load lhs variable", currnode->child[0]->attr.name);
+                       emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currnode->child[0]->attr.name);
                        emitRO((char *)"LDA", AC, -1, 3, (char *)"decrement value of", currentNode->child[0]->attr.name);
                        break;
 
