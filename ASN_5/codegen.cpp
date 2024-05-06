@@ -312,7 +312,6 @@ void codegenDecl(TreeNode *currentNode)
                emitRM((char *)"ST", AC, currentNode->offset+1, offsetRegister(currentNode->varKind),
                      (char *)"save size of array", currentNode->attr.name);
             }
-         }
             if (currentNode->child[1])
             {
                
@@ -327,36 +326,21 @@ void codegenDecl(TreeNode *currentNode)
                }
             }
 
-
-            else
+         }
+         
+         else
+         {
+            if (currentNode->child[1])
             {
-               // !currentNode->isArray
-               // SCALAR VALUE initialization
-               if (currentNode->child[0])
+               if (currentNode->varKind == Local)
                {
-                  switch(currentNode->varKind)
-                  {
-                     case VarKind::Local:
-                     // compute rhs -> AC
-                     codegenExpression(currentNode->child[0]);
-                     // save it
-                     emitRM((char *)"ST", AC, currentNode->offset, FP, (char *)"Store variable", currentNode->attr.name);
-                        break;
-                     case VarKind::LocalStatic:
-                        break;
-                     case VarKind::Parameter:
-                        break;
-                     case VarKind::Global:
-                        // Do Nothing Here
-                        break;
-                     case VarKind::None:
-                        // Error condition
-                        break;
-                  }
+                  codegenExpression(currentNode->child[0]);
+                  emitRM((char *)"ST", AC, currentNode->offset, FP, (char *)"Store variable", currentNode->attr.name);
                }
             }
          }
          break;
+
       case DeclKind::FuncK:
          if (currentNode->lineno == -1)
          {
