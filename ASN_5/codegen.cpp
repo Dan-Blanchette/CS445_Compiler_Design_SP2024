@@ -1,4 +1,5 @@
 #include "codegen.h"
+#include "emitcode.h"
 #include "parser.tab.h"
 
 /*IMPORTANT NOTES:
@@ -55,7 +56,7 @@ void codegen(FILE *codeIn,           // where the code should be written
    codegenInit(initJump, globalOffset);
 }
 
-void codegenStatment(TreeNode *currentNode)
+void codegenStatement(TreeNode *currentNode)
 {
    // local state to remember stuff
    int skiploc = 0, skiploc2 = 0, currloc = 0;
@@ -87,17 +88,6 @@ void codegenStatment(TreeNode *currentNode)
       emitComment((char *)"END WHILE");
       break;
 
-   OpK:
-      if (currentNode->child[1])
-      {
-         emitRM((char *)"ST", AC, toffset, FP, (char *)"Push left side");
-         toffset--;
-         emitComment((char *)"TOFF dec:", toffset);
-         codegenExpression(currentNode->child[1]);
-         toffset++;
-         emitComment((char *)"TOFF inc:", toffset);
-         emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop left into ac1");
-      }
 
    case StmtKind::ForK:
       emitComment((char *)"FOR");
@@ -120,6 +110,7 @@ void codegenStatment(TreeNode *currentNode)
 
    case StmtKind::CompoundK:
       // printf("Inside CompoundK\n");
+   {
       int savedToffset;
       savedToffset = toffset;
       toffset = currentNode->size; // recover the end of activation record
@@ -131,6 +122,7 @@ void codegenStatment(TreeNode *currentNode)
       toffset = savedToffset;
       emitComment((char *)"TOFF set:", toffset);
       emitComment((char *)"END COMPOUND");
+   }
       break;
 
    case StmtKind::ReturnK:
@@ -155,7 +147,7 @@ void codegenExpression(TreeNode *currentNode)
    {
    case ExpKind::AssignK:
       // emitComment((char *)"ASSIGN");
-      if (currentNode->child[0]->attr.op == '[')
+      if (currentNode->attr.op == '[')
       {
          if (!currentNode->child[1] && currentNode->child[0]->varKind == Global)
          {
@@ -246,6 +238,10 @@ void codegenExpression(TreeNode *currentNode)
             emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
          }
       }
+      else
+      {
+         int offReg;   
+      }
       // AssignK case break
       break;
 
@@ -330,36 +326,56 @@ void codegenDecl(TreeNode *currentNode)
       // You have a lot to do here!!!!
       if (currentNode->isArray)
       {
-         if (currentNode->varKind == Local)
+         switch(currentNode->varKind)
          {
-            emitRM((char *)"LDC", 3, (currentNode->size - 1), 6,
-                   (char *)"load size of array", currentNode->attr.name);
-            emitRM((char *)"ST", AC, -2, FP,
-                   (char *)"save size of array", currentNode->attr.name);
+            case Local:
+               emitRM((char *)"LDC", AC, currentNode->size-1, 6, (char *)"load size of array", currentNode->attr.name);
+               emitRM((char *)"ST", AC, currentNode->size+1, offsetRegister(currentNode->varKind), 
+                      (char *)"save size of array", currentNode->attr.name);
+               break;
+            case LocalStatic:
+            case Parameter:
+            case Global:
+               // do nothing here
+            break;
+            case None:
+               // error condition
          }
-         if (currentNode->child[1])
+         // Array value initialization
+         if (currentNode->child[0])
          {
             codegenExpression(currentNode->child[0]);
             emitRM((char *)"LDA", AC1, currentNode->offset, offsetRegister(currentNode->varKind), (char *)"address of lhs");
-            emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
-            emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
-            emitRO((char *)"SWP", 5, 6, 6, (char *)"pick smallest size");
-            emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
+            emitRM((char *)"LD", AC2, 1, AC, (char *)"size of rhs");
+            emitRM((char *)"LD", AC3, 1, AC1, (char *)"size of lhs");
+            emitRO((char *)"SWP", AC2, AC3, 6, (char *)"pick smallest size");
+            emitRO((char *)"MOV", AC1, AC, AC2, (char *)"array op=");                        
          }
-      }
-
-      else
-      {
-         if (currentNode->child[1])
+         // not an array
+         else
          {
-            if (currentNode->varKind == Local)
+            if (currentNode->child[0])
             {
-               codegenExpression(currentNode->child[0]);
-               emitRM((char *)"ST", AC, currentNode->offset, FP, (char *)"Store variable", currentNode->attr.name);
+               switch (currentNode->varKind)
+               {
+                  case Local:
+                     codegenExpression(currentNode->child[0]);
+                     emitRM((char *)"ST", AC, currentNode->offset, FP, (char *)"Store variable", currentNode->attr.name);
+                  case LocalStatic:
+                  case Parameter:
+                  case Global:
+                    // do nothing
+                    break;
+                  case None:
+                     //Error conidtion
+               }
             }
          }
+            //
+            break;
       }
-      break;
+         // VarK break
+         break;
 
    case DeclKind::FuncK:
       if (currentNode->lineno == -1)
@@ -488,7 +504,7 @@ void codegenGeneral(TreeNode *currentNode)
       switch (currentNode->nodekind)
       {
       case StmtK:
-         codegenStatment(currentNode);
+         codegenStatement(currentNode);
          break;
       case ExpK:
          emitComment((char *)"EXPRESSION");

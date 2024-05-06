@@ -17,7 +17,7 @@ void codegen(FILE *codeIn,          // where the code should be written
              bool linenumFlagIn);   // comment with line numbers
 
 // Node Type Switch Case Functions
-void codegenStatment(TreeNode *currentNode);
+void codegenStatement(TreeNode *currentNode);
 void codegenExpression(TreeNode *currentNode);
 void codegenDecl(TreeNode *currentNode);
 
