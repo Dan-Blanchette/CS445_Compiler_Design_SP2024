@@ -185,7 +185,7 @@ void codegenExpression(TreeNode *currentNode)
                else
                {
                   emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-                  emitRM((char *)"ST", currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);                  
+                  emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);                  
                }
             }
          }
