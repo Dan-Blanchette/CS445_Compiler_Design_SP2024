@@ -1,5 +1,6 @@
 #include "codegen.h"
-#include "string.h"
+#include "stdio.h"
+#include "string.h
 
 /*IMPORTANT NOTES:
 // For function nodes the offset is defined to be the position of the
