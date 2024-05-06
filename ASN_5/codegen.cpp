@@ -162,8 +162,8 @@ void codegenExpression(TreeNode *currentNode)
                if (currentNode->attr.op)
                {
                   case INC:
-                     emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), AC3, (char *)"Load integer constant");
-                     emitRM((char *)"LDA", AC2, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
+                     emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
+                     emitRM((char *)"LDA", 5, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
                }
             }
          }
@@ -180,25 +180,25 @@ void codegenExpression(TreeNode *currentNode)
                if (currentNode->varKind == Parameter)
                {
                   emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
-                  emitRM((char *)"LD", AC2, 1, AC, (char *)"size of rhs");
-                  emitRM((char *)"LD", AC3, 1, AC1, (char *)"size of lhs");
-                  emitRO((char *)"SWP", AC2, AC3, AC3, (char *)"pick smallest size");
-                  emitRO((char *)"MOV", AC1, AC, AC2, (char *)"array op =");
+                  emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
+                  emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
+                  emitRO((char *)"SWP", 5, 6, 6, (char *)"pick smallest size");
+                  emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
                }
 
                else if (currentNode->varKind != Parameter)
                {
                   emitRM((char *)"LDA", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
-                  emitRM((char *)"LD", AC2, 1, AC, (char *)"size of rhs");
-                  emitRM((char *)"LD", AC3, 1, AC1, (char *)"size of lhs");
-                  emitRO((char *)"SWP", AC2, AC3, AC3, (char *)"pick smallest size");
-                  emitRO((char *)"MOV", AC1, AC, AC2, (char *)"array op =");
+                  emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
+                  emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
+                  emitRO((char *)"SWP", 5, 6, 6, (char *)"pick smallest size");
+                  emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
                }
             }
 
             else
             {
-               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, AC3, (char *)"Load integer constant");
+               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);                  
             }
             
@@ -208,39 +208,39 @@ void codegenExpression(TreeNode *currentNode)
          {
             if (currentNode->child[1])
             {
-               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, AC3, (char *)"Load integer constant");
+               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
             }
 
             switch (currentNode->attr.op)
             {
                case ADDASS:
                      emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                     emitRO((char *)"ADD", AC, AC1, AC, (char *)"op +=");
+                     emitRO((char *)"ADD", 3, 4, 3, (char *)"op +=");
                      break;
 
                case DEC:
-                     emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                     emitRO((char *)"LDA", AC, -1, AC, (char *)"decrement value of", currentNode->child[0]->attr.name);
+                     emitRM((char*)"LD", AC, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
+                     emitRO((char *)"LDA", AC, -1, 3, (char *)"decrement value of", currentNode->child[0]->attr.name);
                      break;
 
                case DIVASS:
                      emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                     emitRO((char *)"DIV", AC, AC1, AC, (char *)"op /=");
+                     emitRO((char *)"DIV", 3, 4, 3, (char *)"op /=");
                      break;   
 
                case MULASS:
                      emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                     emitRO((char *)"MUL", AC, AC1, AC, (char *)"op *=");
+                     emitRO((char *)"MUL", 3, 4, 3, (char *)"op *=");
                      break;
 
                case SUBASS:
                      emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                     emitRO((char *)"SUB", AC, AC1, AC, (char *)"op -=");
+                     emitRO((char *)"SUB", 3, 4, 3, (char *)"op -=");
                      break;
 
                case INC:
-                     emitRM((char*)"LD", AC1, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
-                     emitRO((char *)"LDA", AC, 1, AC, (char *)"increment value of", currentNode->child[0]->attr.name);
+                     emitRM((char*)"LD", AC, int(currentNode->child[0]->offset), 1, (char*)"load lhs variable", currentNode->child[0]->attr.name);
+                     emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
                      break;
             }
             emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
@@ -256,10 +256,10 @@ void codegenExpression(TreeNode *currentNode)
          switch(currentNode->type)
          {
             case ExpType::Integer:
-               emitRM((char *)"LDC", AC, currentNode->attr.value, AC3, (char *)"Loading integer const");
+               emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Loading integer const");
                break;
             case ExpType::Boolean:
-               emitRM((char *)"LDC", AC, currentNode->attr.value, AC3, (char *)"Loading boolean const");
+               emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Loading boolean const");
                break;
             case ExpType::Char:
                 // if it's a string
@@ -270,7 +270,7 @@ void codegenExpression(TreeNode *currentNode)
                 }
                 else
                 {
-                  emitRM((char *)"LDC", AC, currentNode->attr.cvalue, AC3, (char *)"Load char constant");
+                  emitRM((char *)"LDC", AC, currentNode->attr.cvalue, 6, (char *)"Load char constant");
                 }
                 break;
 
@@ -323,9 +323,9 @@ void codegenDecl(TreeNode *currentNode)
          {    
             if (currentNode->varKind == Local)
             {
-               emitRM((char *)"LDC", AC, (currentNode->size-1), AC3, 
+               emitRM((char *)"LDC", 3, (currentNode->size-1), 6, 
                      (char *)"load size of array", currentNode->attr.name);
-               emitRM((char *)"ST", AC, currentNode->offset+1, offsetRegister(currentNode->varKind),
+               emitRM((char *)"ST", AC, -2, FP,
                      (char *)"save size of array", currentNode->attr.name);
             }
             if (currentNode->child[1])
@@ -335,10 +335,10 @@ void codegenDecl(TreeNode *currentNode)
                {
                   codegenExpression(currentNode->child[0]);
                   emitRM((char *)"LDA", AC1, currentNode->offset, offsetRegister(currentNode->varKind),(char *)"address of lhs");
-                  emitRM((char *)"LD", AC2, 1, AC, (char *)"size of rhs");
-                  emitRM((char *)"LD", AC3, 1, AC1, (char *)"size of lhs");
-                  emitRO((char *)"SWP", AC2, AC3, AC3, (char *)"pick smallest size");
-                  emitRO((char *)"MOV", AC1, AC, AC2, (char *)"array op =");
+                  emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
+                  emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
+                  emitRO((char *)"SWP", 5, 6, 6, (char *)"pick smallest size");
+                  emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
                }
             }
 
@@ -543,7 +543,7 @@ void initAGlobalSymbol(std::string sym, void *ptr)
    {
       if (currentNode->isArray)
       {
-         emitRM((char *)"LDC", AC, currentNode->size - 1, AC3, (char *)"load size of array", currentNode->attr.name);
+         emitRM((char *)"LDC", AC, currentNode->size - 1, 6, (char *)"load size of array", currentNode->attr.name);
          emitRM((char *)"ST", AC, currentNode->offset + 1, GP, (char *)"save size of array", currentNode->attr.name);
       }
       if (currentNode->kind.decl == VarK &&
