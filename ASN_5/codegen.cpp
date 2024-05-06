@@ -173,7 +173,7 @@ void codegenExpression(TreeNode *currentNode)
                   emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
                }
 
-               else if (currentNode->varkind != Parameter)
+               else if (currentNode->varKind != Parameter)
                {
                   emitRM((char *)"LDA", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
                   emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
