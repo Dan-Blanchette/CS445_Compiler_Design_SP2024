@@ -198,7 +198,7 @@ void codegenExpression(TreeNode *currentNode)
 
                switch (currentNode->attr.op)
                {
-                  case "+=":
+                  case stoi("+="):
                      printf("test");
                   // case DEC:
                   // case DIVASS:
