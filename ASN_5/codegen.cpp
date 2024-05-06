@@ -1,4 +1,9 @@
 #include "codegen.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "symbolTable.h"
+#include "emitcode.h"
 #include "parser.tab.h"
 
 /*IMPORTANT NOTES:

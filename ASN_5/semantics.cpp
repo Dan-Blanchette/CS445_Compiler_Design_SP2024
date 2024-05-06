@@ -1,6 +1,7 @@
 #include "semantics.h"
 #include <string.h>
 #include "parser.tab.h"
+#include "codegen.h"
 
 
 // GLOBAL SCOPE VARS
