@@ -142,18 +142,18 @@ void codegenExpression(TreeNode *currentNode)
    {
       case ExpKind::AssignK:
          emitComment((char *)"ASSIGN");
-         // if (currentNode->child[0]->attr.op == '[')
-         // {
-         //    if (!currentNode->child[1] && currentNode->child[0]->varKind == Global)
-         //    {
-         //       if (currentNode->attr.op)
-         //       {
-         //          case INC:
-         //             emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
-         //             emitRM((char *)"LDA", 5, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
-         //       }
-         //    }
-         // }
+         if (currentNode->child[0]->attr.op == '[')
+         {
+            if (!currentNode->child[1] && currentNode->child[0]->varKind == Global)
+            {
+               if (currentNode->attr.op)
+               {
+                  case INC:
+                     emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
+                     emitRM((char *)"LDA", 5, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
+               }
+            }
+         }
          if (currentNode->attr.op == '=')
          {
             if (currentNode->isArray)
