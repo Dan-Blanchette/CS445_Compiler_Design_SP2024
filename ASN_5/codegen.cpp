@@ -163,13 +163,29 @@ void codegenExpression(TreeNode *currentNode)
                   emitStrLit(currentNode->child[1]->offset, (char *)currentNode->child[1]->attr.string);
                   emitRM((char *)"LDA", AC, int(currentNode->child[1]->offset), 0, (char *)"Load address of array");
                }
+
                if (currentNode->varKind == Parameter)
                {
                   emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
                   emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
                   emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
-                  emitRM((char *)"SWP", 5, 6, 6, (char *)"smallest size");
-                  emitRM((char *)"MOV", 4, 3, 5, (char *)"array op =");
+                  emitRO((char *)"SWP", 5, 6, 6, (char *)"pick smallest size");
+                  emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
+               }
+
+               else if (currentNode->varkind != Parameter)
+               {
+                  emitRM((char *)"LDA", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
+                  emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
+                  emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
+                  emitRO((char *)"SWP", 5, 6, 6, (char *)"pick smallest size");
+                  emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
+               }
+
+               else
+               {
+                  emitRM((char *)"LDC", AC, currentNode->child[1].attr.value, 6, (char *)"Load integer constant");
+                  emitRM((char *)"ST", currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);                  
                }
             }
          }
