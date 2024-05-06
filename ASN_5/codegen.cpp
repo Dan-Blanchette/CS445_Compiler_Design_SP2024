@@ -141,6 +141,37 @@ void codegenExpression(TreeNode *currentNode)
    {
       case ExpKind::AssignK:
          emitComment((char *)"ASSIGN");
+         if (currentNode->child[0]->attr.op == '[')
+         {
+            if (!currentNode->child[1] && currentnode->child[0]->varKind == Global)
+            {
+               switch (currentNode->attr.op)
+               {
+                  case INC:
+                     emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
+                     emitRM((char *)"LDA", 5, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
+               }
+            }
+         }
+         if (currentNode->attr.op == '=')
+         {
+            if (currentNode->isArray)
+            {
+               if (currentNode->child[1])
+               {
+                  emitStrLit(currentNode->child[1]->offset, (char *)currentNode->child[1]->attr.string);
+                  emitRM((char *)"LDA", AC, int(currentNode->child[1]->offset), 0, (char *)"Load address of array");
+               }
+               if (currentNode->varKind == Parameter)
+               {
+                  emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
+                  emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
+                  emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
+                  emitRM((char *)"SWP", 5, 6, 6, (char *)"smallest size");
+                  emitRM();
+               }
+            }
+         }
          break;
       case ExpKind::CallK:
          emitComment((char *)"CALL");
@@ -164,7 +195,7 @@ void codegenExpression(TreeNode *currentNode)
                 }
                 else
                 {
-                  emitRM((char *)"LDC", AC, currentNode->attr.cvalue, 6, (char *)"Load char const");
+                  emitRM((char *)"LDC", AC, currentNode->attr.cvalue, 6, (char *)"Load char constant");
                 }
                 break;
 
