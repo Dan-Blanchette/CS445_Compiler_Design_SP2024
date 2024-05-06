@@ -450,7 +450,7 @@ void codegenFun(TreeNode *currentNode)
 void codegenHeader(char *srcFile)
 {
    emitComment((char *)"bC compiler version bC-Su23");
-   emitComment((char *)"File compiled:", srcFile);
+   emitComment((char *)"File compiled: ", srcFile);
 }
 
 // general code including the I/O library
