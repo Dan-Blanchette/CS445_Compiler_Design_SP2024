@@ -145,11 +145,10 @@ void codegenExpression(TreeNode *currentNode)
          {
             if (!currentNode->child[1] && currentnode->child[0]->varKind == Global)
             {
-               switch (currentNode->attr.op)
+               if (currentNode->attr.op == "++")
                {
-                  case INC:
-                     emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
-                     emitRM((char *)"LDA", 5, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
+                  emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
+                  emitRM((char *)"LDA", 5, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
                }
             }
          }
