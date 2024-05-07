@@ -560,7 +560,7 @@ int main(int argc, char **argv)
    // Initialize Syntax Tree and Symbol Table for semantic analysis
    syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
    // CODEGEN!!!!!
-   // codegen(stdout, argv[1], syntaxTree, symtab, globalOffset, false);
+   codegen(stdout, argv[1], syntaxTree, symtab, globalOffset, false);
 
    // TreeTraverse Call
    treeTraverse(syntaxTree, symtab);
@@ -573,13 +573,15 @@ int main(int argc, char **argv)
         // printTree(stdout, syntaxTree, true, false);
       }
    }
-//   else 
-//   {
+   else 
+   {
 //      printf("/****************\n");
 //      printf("Error: %d\n", numErrors);
 //      printf("*****************/\n");
-//   } 
-   printf("Number of warnings: %i\n", numWarnings);
-   printf("Number of errors: %i\n", numErrors);
+      printf("Number of warnings: %i\n", numWarnings);
+      printf("Number of errors: %i\n", numErrors);
+   } 
+//   printf("Number of warnings: %i\n", numWarnings);
+//   printf("Number of errors: %i\n", numErrors);
    return 0;
 }
