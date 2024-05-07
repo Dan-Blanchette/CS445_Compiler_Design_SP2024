@@ -17,6 +17,8 @@ using namespace std;
 #define YY_DECL extern "C" int yylex()
 #define YYSTYPE int
 
+extern int numErrors;
+extern int numWarnings;
 int line=1;
 char *lastToken=(char *)"";
 //extern int numErrors;
