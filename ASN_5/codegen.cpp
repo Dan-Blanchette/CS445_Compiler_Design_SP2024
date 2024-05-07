@@ -360,17 +360,17 @@ void codegenDecl(TreeNode *currentNode)
             {
                switch (currentNode->varKind)
                {
-                  case Local:
+                  case VarKind::Local:
                      // computer righ hand side
                      codegenExpression(currentNode->child[0]);
                      // save it
                      emitRM((char *)"ST", AC, currentNode->offset, FP, (char *)"Store variable", currentNode->attr.name);
-                  case LocalStatic:
-                  case Parameter:
-                  case Global:
+                  case VarKind::LocalStatic:
+                  case VarKind::Parameter:
+                  case VarKind::Global:
                      // do nothing
                      break;
-                  case None:
+                  case VarKind::None:
                      //Error conidtion
                }
             }          
