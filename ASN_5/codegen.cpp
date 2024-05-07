@@ -374,7 +374,7 @@ void codegenDecl(TreeNode *currentNode)
          //             //Error conidtion
          //       }
          //    }          
-         // }
+         }
          // VarK break
          break;
 
