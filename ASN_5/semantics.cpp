@@ -292,7 +292,7 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
       case IfK:
          if (currentNode->child[0]->type != Boolean)
          {
-            printf("SEMANTIC ERROR(%d): Symbol \'%s\' is not declared.\n", currentNode->lineno, currentNode->attr.name);
+            printf("SEMANTIC ERROR(%d): Expecting Boolean test condition in if statement but got type int.\n", currentNode->lineno);
             numErrors++;
          }
          treeTraverse(c0, symtab);
@@ -303,7 +303,7 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
       case ReturnK:
          if( currentNode->child[0]->isArray)
          {
-            printf("SEMANTIC ERROR(%d): Symbol \'%s\' is not declared.\n", currentNode->lineno, currentNode->attr.name);
+            printf("SEMANTIC ERROR(%d): Cannot return an array.\n", currentNode->lineno);
             numErrors++;
          }
          treeTraverse(c0, symtab);
@@ -360,7 +360,17 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          if(currentNode->attr.op == int('+') || currentNode->attr.op == int('[') || 
             currentNode->attr.op == int('='))
          {
-            currentNode->type = c0->type;
+            if (currentNode->child[1]->type == UndefinedType)
+            {
+               printf("SEMANTIC ERROR(%d): '=' requires operands of the same type but lhs is %s and rhs is %s.\n",
+                          currentNode->lineno, expTypeToStr(currentNode->type), 
+                          expTypeToStr(currentNode->child[1]->type));
+                          numErrors++;
+            }
+            else
+            {
+               currentNode->type = c0->type;
+            }
          }
          else if(currentNode->attr.op == AND || currentNode->attr.op == OR || 
                   currentNode->attr.op == LEQ || currentNode->attr.op == GEQ ||
