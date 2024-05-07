@@ -326,21 +326,21 @@ void codegenDecl(TreeNode *currentNode)
          // You have a lot to do here!!!!
          if (currentNode->isArray)
          {
-            switch(currentNode->varKind)
-            {
-               case VarKind::Local:
-                  emitRM((char *)"LDC", AC, currentNode->size-1, 6, (char *)"load size of array", currentNode->attr.name);
-                  emitRM((char *)"ST", AC, currentNode->offset+1, offsetRegister(currentNode->varKind), 
-                        (char *)"save size of array", currentNode->attr.name);
-                  break;
-               case VarKind::LocalStatic:
-               case VarKind::Parameter:
-               case VarKind::Global:
-                  // do nothing here
-                  break;
-               case VarKind::None:
-                  // Error condition
-            }
+            // switch(currentNode->varKind)
+            // {
+            //    case VarKind::Local:
+            //       emitRM((char *)"LDC", AC, currentNode->size-1, 6, (char *)"load size of array", currentNode->attr.name);
+            //       emitRM((char *)"ST", AC, currentNode->offset+1, offsetRegister(currentNode->varKind), 
+            //             (char *)"save size of array", currentNode->attr.name);
+            //       break;
+            //    case VarKind::LocalStatic:
+            //    case VarKind::Parameter:
+            //    case VarKind::Global:
+            //       // do nothing here
+            //       break;
+            //    case VarKind::None:
+            //       // Error condition
+            // }
          //    // Array value initialization
          //    if (currentNode->child[0])
          //    {
