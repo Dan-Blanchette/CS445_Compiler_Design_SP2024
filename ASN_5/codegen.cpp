@@ -328,17 +328,17 @@ void codegenDecl(TreeNode *currentNode)
          {
             switch(currentNode->varKind)
             {
-               case Varkind::Local:
+               case VarKind::Local:
                   emitRM((char *)"LDC", AC, currentNode->size-1, 6, (char *)"load size of array", currentNode->attr.name);
                   emitRM((char *)"ST", AC, currentNode->offset+1, offsetRegister(currentNode->varKind), 
                         (char *)"save size of array", currentNode->attr.name);
                   break;
-               case Varkind::LocalStatic:
-               case Varkind::Parameter:
-               case Varkind::Global:
+               case VarKind::LocalStatic:
+               case VarKind::Parameter:
+               case VarKind::Global:
                   // do nothing here
                   break;
-               case Varkind::None:
+               case VarKind::None:
                   // Error condition
             }
             // Array value initialization
