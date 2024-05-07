@@ -1,7 +1,7 @@
 #include "semantics.h"
 #include <string.h>
+#include "codegen.h"
 #include "parser.tab.h"
-
 
 // GLOBAL SCOPE VARS
 /* Assignment 4 Completed and Passing All Test Cases*/
@@ -12,6 +12,8 @@ static int goffset = 0;
 static bool newScope = false;
 static int varCounter = 0;
 
+extern int numErrors;
+extern int numWarnings;
 // Progress Apr 8th NOTE:
 /* 
    I'm working on hunting down an incorrect size for the foffset
@@ -288,12 +290,22 @@ void treeTraverseStmt(TreeNode *currentNode, SymbolTable *symtab)
          break;
 
       case IfK:
+         if (currentNode->child[0]->type != Boolean)
+         {
+            printf("SEMANTIC ERROR(%d): Expecting Boolean test condition in if statement but got type int.\n", currentNode->lineno);
+            numErrors++;
+         }
          treeTraverse(c0, symtab);
          // currentNode->size = foffset - 1;
          treeTraverse(c1, symtab);
          treeTraverse(c2, symtab);
          break;
       case ReturnK:
+         if( currentNode->child[0]->isArray)
+         {
+            printf("SEMANTIC ERROR(%d): Cannot return an array.\n", currentNode->lineno);
+            numErrors++;
+         }
          treeTraverse(c0, symtab);
          break;
       case RangeK:
@@ -339,12 +351,7 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
    switch(currentNode->kind.exp)
    {
       case OpK:
-         // treeTraverse(c0, symtab);
-         // treeTraverse(c1, symtab);
-         // if (currentNode->attr.op == int('<') || currentNode->attr.op == int('>'))
-         // {
-         //    currentNode->type = ExpType::Boolean;
-         // }
+         // We fall through because OpK and AssignK traverse similarly  
 
       case AssignK:
          treeTraverse(c0, symtab);
@@ -353,7 +360,17 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          if(currentNode->attr.op == int('+') || currentNode->attr.op == int('[') || 
             currentNode->attr.op == int('='))
          {
-            currentNode->type = c0->type;
+            if (currentNode->child[1]->type == UndefinedType)
+            {
+               printf("SEMANTIC ERROR(%d): '=' requires operands of the same type but lhs is %s and rhs is %s.\n",
+                          currentNode->lineno, expTypeToStr(currentNode->type), 
+                          expTypeToStr(currentNode->child[1]->type));
+                          numErrors++;
+            }
+            else
+            {
+               currentNode->type = c0->type;
+            }
          }
          else if(currentNode->attr.op == AND || currentNode->attr.op == OR || 
                   currentNode->attr.op == LEQ || currentNode->attr.op == GEQ ||
@@ -385,6 +402,8 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          else
          {
            // This looks like an error condition symbol table value is not there w06
+           printf("SEMANTIC ERROR(%d): Symbol \'%s\' is not declared.\n", currentNode->lineno, currentNode->attr.name);
+           numErrors++;
          }
          break;
 
@@ -413,14 +432,15 @@ void treeTraverseExp(TreeNode *currentNode, SymbolTable *symtab)
          }
          else
          {
-            printf("An Error Occured\n");
-            // probably an error w06
+            // printf("An Error Occured\n");
+            printf("SEMANTIC ERROR(%d): Symbol \'%s\' is not declared.\n", currentNode->lineno, currentNode->attr.name);
+            numErrors++;
          }
          break;
 
       default:
       // another error?
-         printf("unknown kind.exp");    
+      printf("unknown kind.exp");    
    }
 }
 

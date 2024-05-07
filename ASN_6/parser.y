@@ -9,10 +9,13 @@
 #include "symbolTable.h"
 #include "scanType.h"
 #include "dot.h"
+#include "codegen.h"
+#include "emitcode.h"
+#include "yyerror.h"
 
 using namespace std;
 
-// Assignment 4 in progress...
+// Assignment 5 in progress...
 //for pushing
 
 extern "C" int yylex();
@@ -119,7 +122,7 @@ program : precompList declList {syntaxTree = $2;}
 // changing NULL to nullptr here. Not sure if that is the issue.
 precompList : precompList PRECOMPILER {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
    | PRECOMPILER                      {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
-   | /*empty*/                        {$$ = nullptr;}
+   | /*empty*/                        {$$ = NULL;}
    ;
 
 // rule 3
@@ -133,7 +136,7 @@ decl : varDecl {$$ = $1;}
    ;
 
 //rule 5
-varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false);}
+varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false); yyerrok;}
    ;
 
 // rule 6
@@ -145,7 +148,7 @@ scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true);
    ;
 
 // rule 7
-varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3); yyerrok;}
+varDeclList : varDeclList ',' varDeclInit {$$ = addSibling($1, $3);}
    | varDeclInit                          {$$ = $1;}
    ;
 
@@ -196,7 +199,7 @@ parmTypeList : typeSpec parmIdList {$$ = $2; setType($2, $1, false);}
 // we don't want the ',' to become a node so $2 aka ',' is of no use to us.
 // and $3 parmId is a sibling to $1 parmIdList.
 
-parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3); yyerrok;}
+parmIdList : parmIdList ',' parmId  {$$ = addSibling($1, $3);}
    | parmId                         {$$ = $1;}
    ;
 
@@ -273,8 +276,8 @@ stmtList : stmtList stmt { $$ = addSibling($1, $2);}
 
 // rule 25
 returnstmt : RETURN ';' {$$ = newStmtNode(StmtKind::ReturnK, $1);}
-   | RETURN exp ';'     {$$ = newStmtNode(StmtKind::ReturnK, $1, $2); yyerrok;}
-   | RETURN error ';'   {$$ = NULL; yyerrok; /*printf("ERR221\n");*/}
+   | RETURN exp ';'     {$$ = newStmtNode(StmtKind::ReturnK, $1, $2);}
+   | RETURN error ';'   {$$ = NULL; yyerrok;/*printf("ERR221\n");*/}
    ;
 
 //rule 26
@@ -405,7 +408,7 @@ args : argList {$$ = $1;}
 // we use $1 because arglist is a treeType and also the 3rd entry exp is as well
 // ',' is not and we will not need to make a new node for it.
 
-argList : argList ',' exp {$$ = addSibling($1, $3); yyerrok;}
+argList : argList ',' exp {$$ = addSibling($1, $3);}
    | exp {$$ = $1;}
    ;
 
@@ -498,10 +501,11 @@ char *largerTokens[LASTTERM+1]; // used in the utils.cpp file printing routines
     return tokenBuffer;
 }
 
-void yyerror (const char *msg)
+/* void yyerror (const char *msg)
 { 
    cout << "Error: " <<  msg << endl;
 }
+*/
 
 int main(int argc, char **argv) 
 {
@@ -515,6 +519,8 @@ int main(int argc, char **argv)
    bool dotAST = false;
    extern FILE *yyin;
    
+   initErrorProcessing();
+
    while ((opt = getopt(argc, argv, "w")) != -1)
    {
       switch (opt)
@@ -553,6 +559,8 @@ int main(int argc, char **argv)
 
    // Initialize Syntax Tree and Symbol Table for semantic analysis
    syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
+   // CODEGEN!!!!!
+   // codegen(stdout, argv[1], syntaxTree, symtab, globalOffset, false);
 
    // TreeTraverse Call
    treeTraverse(syntaxTree, symtab);
@@ -565,12 +573,12 @@ int main(int argc, char **argv)
         // printTree(stdout, syntaxTree, true, false);
       }
    }
-   else 
-   {
-      printf("/****************\n");
-      printf("Error: %d\n", numErrors);
-      printf("*****************/\n");
-   }
+//   else 
+//   {
+//      printf("/****************\n");
+//      printf("Error: %d\n", numErrors);
+//      printf("*****************/\n");
+//   } 
    printf("Number of warnings: %i\n", numWarnings);
    printf("Number of errors: %i\n", numErrors);
    return 0;

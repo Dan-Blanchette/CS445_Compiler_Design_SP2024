@@ -207,7 +207,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
                return (char *)"static array of type int";
                break;
             case ExpType::UndefinedType:
-               return (char *)"static array of type UNDEFINED";
+                (char *)"static array of type UNDEFINED";
                break;
             case ExpType::Void:
                return (char *)"static array of type void";
@@ -379,6 +379,11 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                   fprintf(out, " '%c'",  syntaxTree->attr.cvalue);
 
             }
+            else if (syntaxTree->type == ExpType::UndefinedType)
+            {
+               fprintf(out, "SYSTEM ERROR: parse tree contains invalid type for constant: %s\n", expTypeToStr(syntaxTree->type));
+            }
+            // it's an integer
             else 
             {
                fprintf(out, " %d", syntaxTree->attr.value);
@@ -409,14 +414,6 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
       fprintf(out, "I'm a node, I should say something here...", syntaxTree->nodekind);
    }
 
-   // if (showAllocation && (syntaxTree->varKind != VarKind::None || syntaxTree->size != 1 
-   //     || syntaxTree->kind.decl == DeclKind::VarK 
-   //     || syntaxTree->kind.stmt == StmtKind::CompoundK))
-   // {
-   //    // printf("Entered MemeAllloc\n");
-   //    // updated to fprintf (might be the issue as it was not using the filestream object originally printf())
-   //    fprintf(out, " [mem: %s loc: %d size: %d]", varkToStr(syntaxTree->varKind), syntaxTree->offset, syntaxTree->size);
-   // }  
 
    
    if (showAllocation && ( 
