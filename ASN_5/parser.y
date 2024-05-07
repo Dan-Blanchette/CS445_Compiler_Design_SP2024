@@ -11,6 +11,7 @@
 #include "dot.h"
 #include "codegen.h"
 #include "emitcode.h"
+#include "yyerror.h"
 
 using namespace std;
 
