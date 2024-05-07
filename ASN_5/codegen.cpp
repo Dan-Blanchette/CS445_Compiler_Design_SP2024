@@ -322,74 +322,75 @@ void codegenDecl(TreeNode *currentNode)
    commentLineNum(currentNode);
    switch (currentNode->kind.decl)
    {
-   case DeclKind::VarK:
-      // You have a lot to do here!!!!
-      if (currentNode->isArray)
-      {
-         switch(currentNode->varKind)
+      case DeclKind::VarK:
+         // You have a lot to do here!!!!
+         if (currentNode->isArray)
          {
-            case Local:
-               emitRM((char *)"LDC", AC, currentNode->size-1, 6, (char *)"load size of array", currentNode->attr.name);
-               emitRM((char *)"ST", AC, currentNode->size+1, offsetRegister(currentNode->varKind), 
-                      (char *)"save size of array", currentNode->attr.name);
-               break;
-            case LocalStatic:
-            case Parameter:
-            case Global:
-               // do nothing here
-            break;
-            case None:
-               // error condition
+            switch(currentNode->varKind)
+            {
+               case Local:
+                  emitRM((char *)"LDC", AC, currentNode->size-1, 6, (char *)"load size of array", currentNode->attr.name);
+                  emitRM((char *)"ST", AC, currentNode->offset+1, offsetRegister(currentNode->varKind), 
+                        (char *)"save size of array", currentNode->attr.name);
+                  break;
+               case LocalStatic:
+               case Parameter:
+               case Global:
+                  // do nothing here
+                  break;
+               case None:
+                  // Error condition
+            }
+            // Array value initialization
+            if (currentNode->child[0])
+            {
+               codegenExpression(currentNode->child[0]);
+               emitRM((char *)"LDA", AC1, currentNode->offset, offsetRegister(currentNode->varKind), (char *)"address of lhs");
+               emitRM((char *)"LD", AC2, 1, AC, (char *)"size of rhs");
+               emitRM((char *)"LD", AC3, 1, AC1, (char *)"size of lhs");
+               emitRO((char *)"SWP", AC2, AC3, 6, (char *)"pick smallest size");
+               emitRO((char *)"MOV", AC1, AC, AC2, (char *)"array op=");                        
+            }
          }
-         // Array value initialization
-         if (currentNode->child[0])
-         {
-            codegenExpression(currentNode->child[0]);
-            emitRM((char *)"LDA", AC1, currentNode->offset, offsetRegister(currentNode->varKind), (char *)"address of lhs");
-            emitRM((char *)"LD", AC2, 1, AC, (char *)"size of rhs");
-            emitRM((char *)"LD", AC3, 1, AC1, (char *)"size of lhs");
-            emitRO((char *)"SWP", AC2, AC3, 6, (char *)"pick smallest size");
-            emitRO((char *)"MOV", AC1, AC, AC2, (char *)"array op=");                        
-         }
-         // not an array
+         // currentNode is not an array
          else
          {
+            // SCALAR VALUE initialization
             if (currentNode->child[0])
             {
                switch (currentNode->varKind)
                {
                   case Local:
+                     // computer righ hand side
                      codegenExpression(currentNode->child[0]);
+                     // save it
                      emitRM((char *)"ST", AC, currentNode->offset, FP, (char *)"Store variable", currentNode->attr.name);
                   case LocalStatic:
                   case Parameter:
                   case Global:
-                    // do nothing
-                    break;
+                     // do nothing
+                     break;
                   case None:
                      //Error conidtion
                }
-            }
+            }          
          }
-            //
-            break;
-      }
          // VarK break
          break;
 
-   case DeclKind::FuncK:
-      if (currentNode->lineno == -1)
-      {
-         codegenLibraryFun(currentNode); // need to define codegenLibraryFun
-      }
-      else
-      {
-         codegenFun(currentNode);
-      }
-      break;
-   case DeclKind::ParamK:
-      // IMPORTANT: no instructions need to be allocated for parameters here
-      break;
+      case DeclKind::FuncK:
+         if (currentNode->lineno == -1)
+         {
+            codegenLibraryFun(currentNode); // need to define codegenLibraryFun
+         }
+         else
+         {
+            codegenFun(currentNode);
+         }
+         break;
+      case DeclKind::ParamK:
+         // IMPORTANT: no instructions need to be allocated for parameters here
+         break;
    }
 }
 
