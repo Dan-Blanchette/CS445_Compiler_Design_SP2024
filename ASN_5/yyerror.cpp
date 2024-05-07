@@ -177,10 +177,7 @@ void yyerror(const char *msg)
         if (lastToken[0]=='\'' || lastToken[0]=='"') printf(" %s", lastToken); 
         else printf(" \"%s\"", lastToken);
     }
-    if (lastToken[0]==';')
-    {
-        printf("SYNTAX ERROR(%d): unexpected %s expecting \"bool\" or \"char\" o", line, strs[3]);
-    }
+
 
     if (numstrs>4) printf(",");
 
