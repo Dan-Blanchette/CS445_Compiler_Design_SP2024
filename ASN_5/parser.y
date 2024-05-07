@@ -571,12 +571,12 @@ int main(int argc, char **argv)
         // printTree(stdout, syntaxTree, true, false);
       }
    }
-   else 
-/*   {
-      printf("/****************\n");
-      printf("Error: %d\n", numErrors);
-      printf("*****************/\n");
-   } */
+//   else 
+//   {
+//      printf("/****************\n");
+//      printf("Error: %d\n", numErrors);
+//      printf("*****************/\n");
+//   } 
    printf("Number of warnings: %i\n", numWarnings);
    printf("Number of errors: %i\n", numErrors);
    return 0;
