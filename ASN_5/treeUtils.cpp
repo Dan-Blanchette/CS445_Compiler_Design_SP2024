@@ -207,7 +207,7 @@ char *expTypeToStr(ExpType type, bool isArray, bool isStatic)
                return (char *)"static array of type int";
                break;
             case ExpType::UndefinedType:
-               return (char *)"static array of type UNDEFINED";
+                (char *)"static array of type UNDEFINED";
                break;
             case ExpType::Void:
                return (char *)"static array of type void";
@@ -379,6 +379,11 @@ void printTreeNode(FILE *out, TreeNode *syntaxTree, bool showExpType, bool showA
                   fprintf(out, " '%c'",  syntaxTree->attr.cvalue);
 
             }
+            else if (syntaxTree->type == ExpType::UndefinedType)
+            {
+               fprintf(out, "SYSTEM ERROR: parse tree contains invalid type for constant: %s\n", expTypeToStr(syntaxTree->type));
+            }
+            // it's an integer
             else 
             {
                fprintf(out, " %d", syntaxTree->attr.value);

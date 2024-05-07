@@ -121,7 +121,7 @@ program : precompList declList {syntaxTree = $2;}
 // changing NULL to nullptr here. Not sure if that is the issue.
 precompList : precompList PRECOMPILER {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
    | PRECOMPILER                      {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
-   | /*empty*/                        {$$ = nullptr;}
+   | /*empty*/                        {$$ = NULL;}
    ;
 
 // rule 3
@@ -276,6 +276,7 @@ stmtList : stmtList stmt { $$ = addSibling($1, $2);}
 // rule 25
 returnstmt : RETURN ';' {$$ = newStmtNode(StmtKind::ReturnK, $1);}
    | RETURN exp ';'     {$$ = newStmtNode(StmtKind::ReturnK, $1, $2);}
+   | RETURN error ';'   {$$ = NULL; yyerrok;/*printf("ERR221\n");*/}
    ;
 
 //rule 26
@@ -517,6 +518,8 @@ int main(int argc, char **argv)
    bool dotAST = false;
    extern FILE *yyin;
    
+   initErrorProcessing();
+
    while ((opt = getopt(argc, argv, "w")) != -1)
    {
       switch (opt)
@@ -556,6 +559,7 @@ int main(int argc, char **argv)
    // Initialize Syntax Tree and Symbol Table for semantic analysis
    syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
    codegen(stdout, argv[1], syntaxTree, symtab, globalOffset, false);
+
    // TreeTraverse Call
    treeTraverse(syntaxTree, symtab);
 
@@ -568,11 +572,11 @@ int main(int argc, char **argv)
       }
    }
    else 
-   {
+/*   {
       printf("/****************\n");
       printf("Error: %d\n", numErrors);
       printf("*****************/\n");
-   }
+   } */
    printf("Number of warnings: %i\n", numWarnings);
    printf("Number of errors: %i\n", numErrors);
    return 0;

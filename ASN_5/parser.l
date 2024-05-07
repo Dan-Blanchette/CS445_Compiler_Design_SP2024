@@ -164,4 +164,4 @@ comment \/\/.*
 {letter}{letdig}*  {return setValue(line, ID, yytext);}
 \n             {  line++; }
 {whitespace}+  ;
-.              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]);}
+.              { printf("ERROR(%d): Token error, invalid or misplaced input character: \'%c\'. Character Ignored.\n", line, yytext[0]); numErrors++}
