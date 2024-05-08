@@ -282,7 +282,7 @@ void codegenExpression(TreeNode *currentNode)
       emitRM((char *)"LDA", AC, 0, 0, (char *)"Save the result in ac");
       emitComment((char *)"Call end", currentNode->attr.name);
       toffset = ghostFrame;
-      emitComment((char *)"TOFF set:", toffset)
+      emitComment((char *)"TOFF set:", toffset);
 
       break;
    case ExpKind::ConstantK:
