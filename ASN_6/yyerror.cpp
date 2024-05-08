@@ -175,7 +175,7 @@ void yyerror(const char *msg)
     {
         printf("ERROR(%d): Syntax error, unexpected end of input, expecting \"bool\" or \"char\" or \"int\" or identifier.\n",
                line);
-        NUM_ERRORS++;
+        numErrors++;
     }
     else
     {
