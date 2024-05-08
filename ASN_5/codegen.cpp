@@ -249,7 +249,7 @@ void codegenExpression(TreeNode *currentNode)
       break;
 
    case ExpKind::CallK:
-      TreeNode *funcNode, param;
+      TreeNode *funcNode, *param;
       int ghostFrame, callLoc;
       funcNode = ((TreeNode *)(globals->lookup(currentNode->attr.name)));
       emitComment((char *)"CALL", currentNode->attr.name);
