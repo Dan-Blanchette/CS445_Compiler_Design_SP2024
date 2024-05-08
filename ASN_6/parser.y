@@ -277,7 +277,7 @@ stmtList : stmtList stmt { $$ = addSibling($1, $2);}
 // rule 25
 returnstmt : RETURN ';' {$$ = newStmtNode(StmtKind::ReturnK, $1);}
    | RETURN exp ';'     {$$ = newStmtNode(StmtKind::ReturnK, $1, $2);}
-   | RETURN error ';'   {$$ = NULL; yyerrok;/*printf("ERR221\n");*/}
+   | RETURN error ';'   {$$ = NULL; yyerrok; printf("ERR221\n");}
    ;
 
 //rule 26
@@ -578,8 +578,8 @@ int main(int argc, char **argv)
 //      printf("/****************\n");
 //      printf("Error: %d\n", numErrors);
 //      printf("*****************/\n");
-      printf("Number of warnings: %d\n", numWarnings);
-      printf("Number of errors: %d\n", numErrors);
+      // printf("Number of warnings: %d\n", numWarnings);
+      // printf("Number of errors: %d\n", numErrors);
    } 
    printf("Number of warnings: %d\n", numWarnings);
    printf("Number of errors: %d\n", numErrors);
