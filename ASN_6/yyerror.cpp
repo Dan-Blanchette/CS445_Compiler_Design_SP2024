@@ -171,25 +171,35 @@ void yyerror(const char *msg)
         strs[i] = niceTokenStr(strs[i]);
     }
 
-    // print components
-    printf("SYNTAX ERROR(%d): unexpected %s", line, strs[3]);
-    if (elaborate(strs[3])) {
-        if (lastToken[0]=='\'' || lastToken[0]=='"') printf(" %s", lastToken); 
-        else printf(" \"%s\"", lastToken);
+    if (strcmp(msg, "syntax error, unexpected end of file, expecting ID or INT or BOOL or CHAR") == 0)
+    {
+        printf("ERROR(%d): Syntax error, unexpected end of input, expecting \"bool\" or \"char\" or \"int\" or identifier.\n",
+               line);
+        NUM_ERRORS++;
     }
+    else
+    {
+        // print components
+        printf("SYNTAX ERROR(%d): unexpected %s", line, strs[3]);
+        if (elaborate(strs[3])) 
+        {
+            if (lastToken[0]=='\'' || lastToken[0]=='"') printf(" %s", lastToken); 
+            else printf(" \"%s\"", lastToken);
+        }
 
 
-    if (numstrs>4) printf(",");
+        if (numstrs>4) printf(",");
 
-    // print sorted list of expected
-    tinySort(strs+5, numstrs-5, 2, true); 
-    for (int i=4; i<numstrs; i++) {
-        printf(" %s", strs[i]);
+        // print sorted list of expected
+        tinySort(strs+5, numstrs-5, 2, true); 
+        for (int i=4; i<numstrs; i++) {
+            printf(" %s", strs[i]);
+        }
+        printf(".\n");
+        fflush(stdout);   // force a dump of the error
+
+        numErrors++;      // count the number of errors
+
+        free(space);
     }
-    printf(".\n");
-    fflush(stdout);   // force a dump of the error
-
-    numErrors++;      // count the number of errors
-
-    free(space);
 }
