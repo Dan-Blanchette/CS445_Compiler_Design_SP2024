@@ -277,7 +277,6 @@ stmtList : stmtList stmt { $$ = addSibling($1, $2);}
 // rule 25
 returnstmt : RETURN ';' {$$ = newStmtNode(StmtKind::ReturnK, $1);}
    | RETURN exp ';'     {$$ = newStmtNode(StmtKind::ReturnK, $1, $2);}
-   | RETURN error ';'   {$$ = NULL; yyerrok; printf("ERR221\n");}
    ;
 
 //rule 26
