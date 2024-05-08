@@ -171,7 +171,7 @@ void yyerror(const char *msg)
         strs[i] = niceTokenStr(strs[i]);
     }
 
-    if (strcmp(msg, "syntax error, unexpected end of file, expecting ID or INT or BOOL or CHAR") == 0)
+    if (strcmp(msg, "SYNTAX ERROR, unexpected end of file, expecting ID or INT or BOOL or CHAR") == 0)
     {
         printf("ERROR(%d): Syntax error, unexpected end of input, expecting \"bool\" or \"char\" or \"int\" or identifier.\n",
                line);
