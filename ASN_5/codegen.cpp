@@ -249,7 +249,42 @@ void codegenExpression(TreeNode *currentNode)
       break;
 
    case ExpKind::CallK:
-      // emitComment((char *)"CALL");
+      TreeNode *funcNode, param;
+      int ghostFrame, callLoc;
+      funcNode = ((TreeNode *)(globals->lookup(currentNode->attr.name)));
+      emitComment((char *)"CALL", currentNode->attr.name);
+      callLoc = funcNode->offset;
+      ghostFrame = toffset;
+      emitRM((char *)"ST", FP, -2, FP, (char *)"Store fp in ghost frame for", currentNode->attr.name);
+      toffset--;
+      emitComment((char *)"TOFF dec:", toffset);
+      toffset--;
+      emitComment
+      emitComment((char *)"TOFF dec:", toffset);
+
+      param = currentNode->child[0];
+
+      {
+         int i;
+         char buff[16];
+         while (param)
+         {
+            sprintf(buff, "%d", i);
+            emitComment((char *)"Param", buff);
+            codegenExpression(param);
+            emitRM((char *)"ST", AC, toffset, FP, (char *)"Push parameter");
+            emitComment((char *)"TOFF dec:", toffset);
+            param = param->sibling;
+            i++;
+         }
+      }
+      emitComment((char *)"Param end", currentNode->attr.name);
+      emitRM((char *)"LDA", FP, ghostFrame, FP, (char *)"Ghost frame now becomes the new active frame");
+      emitRM((char *)"LDA", AC, 0, 0, (char *)"Save the result in ac");
+      emitComment((char *)"Call end", currentNode->attr.name);
+      toffset = ghostFrame;
+      emitComment((char *)"TOFF set:", toffset)
+
       break;
    case ExpKind::ConstantK:
       // emitComment((char *)"CONSTANT");
