@@ -35,7 +35,7 @@ TreeNode *addSibling(TreeNode *t, TreeNode *s)
    // make sure s is not the null value. If it is empty, major error, exit program!
    if(s == nullptr)
    {
-      printf("ERROR: Sibling is equal to 0.");
+      printf("ERROR(SYSTEM): never add a NULL to a sibling list.\n");
       exit(1);
    }
 
