@@ -116,7 +116,6 @@ void codegenStatement(TreeNode *currentNode)
       break;
 
    case StmtKind::CompoundK:
-
       int savedToffset;
       savedToffset = toffset;
       toffset = currentNode->size; // recover the end of activation record
@@ -148,16 +147,13 @@ void codegenStatement(TreeNode *currentNode)
 
 void codegenExpression(TreeNode *currentNode)
 {
-   TreeNode *lhs, *rhs;
-   lhs = currentNode->child[0];
-   rhs = currentNode->child[1];
    switch (currentNode->kind.exp)
    {
       case ExpKind::AssignK:
-         
-         if (lhs->attr.op == '[')
+         // emitComment((char *)"ASSIGN");
+         if (currentNode->child[0]->attr.op == '[')
          {
-            if (!rhs && lhs->varKind == Global)
+            if (!currentNode->child[1] && currentNode->child[0]->varKind == Global)
             {
                switch (currentNode->attr.op)
                {
@@ -240,7 +236,7 @@ void codegenExpression(TreeNode *currentNode)
 
                case INC:
                   emitRM((char *)"LD", AC, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-                  emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
+                  emitRO((char *)"LDA", AC, -1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
                   break;
                }
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
