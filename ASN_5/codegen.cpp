@@ -259,7 +259,6 @@ void codegenExpression(TreeNode *currentNode)
       toffset--;
       emitComment((char *)"TOFF dec:", toffset);
       toffset--;
-      emitComment
       emitComment((char *)"TOFF dec:", toffset);
 
       param = currentNode->child[0];
