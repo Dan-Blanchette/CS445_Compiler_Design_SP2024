@@ -116,8 +116,7 @@ void codegenStatement(TreeNode *currentNode)
       break;
 
    case StmtKind::CompoundK:
-      // printf("Inside CompoundK\n");
-   {
+
       int savedToffset;
       savedToffset = toffset;
       toffset = currentNode->size; // recover the end of activation record
@@ -129,7 +128,6 @@ void codegenStatement(TreeNode *currentNode)
       toffset = savedToffset;
       emitComment((char *)"TOFF set:", toffset);
       emitComment((char *)"END COMPOUND");
-   }
       break;
 
    case StmtKind::ReturnK:
@@ -150,13 +148,16 @@ void codegenStatement(TreeNode *currentNode)
 
 void codegenExpression(TreeNode *currentNode)
 {
+   TreeNode *lhs, *rhs;
+   lhs = currentNode->child[0];
+   rhs = currentNode->child[1];
    switch (currentNode->kind.exp)
    {
       case ExpKind::AssignK:
-         // emitComment((char *)"ASSIGN");
-         if (currentNode->child[0]->attr.op == '[')
+         
+         if (lhs->attr.op == '[')
          {
-            if (!currentNode->child[1] && currentNode->child[0]->varKind == Global)
+            if (!rhs && lhs->varKind == Global)
             {
                switch (currentNode->attr.op)
                {
