@@ -253,6 +253,17 @@ void codegenExpression(TreeNode *currentNode)
                emitRM((char *)"LD", AC1, currentNode->child[0]->offset, offreg, (char *)"load lhs variable", currentNode->child[0]->attr.name);
                emitRO((char *)"ADD", AC, AC1, AC, (char *)"op +=");
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+               break;
+            case '=':
+               if (currentNode->child[0]->isArray)
+               {
+                  // lots going in here
+               }
+               else
+               {
+                  emitRM((char *)"ST", AC, currentNode->child[0]->offset, offreg, (char *)"Store variable", currentNode->child[0]->attr.name);
+               }
+               break;
          }
          //printf("I made it to the ELSE: =======================\n");
 
