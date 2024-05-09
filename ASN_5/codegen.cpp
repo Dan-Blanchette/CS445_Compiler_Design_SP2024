@@ -327,45 +327,49 @@ void codegenExpression(TreeNode *currentNode)
       }
       break;
 
-   case ExpKind::OpK:
-      // process the lhs of the operation
-      codegenExpression(currentNode->child[0]);
-
-      if (currentNode->child[1])
+      case ExpKind::OpK:
       {
-         emitRM((char *)"ST", AC, toffset, FP, (char *)"Push left side");
-         toffset--;
-         emitComment((char *)"TOFF dec:", toffset);
-         codegenExpression(currentNode->child[1]);
-         toffset++;
-         emitComment((char *)"TOFF inc:", toffset);
-         emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop left into ac1");
-      }
+         // process the lhs of the operation
+         codegenExpression(currentNode->child[0]);
 
-      switch (currentNode->attr.op)
-      {
-         case '+':
-            emitRO((char *)"OP", 3, 4, 3, (char *)'+');
-            // break out the case '+' statment
-            break;
+         if (currentNode->child[1])
+         {
+            emitRM((char *)"ST", AC, toffset, FP, (char *)"Push left side");
+            toffset--;
+            emitComment((char *)"TOFF dec:", toffset);
+            codegenExpression(currentNode->child[1]);
+            toffset++;
+            emitComment((char *)"TOFF inc:", toffset);
+            emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop left into ac1");
+         }
 
-         case '-':
-            emitRO((char *)"OP", 3, 4, 3, (char *)'-');
-            break;
-         case '=':
-            emitRO((char *)"OP", 3, 4, 3, (char *)'=');
-            break; 
-         case '<':
-            emitRO((char *)"OP", 3, 4, 3, (char *)'<');
-            break;
-         case '>':
-            emitRO((char *)"OP", 3, 4, 4, (char *)'>');
-            break;
-            
+         switch (currentNode->attr.op)
+         {
+            case '+':
+               emitRO((char *)"OP", 3, 4, 3, (char *)'+');
+               // break out the case '+' statment
+               break;
+
+            case '-':
+               emitRO((char *)"OP", 3, 4, 3, (char *)'-');
+               break;
+            case '=':
+               emitRO((char *)"OP", 3, 4, 3, (char *)'=');
+               break; 
+            case '<':
+               emitRO((char *)"OP", 3, 4, 3, (char *)'<');
+               break;
+            case '>':
+               emitRO((char *)"OP", 3, 4, 4, (char *)'>');
+               break;
+               
+         }
+      // OpK switch statement break
+      
       }
-   //    // OpK switch statement break
-   // break;
+      break;
    }
+   
 }
 
 void codegenDecl(TreeNode *currentNode)
