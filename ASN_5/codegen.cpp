@@ -247,10 +247,8 @@ void codegenExpression(TreeNode *currentNode)
          {
             codegenExpression(currentNode->child[1]);
          }
-         // never got printed..........
-         //printf("I made it to the ELSE: =======================\n");
-         emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-         emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+         //emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
+         //emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
       }      
       // AssignK case break
       break;
