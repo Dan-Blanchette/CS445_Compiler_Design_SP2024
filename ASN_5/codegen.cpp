@@ -189,6 +189,7 @@ void codegenExpression(TreeNode *currentNode)
             }
             else
             {
+               // never got printed..........
                emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
             }
@@ -276,7 +277,7 @@ void codegenExpression(TreeNode *currentNode)
 
       break;
    case ExpKind::ConstantK:
-      emitComment((char *)"CONSTANT");
+      // emitComment((char *)"CONSTANT"); not needed
       switch (currentNode->type)
       {
       case ExpType::Integer:
