@@ -242,9 +242,20 @@ void codegenExpression(TreeNode *currentNode)
       }
       else
       {
+         int offreg = offsetRegister(currentNode->child[0]->varKind);
+         if (currentNode->child[1])
+         {
+            codegenExpression(currentNode->child[1]);
+         }
+         switch(currentNode->attr.op)
+         {
+            case ADDASS:
+               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
+               emitRO((char *)"ADD", AC, AC1, AC, (char *)"op +=");
+               emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+         }
          //printf("I made it to the ELSE: =======================\n");
-         //emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-         //emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+
       }
       // AssignK case break
       break;
