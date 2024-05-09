@@ -165,12 +165,14 @@ void codegenExpression(TreeNode *currentNode)
             {
                if (currentNode->child[1])
                {
+                  printf("I made it to the RHS: =======================\n");
                   emitStrLit(currentNode->child[1]->offset, (char *)currentNode->child[1]->attr.string);
                   emitRM((char *)"LDA", AC, int(currentNode->child[1]->offset), 0, (char *)"Load address of array");
                }
 
                if (currentNode->varKind == Parameter)
                {
+                  printf("I made it to the IF == Parameter: =======================\n");
                   emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
                   emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
                   emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
@@ -180,6 +182,7 @@ void codegenExpression(TreeNode *currentNode)
 
                else if (currentNode->varKind != Parameter)
                {
+                  printf("I made it to the ELSE IF: =======================\n");
                   emitRM((char *)"LDA", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
                   emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
                   emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
@@ -190,6 +193,7 @@ void codegenExpression(TreeNode *currentNode)
             else
             {
                // never got printed..........
+               printf("I made it to the ELSE: =======================\n");
                emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
             }
