@@ -418,6 +418,7 @@ void codegenDecl(TreeNode *currentNode)
       }
       else
       {
+         printf("CALLING CodegenFun %s =====================\n", currentNode->attr.name);
          codegenFun(currentNode);
       }
       break;
