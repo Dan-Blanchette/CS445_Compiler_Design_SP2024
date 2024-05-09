@@ -363,10 +363,8 @@ void codegenExpression(TreeNode *currentNode)
             break;
             
       }
-         // currentNode->kind.exp switch statement break
-         break;
       // OpK switch statement break
-      break;
+   break;
    }
 }
 
