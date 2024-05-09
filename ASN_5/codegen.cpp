@@ -146,14 +146,15 @@ void codegenStatement(TreeNode *currentNode)
 
 void codegenExpression(TreeNode *currentNode)
 {
-   printf("I made it to codgenEXPRESSION: =======================\n");
+   // printf("I made it to codgenEXPRESSION: =======================\n"); // called function
    switch (currentNode->kind.exp)
    {
    case ExpKind::AssignK:
-      printf("I made it to the AssignK: =======================\n");
+      // printf("I made it to the AssignK: =======================\n"); // Made it this far
       // emitComment((char *)"ASSIGN");
       if (currentNode->child[0]->attr.op == '[')
       {
+         //did not enter this case as expected
          switch (currentNode->attr.op)
          {
          case INC:
@@ -163,8 +164,10 @@ void codegenExpression(TreeNode *currentNode)
 
          if (currentNode->attr.op == '=')
          {
+            printf("I made it to the attr.op '=' scope: =======================\n");
             if (currentNode->isArray)
             {
+               // not an array so didn't move into this if scope
                if (currentNode->child[1])
                {
                   printf("I made it to the RHS: =======================\n");
@@ -194,7 +197,7 @@ void codegenExpression(TreeNode *currentNode)
             }
             else
             {
-               // never got printed..........
+               // should have ended up here but this never got printed..........
                printf("I made it to the ELSE: =======================\n");
                emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
