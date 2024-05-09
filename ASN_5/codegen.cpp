@@ -576,9 +576,9 @@ void codegenInit(int initJump, int globalOffset)
 
 void initGlobalArraySizes()
 {
-   emitComment((char *)"INIT GLOBAL AND STATICS");
+   emitComment((char *)"INIT GLOBALS AND STATICS");
    globals->applyToAllGlobal(initAGlobalSymbol);
-   emitComment((char *)"END INIT GLOBAL AND STATICS");
+   emitComment((char *)"END INIT GLOBALS AND STATICS");
 }
 
 void initAGlobalSymbol(std::string sym, void *ptr)
