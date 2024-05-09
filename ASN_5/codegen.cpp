@@ -186,13 +186,14 @@ void codegenExpression(TreeNode *currentNode)
                   emitRO((char *)"SWP", 5, 6, 6, (char *)"pick smallest size");
                   emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
                }
+               else
+               {
+                  emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
+                  emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+               }
             }
 
-            else
-            {
-               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-               emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
-            }
+
          }
 
          else
