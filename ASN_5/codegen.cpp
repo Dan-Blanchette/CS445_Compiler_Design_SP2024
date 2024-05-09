@@ -236,9 +236,10 @@ void codegenExpression(TreeNode *currentNode)
          }
          emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
       }
+     // AssignK case break
+     break;
    }
-   // AssignK case break
-   break;
+
 
 case ExpKind::CallK:
    TreeNode *funcNode, *param;
