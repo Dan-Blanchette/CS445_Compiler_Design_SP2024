@@ -242,6 +242,11 @@ void codegenExpression(TreeNode *currentNode)
       }
       else
       {
+         int offreg = offsetRegister(currentNode->child[0]->varKind);
+         if (currentNode->child[1])
+         {
+            codegenExpression(currentNode->child[1]);
+         }
          // never got printed..........
          //printf("I made it to the ELSE: =======================\n");
          emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
