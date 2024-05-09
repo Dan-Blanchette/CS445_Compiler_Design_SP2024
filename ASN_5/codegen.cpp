@@ -250,7 +250,7 @@ void codegenExpression(TreeNode *currentNode)
          switch(currentNode->attr.op)
          {
             case ADDASS:
-               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
+               emitRM((char *)"LDC", AC1, currentNode->child[1]->attr.value, offreg, (char *)"load lhs variable", currentNode->child[0]->attr.name);
                emitRO((char *)"ADD", AC, AC1, AC, (char *)"op +=");
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
          }
