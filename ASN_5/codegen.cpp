@@ -278,7 +278,7 @@ void codegenExpression(TreeNode *currentNode)
 
       break;
    case ExpKind::ConstantK:
-      // emitComment((char *)"CONSTANT");
+      emitComment((char *)"CONSTANT");
       switch (currentNode->type)
       {
       case ExpType::Integer:
