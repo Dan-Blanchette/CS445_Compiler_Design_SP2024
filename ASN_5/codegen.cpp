@@ -344,7 +344,7 @@ void codegenExpression(TreeNode *currentNode)
       switch (currentNode->type)
       {
       case ExpType::Integer:
-         emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Load integer constant");
+         emitRM((char *)"LDC", AC, currentNode->child[0]->offset, 6, (char *)"Load integer constant");
          break;
       case ExpType::Boolean:
          emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Load Boolean constant");
