@@ -97,6 +97,7 @@ void codegenStatement(TreeNode *currentNode)
 
    case StmtKind::ForK:
       emitComment((char *)"FOR");
+
       currloc = emitSkip(0);                    // return here to do the test
       codegenExpression(currentNode->child[0]); // test expression
 
@@ -107,11 +108,13 @@ void codegenStatement(TreeNode *currentNode)
       breakloc = emitSkip(1);                // addr of instr that jumps to the end of the loop
                                              // this is also the backpatch point
       codegenGeneral(currentNode->child[1]); // do body of loop
+      // emitRM((char *)"LD", AC,);
+      // emitRM((char *)"LD", AC2,)
       emitGotoAbs(currloc, (char *)"go to beginning of loop");
       // backpatch jump to the end of the loop
       backPatchAJumpToHere(breakloc, (char *)"Jump past loop[backpatch]");
       breakloc = skiploc;
-      emitComment((char *)"END FOR");
+      emitComment((char *)"END LOOP");
       break;
 
    case StmtKind::CompoundK:
@@ -317,13 +320,14 @@ void codegenExpression(TreeNode *currentNode)
       // emitComment((char *)"ID");
       if (currentNode->isArray)
       {
-         // do nothing
+         // pass?
       }
       else
       {
          emitRM((char *)"LD", AC, int(currentNode->offset), 1, (char *)"Load variable", currentNode->attr.name);
       }
       break;
+
    case ExpKind::OpK:
       // process the lhs of the operation
       codegenExpression(currentNode->child[0]);
@@ -341,14 +345,22 @@ void codegenExpression(TreeNode *currentNode)
 
       switch (currentNode->attr.op)
       {
-      case '+':
-         emitRO((char *)"ADD", AC, AC1, AC, (char *)"Op +");
-         // break out the case '+' statment
-         break;
+         case '+':
+            emitRO((char *)"OP", 3, 4, 3, (char *)"Op +");
+            // break out the case '+' statment
+            break;
+
+         case '-':
+            emitRO((char *)"OP", 3, 4, 3, (char *)"Op -");
+            break;
+         case '=':
+            emitRO((char *)"OP", 3, 4, 3, (char *)"Op =");
+            break; 
+            
       }
+         // currentNode->kind.exp switch statement break
+         break;
       // OpK switch statement break
-      break;
-      // currentNode->kind.exp switch statement break
       break;
    }
 }
