@@ -1,0 +1,12 @@
+#DRBC all production rule test case
+main() {
+}
+int foo(int a; bool c) {
+   //simple expr
+   c = a < a;  //////////////////////////////////////////
+   //matched/unmatched
+   while true do
+  {
+     c = a < a;
+  }
+}

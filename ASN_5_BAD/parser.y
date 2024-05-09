@@ -6,15 +6,16 @@
 #include "treeNodes.h"
 #include "treeUtils.h"
 #include "semantics.h"
-#include "codegen.h"
-#include "emitcode.h"
 #include "symbolTable.h"
 #include "scanType.h"
 #include "dot.h"
+#include "codegen.h"
+#include "emitcode.h"
+#include "yyerror.h"
 
 using namespace std;
 
-// Assignment 4 in progress...
+// Assignment 5 in progress...
 //for pushing
 
 extern "C" int yylex();
@@ -121,7 +122,7 @@ program : precompList declList {syntaxTree = $2;}
 // changing NULL to nullptr here. Not sure if that is the issue.
 precompList : precompList PRECOMPILER {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
    | PRECOMPILER                      {cout << yylval.Token_Data->tokenstr << "\n"; $$ = nullptr;}
-   | /*empty*/                        {$$ = nullptr;}
+   | /*empty*/                        {$$ = NULL;}
    ;
 
 // rule 3
@@ -135,15 +136,15 @@ decl : varDecl {$$ = $1;}
    ;
 
 //rule 5
-varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false);}
+varDecl : typeSpec varDeclList  ';' {$$ = $2; setType($2, $1, false); yyerrok;}
    ;
 
 // rule 6
 // UPDATE; set isStatic value to false.
 // has typeSpec in production which needs the setType function as part of node creation
 
-scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true;}
-   | typeSpec varDeclList ';'                   {$$ = $2; setType($2, $1, false); $$->isStatic=false;}
+scopedVarDecl : STATIC typeSpec varDeclList ';' {$$ = $3; setType($3, $2, true); $$->isStatic = true; yyerrok;}
+   | typeSpec varDeclList ';'                   {$$ = $2; setType($2, $1, false); $$->isStatic=false; yyerrok;}
    ;
 
 // rule 7
@@ -255,7 +256,7 @@ expstmt : exp ';' {$$ = $1;}
    ;
 
 // rule 22
-compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3);}
+compoundstmt : '{' localDecls stmtList '}' {$$ = newStmtNode(StmtKind::CompoundK, $1, $2, $3); yyerrok;}
    | compoundstmt ';' {$$ = $1;}
    ;
 
@@ -276,6 +277,7 @@ stmtList : stmtList stmt { $$ = addSibling($1, $2);}
 // rule 25
 returnstmt : RETURN ';' {$$ = newStmtNode(StmtKind::ReturnK, $1);}
    | RETURN exp ';'     {$$ = newStmtNode(StmtKind::ReturnK, $1, $2);}
+   | RETURN error ';'   {$$ = NULL; yyerrok;/*printf("ERR221\n");*/}
    ;
 
 //rule 26
@@ -499,10 +501,11 @@ char *largerTokens[LASTTERM+1]; // used in the utils.cpp file printing routines
     return tokenBuffer;
 }
 
-void yyerror (const char *msg)
+/* void yyerror (const char *msg)
 { 
    cout << "Error: " <<  msg << endl;
 }
+*/
 
 int main(int argc, char **argv) 
 {
@@ -516,6 +519,8 @@ int main(int argc, char **argv)
    bool dotAST = false;
    extern FILE *yyin;
    
+   initErrorProcessing();
+
    while ((opt = getopt(argc, argv, "w")) != -1)
    {
       switch (opt)
@@ -552,16 +557,25 @@ int main(int argc, char **argv)
    symtab = new SymbolTable();
    symtab->debug(debugSymTab);
 
-   // Initialize Syntax Tree and Symbol Table for semantic analysis
-   syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
+   if (numErrors == 0)
+   {
+      // Initialize Syntax Tree and Symbol Table for semantic analysis
+      // printf("Before =============\n");
+      syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
+      // printf("After =============\n");
+   }
+
+   
+   
 
    // TreeTraverse Call
-   treeTraverse(syntaxTree, symtab);
+   // treeTraverse(syntaxTree, symtab);
 
    if(numErrors == 0)
    {
-      codegen(stdout, (char *)argv[1], syntaxTree, symtab, globalOffset, false);
-     //  printTree(stdout, syntaxTree, true, true);
+      printTree(stdout, syntaxTree, true, true);
+      // CODEGEN!!!!!
+      // codegen(stdout, (char *)argv[1], syntaxTree, symtab, globalOffset, false);
       if (dotAST)
       {
         // printTree(stdout, syntaxTree, true, false);
@@ -569,11 +583,13 @@ int main(int argc, char **argv)
    }
    else 
    {
-      printf("/****************\n");
-      printf("Error: %d\n", numErrors);
-      printf("*****************/\n");
-   }
-   printf("Number of warnings: %i\n", numWarnings);
-   printf("Number of errors: %i\n", numErrors);
+//      printf("/****************\n");
+//      printf("Error: %d\n", numErrors);
+//      printf("*****************/\n");
+      printf("Number of warnings: %i\n", numWarnings);
+      printf("Number of errors: %i\n", numErrors);
+   } 
+//   printf("Number of warnings: %i\n", numWarnings);
+//   printf("Number of errors: %i\n", numErrors);
    return 0;
 }
