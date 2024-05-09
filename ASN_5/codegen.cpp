@@ -510,7 +510,7 @@ void codegenFun(TreeNode *currentNode)
    emitRM((char *)"ST", AC, RETURNOFFSET, FP, (char *)"Store return address");
 
    // Generate code for the statements..
-   codegenFun(currentNode->child[1]);
+   codegenGeneral(currentNode->child[1]);
 
    // In case there was no return statement
    //  set return register to 0 and return
