@@ -274,6 +274,12 @@ void codegenExpression(TreeNode *currentNode)
                emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
                emitRO((char *)"DIV", 3, 4, 3, (char *)"op /=");
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+               break;
+
+            case INC:
+               emitRM((char *)"LD", AC, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
+               emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
+               emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
                break;               
          }
          //printf("I made it to the ELSE: =======================\n");
