@@ -560,9 +560,9 @@ int main(int argc, char **argv)
    if (numErrors == 0)
    {
       // Initialize Syntax Tree and Symbol Table for semantic analysis
-      printf("Before =============\n");
+      // printf("Before =============\n");
       syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
-      printf("After =============\n");
+      // printf("After =============\n");
    }
 
    
@@ -573,7 +573,7 @@ int main(int argc, char **argv)
 
    if(numErrors == 0)
    {
-      // printTree(stdout, syntaxTree, true, true);
+      printTree(stdout, syntaxTree, true, true);
       // CODEGEN!!!!!
       codegen(stdout, (char *)argv[1], syntaxTree, symtab, globalOffset, false);
       if (dotAST)
