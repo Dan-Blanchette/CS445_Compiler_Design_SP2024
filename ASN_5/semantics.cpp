@@ -167,6 +167,7 @@ void treeTraverseDecl(TreeNode *currentNode, SymbolTable *symtab)
          treeTraverse(c1, symtab);
          symtab->leave();
          newScope = true;
+         printf("CurrentNode size %s %d =============\n",currentNode->attr.name, currentNode->size);
          break;
 
       case VarK:
