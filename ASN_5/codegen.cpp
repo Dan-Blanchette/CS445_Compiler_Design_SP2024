@@ -285,7 +285,7 @@ void codegenExpression(TreeNode *currentNode)
          emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Loading integer const");
          break;
       case ExpType::Boolean:
-         emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Loading boolean const");
+         emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Loading Boolean const");
          break;
       case ExpType::Char:
          // if it's a string
