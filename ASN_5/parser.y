@@ -557,17 +557,23 @@ int main(int argc, char **argv)
    symtab = new SymbolTable();
    symtab->debug(debugSymTab);
 
-   // Initialize Syntax Tree and Symbol Table for semantic analysis
-   syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
-   // CODEGEN!!!!!
-   codegen(stdout, argv[1], syntaxTree, symtab, globalOffset, false);
+   if (numErrors == 0)
+   {
+      // Initialize Syntax Tree and Symbol Table for semantic analysis
+      syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
+   }
+
+   
+   
 
    // TreeTraverse Call
-   treeTraverse(syntaxTree, symtab);
+   // treeTraverse(syntaxTree, symtab);
 
    if(numErrors == 0)
    {
-      printTree(stdout, syntaxTree, true, true);
+      // printTree(stdout, syntaxTree, true, true);
+      // CODEGEN!!!!!
+      codegen(stdout, (char *)argv[1], syntaxTree, symtab, globalOffset, false);
       if (dotAST)
       {
         // printTree(stdout, syntaxTree, true, false);
