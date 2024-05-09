@@ -154,15 +154,12 @@ void codegenExpression(TreeNode *currentNode)
       // emitComment((char *)"ASSIGN");
       if (currentNode->child[0]->attr.op == '[')
       {
-         if (!currentNode->child[1] && currentNode->child[0]->varKind == Global)
+         // as expected did not enter this case
+         switch (currentNode->attr.op)
          {
-            switch (currentNode->attr.op)
-            {
-            case INC:
-               emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
-               emitRM((char *)"LDA", AC, int(currentNode->child[0]->offset), 0, (char *)"Load address of base array",
-                      currentNode->child[0]->attr.name);
-            }
+         case INC:
+            emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
+            emitRM((char *)"LDA", 5, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
          }
 
          if (currentNode->attr.op == '=')
@@ -171,12 +168,14 @@ void codegenExpression(TreeNode *currentNode)
             {
                if (currentNode->child[1])
                {
+                  //printf("I made it to the RHS: =======================\n");
                   emitStrLit(currentNode->child[1]->offset, (char *)currentNode->child[1]->attr.string);
-                  emitRM((char *)"LDA", AC, int(currentNode->child[1]->offset), 0, (char *)"Load address of char array");
+                  emitRM((char *)"LDA", AC, int(currentNode->child[1]->offset), 0, (char *)"Load address of array");
                }
 
                if (currentNode->varKind == Parameter)
                {
+                  //printf("I made it to the IF == Parameter: =======================\n");
                   emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
                   emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
                   emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
@@ -186,6 +185,7 @@ void codegenExpression(TreeNode *currentNode)
 
                else if (currentNode->varKind != Parameter)
                {
+                  //printf("I made it to the ELSE IF: =======================\n");
                   emitRM((char *)"LDA", AC1, int(currentNode->child[0]->offset), 1, (char *)"address of lhs");
                   emitRM((char *)"LD", 5, 1, 3, (char *)"size of rhs");
                   emitRM((char *)"LD", 6, 1, 4, (char *)"size of lhs");
@@ -193,159 +193,165 @@ void codegenExpression(TreeNode *currentNode)
                   emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
                }
             }
+            else
+            {
+               // never got printed..........
+               //printf("I made it to the ELSE: =======================\n");
+               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
+               emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+            }
+         }
+
+         else
+         {
+            if (currentNode->child[1])
+            {
+               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
+            }
+
+            switch (currentNode->attr.op)
+            {
+            case ADDASS:
+               emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
+               emitRO((char *)"ADD", 3, 4, 3, (char *)"op +=");
+               break;
+
+            case DEC:
+               emitRM((char *)"LD", AC, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
+               emitRO((char *)"LDA", AC, -1, 3, (char *)"decrement value of", currentNode->child[0]->attr.name);
+               break;
+
+            case DIVASS:
+               emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
+               emitRO((char *)"DIV", 3, 4, 3, (char *)"op /=");
+               break;
+
+            case MULASS:
+               emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
+               emitRO((char *)"MUL", 3, 4, 3, (char *)"op *=");
+               break;
+
+            case SUBASS:
+               emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
+               emitRO((char *)"SUB", 3, 4, 3, (char *)"op -=");
+               break;
+
+            case INC:
+               emitRM((char *)"LD", AC, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
+               emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
+               break;
+            }
+            emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
+         }
+      }
+      // AssignK case break
+      break;
+
+   case ExpKind::CallK:
+      TreeNode *funcNode, *param;
+      int ghostFrame, callLoc;
+      funcNode = ((TreeNode *)(globals->lookup(currentNode->attr.name)));
+      emitComment((char *)"CALL", currentNode->attr.name);
+      callLoc = funcNode->offset;
+      ghostFrame = toffset;
+      emitRM((char *)"ST", FP, -2, FP, (char *)"Store fp in ghost frame for", currentNode->attr.name);
+      toffset--;
+      emitComment((char *)"TOFF dec:", toffset);
+      toffset--;
+      emitComment((char *)"TOFF dec:", toffset);
+
+      param = currentNode->child[0];
+
+      {
+         int i;
+         char buff[16];
+         while (param)
+         {
+            sprintf(buff, "%d", i);
+            emitComment((char *)"Param", buff);
+            codegenExpression(param);
+            emitRM((char *)"ST", AC, toffset, FP, (char *)"Push parameter");
+            emitComment((char *)"TOFF dec:", toffset);
+            param = param->sibling;
+            i++;
+         }
+      }
+      emitComment((char *)"Param end", currentNode->attr.name);
+      emitRM((char *)"LDA", FP, ghostFrame, FP, (char *)"Ghost frame now becomes the new active frame");
+      emitRM((char *)"LDA", AC, 0, 0, (char *)"Save the result in ac");
+      emitComment((char *)"Call end", currentNode->attr.name);
+      toffset = ghostFrame;
+      emitComment((char *)"TOFF set:", toffset);
+
+      break;
+   case ExpKind::ConstantK:
+      // emitComment((char *)"CONSTANT"); not needed
+      switch (currentNode->type)
+      {
+      case ExpType::Integer:
+         emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Load integer constant");
+         break;
+      case ExpType::Boolean:
+         emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Load Boolean constant");
+         break;
+      case ExpType::Char:
+         // if it's a string
+         if (currentNode->isArray)
+         {
+            emitStrLit(currentNode->offset, currentNode->attr.string);
+            emitRM((char *)"LDA", AC, int(currentNode->offset), 0, (char *)"Load address of string");
          }
          else
          {
-            emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-            emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+            emitRM((char *)"LDC", AC, currentNode->attr.cvalue, 6, (char *)"Load char constant");
          }
+         break;
+
+      case ExpType::Void:
+         // Do Nothing
+         break;
       }
-      else
-      {
-         if (currentNode->child[1])
-         {
-            emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-         }
 
-         switch (currentNode->attr.op)
-         {
-         case ADDASS:
-            emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-            emitRO((char *)"ADD", 3, 4, 3, (char *)"op +=");
-            break;
-         case DEC:
-            emitRM((char *)"LD", AC, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-            emitRM((char *)"LDA", AC, -1, 3, (char *)"decrement value of", currentNode->child[0]->attr.name);
-            break;
-         case DIVASS:
-            emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-            emitRO((char *)"DIV", 3, 4, 3, (char *)"op /=");
-            break;
-         case MULASS:
-            emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-            emitRO((char *)"MUL", 3, 4, 3, (char *)"op *=");
-            break;
-         case SUBASS:
-            emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-            emitRO((char *)"SUB", 3, 4, 3, (char *)"op -=");
-            break;
-         case INC:
-            emitRM((char *)"LD", AC, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-            emitRM((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
-            break;
-         }
-         emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
-      }
-     // AssignK case break
-     break;
-   }
-
-
-case ExpKind::CallK:
-   TreeNode *funcNode, *param;
-   int ghostFrame, callLoc;
-   funcNode = ((TreeNode *)(globals->lookup(currentNode->attr.name)));
-   emitComment((char *)"CALL", currentNode->attr.name);
-   callLoc = funcNode->offset;
-   ghostFrame = toffset;
-   emitRM((char *)"ST", FP, -2, FP, (char *)"Store fp in ghost frame for", currentNode->attr.name);
-   toffset--;
-   emitComment((char *)"TOFF dec:", toffset);
-   toffset--;
-   emitComment((char *)"TOFF dec:", toffset);
-
-   param = currentNode->child[0];
-
-   {
-      int i;
-      char buff[16];
-      while (param)
-      {
-         sprintf(buff, "%d", i);
-         emitComment((char *)"Param", buff);
-         codegenExpression(param);
-         emitRM((char *)"ST", AC, toffset, FP, (char *)"Push parameter");
-         emitComment((char *)"TOFF dec:", toffset);
-         param = param->sibling;
-         i++;
-      }
-   }
-   emitComment((char *)"Param end", currentNode->attr.name);
-   emitRM((char *)"LDA", FP, ghostFrame, FP, (char *)"Ghost frame now becomes the new active frame");
-   emitRM((char *)"LDA", AC, 0, 0, (char *)"Save the result in ac");
-   emitComment((char *)"Call end", currentNode->attr.name);
-   toffset = ghostFrame;
-   emitComment((char *)"TOFF set:", toffset);
-
-   break;
-case ExpKind::ConstantK:
-   // emitComment((char *)"CONSTANT"); not needed
-   switch (currentNode->type)
-   {
-   case ExpType::Integer:
-      emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Load integer constant");
       break;
-   case ExpType::Boolean:
-      emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Load Boolean constant");
-      break;
-   case ExpType::Char:
-      // if it's a string
+   case ExpKind::IdK:
+      // emitComment((char *)"ID");
       if (currentNode->isArray)
       {
-         emitStrLit(currentNode->offset, currentNode->attr.string);
-         emitRM((char *)"LDA", AC, int(currentNode->offset), 0, (char *)"Load address of string");
+         // do nothing
       }
       else
       {
-         emitRM((char *)"LDC", AC, currentNode->attr.cvalue, 6, (char *)"Load char constant");
+         emitRM((char *)"LD", AC, int(currentNode->offset), 1, (char *)"Load variable", currentNode->attr.name);
       }
       break;
+   case ExpKind::OpK:
+      // process the lhs of the operation
+      codegenExpression(currentNode->child[0]);
 
-   case ExpType::Void:
-      // Do Nothing
+      if (currentNode->child[1])
+      {
+         emitRM((char *)"ST", AC, toffset, FP, (char *)"Push left side");
+         toffset--;
+         emitComment((char *)"TOFF dec:", toffset);
+         codegenExpression(currentNode->child[1]);
+         toffset++;
+         emitComment((char *)"TOFF inc:", toffset);
+         emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop left into ac1");
+      }
+
+      switch (currentNode->attr.op)
+      {
+      case '+':
+         emitRO((char *)"ADD", AC, AC1, AC, (char *)"Op +");
+         // break out the case '+' statment
+         break;
+      }
+      // OpK switch statement break
+      break;
+      // currentNode->kind.exp switch statement break
       break;
    }
-
-   break;
-case ExpKind::IdK:
-   // emitComment((char *)"ID");
-   if (currentNode->isArray)
-   {
-      // do nothing
-   }
-   else
-   {
-      emitRM((char *)"LD", AC, int(currentNode->offset), 1, (char *)"Load variable", currentNode->attr.name);
-   }
-   break;
-case ExpKind::OpK:
-   // process the lhs of the operation
-   codegenExpression(currentNode->child[0]);
-
-   if (currentNode->child[1])
-   {
-      emitRM((char *)"ST", AC, toffset, FP, (char *)"Push left side");
-      toffset--;
-      emitComment((char *)"TOFF dec:", toffset);
-      codegenExpression(currentNode->child[1]);
-      toffset++;
-      emitComment((char *)"TOFF inc:", toffset);
-      emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop left into ac1");
-   }
-
-   switch (currentNode->attr.op)
-   {
-   case '+':
-      emitRO((char *)"ADD", AC, AC1, AC, (char *)"Op +");
-      // break out the case '+' statment
-      break;
-   }
-   // OpK switch statement break
-   break;
-   // currentNode->kind.exp switch statement break
-   break;
 }
-
 
 void codegenDecl(TreeNode *currentNode)
 {
