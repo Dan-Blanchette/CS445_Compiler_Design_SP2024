@@ -146,9 +146,11 @@ void codegenStatement(TreeNode *currentNode)
 
 void codegenExpression(TreeNode *currentNode)
 {
+   printf("I made it to codgenEXPRESSION: =======================\n");
    switch (currentNode->kind.exp)
    {
    case ExpKind::AssignK:
+      printf("I made it to the AssignK: =======================\n");
       // emitComment((char *)"ASSIGN");
       if (currentNode->child[0]->attr.op == '[')
       {
