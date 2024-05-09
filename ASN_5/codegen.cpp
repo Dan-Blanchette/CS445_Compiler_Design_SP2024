@@ -620,7 +620,6 @@ void codegenGeneral(TreeNode *currentNode)
 // generate init code
 void codegenInit(int initJump, int globalOffset)
 {
-   // printf("This is the Goffset: %d========================\n", globalOffset);
    backPatchAJumpToHere(initJump, (char *)"Jump to init [backpatch]");
    emitComment((char *)"INIT");
    emitRM((char *)"LDA", FP, globalOffset, GP, (char *)"set first frame at end of globals");
