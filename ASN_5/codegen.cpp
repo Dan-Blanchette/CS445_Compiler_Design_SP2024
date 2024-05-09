@@ -620,13 +620,14 @@ void codegenGeneral(TreeNode *currentNode)
 // generate init code
 void codegenInit(int initJump, int globalOffset)
 {
-   printf("This is the Goffset: %d========================\n", globalOffset);
+   // printf("This is the Goffset: %d========================\n", globalOffset);
    backPatchAJumpToHere(initJump, (char *)"Jump to init [backpatch]");
    emitComment((char *)"INIT");
-   emitRM((char *)"LDA", FP, globalOffset, GP, (char *)"set first frame at end of globals");
+   emitRM((char *)"LDA", FP, globalOffset-1, GP, (char *)"set first frame at end of globals");
+   initGlobalArraySizes(); // needs defined
    emitRM((char *)"ST", FP, 0, FP, (char *)"store old fp (point to self)");
 
-   initGlobalArraySizes(); // needs defined
+   
 
    emitRM((char *)"LDA", AC, 1, PC, (char *)"Return address in ac");
    {
