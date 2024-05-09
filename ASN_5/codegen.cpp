@@ -187,11 +187,11 @@ void codegenExpression(TreeNode *currentNode)
                   emitRO((char *)"MOV", 4, 3, 5, (char *)"array op =");
                }
             }
-            // else
-            // {
-            //    emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-            //    emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
-            // }
+            else
+            {
+               emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
+               emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+            }
          }
 
          else
@@ -233,8 +233,6 @@ void codegenExpression(TreeNode *currentNode)
                emitRO((char *)"LDA", AC, -1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
                break;
             }
-            emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-            emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
          }
       }
       // AssignK case break
