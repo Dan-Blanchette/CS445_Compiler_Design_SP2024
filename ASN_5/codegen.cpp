@@ -346,12 +346,12 @@ void codegenExpression(TreeNode *currentNode)
          switch (currentNode->attr.op)
          {
             case '+':
-               emitRO((char *)"OP", 3, 4, 3, (char *)"Op +");
+               emitRO((char *)"ADD", 3, 4, 3, (char *)"Op +");
                // break out the case '+' statment
                break;
 
             case '-':
-               emitRO((char *)"OP", 3, 4, 3, (char *)"Op -");
+               emitRO((char *)"SUB", 3, 4, 3, (char *)"Op -");
                break;
             case '=':
                emitRO((char *)"OP", 3, 4, 3, (char *)"Op =");
