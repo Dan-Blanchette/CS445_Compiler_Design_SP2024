@@ -272,7 +272,7 @@ void codegenExpression(TreeNode *currentNode)
                
             case DIVASS:
                emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-               emitRM((char *)"DIV", 3, 4, 3, (char *)"op /=");
+               emitRO((char *)"DIV", 3, 4, 3, (char *)"op /=");
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
                break;               
          }
