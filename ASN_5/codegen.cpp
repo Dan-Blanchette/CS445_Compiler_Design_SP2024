@@ -242,7 +242,7 @@ void codegenExpression(TreeNode *currentNode)
       }
       else
       {
-         printf("=============================\n");
+         // printf("=============================\n");
          int offreg = offsetRegister(currentNode->child[0]->varKind);
          if (currentNode->child[1])
          {
@@ -262,7 +262,7 @@ void codegenExpression(TreeNode *currentNode)
                }
                else
                {
-                  printf("-----------------------------\n");
+                  // printf("-----------------------------\n");
                   emitRM((char *)"ST", AC, currentNode->child[0]->offset, offreg, (char *)"Store variable", currentNode->child[0]->attr.name);
                }
                break;
