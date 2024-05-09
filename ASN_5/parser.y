@@ -561,7 +561,7 @@ int main(int argc, char **argv)
    if(numErrors == 0)
    {
       codegen(stdout, (char *)argv[1], syntaxTree, symtab, globalOffset, false);
-     //  printTree(stdout, syntaxTree, true, true);
+      printTree(stdout, syntaxTree, true, true);
       if (dotAST)
       {
         // printTree(stdout, syntaxTree, true, false);
