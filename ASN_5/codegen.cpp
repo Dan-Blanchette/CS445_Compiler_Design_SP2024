@@ -198,7 +198,6 @@ void codegenExpression(TreeNode *currentNode)
             }
             else
             {
-               // never got printed..........
                //printf("I made it to the ELSE: =======================\n");
                emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
