@@ -219,7 +219,7 @@ void codegenExpression(TreeNode *currentNode)
 
             case DIVASS:
                emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-               emitRO((char *)"DIV", 3, 4, 3, (char *)"op /=");
+               emitRM((char *)"DIV", 3, 4, 3, (char *)"op /=");
                break;
 
             case MULASS:
@@ -269,6 +269,12 @@ void codegenExpression(TreeNode *currentNode)
                emitRM((char *)"LDA", AC, -1, 3, (char *)"decrement value of", currentNode->child[0]->attr.name);
                emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
                break;
+               
+            case DIVASS:
+               emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
+               emitRM((char *)"DIV", 3, 4, 3, (char *)"op /=");
+               emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+               break;               
          }
          //printf("I made it to the ELSE: =======================\n");
 
