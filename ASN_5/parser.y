@@ -575,7 +575,7 @@ int main(int argc, char **argv)
    {
       printTree(stdout, syntaxTree, true, true);
       // CODEGEN!!!!!
-      codegen(stdout, (char *)argv[1], syntaxTree, symtab, globalOffset, false);
+      // codegen(stdout, (char *)argv[1], syntaxTree, symtab, globalOffset, false);
       if (dotAST)
       {
         // printTree(stdout, syntaxTree, true, false);
