@@ -262,6 +262,7 @@ void codegenExpression(TreeNode *currentNode)
                }
                else
                {
+                  printf("-----------------------------\n")
                   emitRM((char *)"ST", AC, currentNode->child[0]->offset, offreg, (char *)"Store variable", currentNode->child[0]->attr.name);
                }
                break;
