@@ -242,6 +242,7 @@ void codegenExpression(TreeNode *currentNode)
       }
       else
       {
+         printf("=============================\n");
          int offreg = offsetRegister(currentNode->child[0]->varKind);
          if (currentNode->child[1])
          {
