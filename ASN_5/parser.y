@@ -560,7 +560,9 @@ int main(int argc, char **argv)
    if (numErrors == 0)
    {
       // Initialize Syntax Tree and Symbol Table for semantic analysis
+      printf("Before =============\n");
       syntaxTree = semanticAnalysis(syntaxTree, true, false, symtab, globalOffset);
+      printf("After =============\n");
    }
 
    
