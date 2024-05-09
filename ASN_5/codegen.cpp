@@ -231,9 +231,10 @@ void codegenExpression(TreeNode *currentNode)
 
             case INC:
                emitRM((char *)"LD", AC, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-               emitRO((char *)"LDA", AC, -1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
+               emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
                break;
             }
+            emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
          }
       }
       // AssignK case break
