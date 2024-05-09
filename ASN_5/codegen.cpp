@@ -240,16 +240,16 @@ void codegenExpression(TreeNode *currentNode)
             emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
          }
       }
-      // else
-      // {
-      //    int offreg = offsetRegister(currentNode->child[0]->varKind);
-      //    if (currentNode->child[1])
-      //    {
-      //       codegenExpression(currentNode->child[1]);
-      //    }
-      //    //emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-      //    //emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
-      // }      
+      else
+      {
+         int offreg = offsetRegister(currentNode->child[0]->varKind);
+         if (currentNode->child[1])
+         {
+            // codegenExpression(currentNode->child[1]);
+         }
+         //emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
+         //emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
+      }      
       // AssignK case break
       break;
 
