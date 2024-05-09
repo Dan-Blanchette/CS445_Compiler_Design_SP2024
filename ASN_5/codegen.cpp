@@ -245,7 +245,7 @@ void codegenExpression(TreeNode *currentNode)
          int offreg = offsetRegister(currentNode->child[0]->varKind);
          if (currentNode->child[1])
          {
-            // codegenExpression(currentNode->child[1]);
+            codegenExpression(currentNode->child[1]);
          }
          //emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
          //emitRM((char *)"ST", AC, currentNode->child[0]->offset, FP, (char *)"Store variable", currentNode->child[0]->attr.name);
