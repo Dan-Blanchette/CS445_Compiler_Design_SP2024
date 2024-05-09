@@ -149,7 +149,7 @@ void codegenExpression(TreeNode *currentNode)
    switch (currentNode->kind.exp)
    {
    case ExpKind::AssignK:
-      emitComment((char *)"ASSIGN");
+      // emitComment((char *)"ASSIGN");
       if (currentNode->child[0]->attr.op == '[')
       {
          switch (currentNode->attr.op)
