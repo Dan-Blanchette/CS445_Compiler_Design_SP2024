@@ -359,7 +359,7 @@ void codegenExpression(TreeNode *currentNode)
       switch (currentNode->type)
       {
       case ExpType::Integer:
-         emitRM((char*)"TOFF dec:", toffset);
+         emitComment((char*)"TOFF dec:", toffset);
          emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Load integer constant");
          break;
       case ExpType::Boolean:
