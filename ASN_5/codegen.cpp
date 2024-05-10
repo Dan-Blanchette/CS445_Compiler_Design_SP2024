@@ -208,7 +208,7 @@ void codegenExpression(TreeNode *currentNode)
             case DEC:
                 emitRM((char *)"LD", AC, 0, AC2,
                        (char *)"load lhs variable", var->attr.name);
-                emitRM((char *)"LDA", AC, 1, AC,
+                emitRM((char *)"LDA", AC, -1, AC,
                        (char *)"decrement value of", var->attr.name);
                 emitRM((char *)"ST", AC, 0 , AC2,
                        (char *)"Store variable", var->attr.name);
