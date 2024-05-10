@@ -212,6 +212,12 @@ void codegenExpression(TreeNode *currentNode)
                        (char *)"decrement value of", var->attr.name);
                 emitRM((char *)"ST", AC, 0 , AC2,
                        (char *)"Store variable", var->attr.name);
+               break;
+
+            case ADDASS:
+               printf("ADDASS");
+               break;
+                 
          }
 
          if (currentNode->attr.op == '=')
