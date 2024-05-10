@@ -152,17 +152,21 @@ void codegenExpression(TreeNode *currentNode)
    // printf("I made it to codgenEXPRESSION: =======================\n"); // called function
    switch (currentNode->kind.exp)
    {
+
    case ExpKind::AssignK:
       // printf("I made it to the AssignK: =======================\n"); // Made it this far
       // emitComment((char *)"ASSIGN");
       if (currentNode->child[0]->attr.op == '[')
       {
+         TreeNode *var, lhs;
+         lhs = currentNode->child[0];
+         var = lhs->child[0];
          // as expected did not enter this case
          switch (currentNode->attr.op)
          {
          case INC:
             emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
-            emitRM((char *)"LDA", 5, currentNode->child[0]->offset, 0, (char *)"Load address of base of array", currentNode->child[0]->attr.name);
+            emitRM((char *)"LDA", 5, var->offset, 0, (char *)"Load address of base of array", var->attr.name);
          }
 
          if (currentNode->attr.op == '=')
