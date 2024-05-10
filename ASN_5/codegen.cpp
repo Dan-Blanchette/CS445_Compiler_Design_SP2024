@@ -216,7 +216,8 @@ void codegenExpression(TreeNode *currentNode)
                break;
 
             case ADDASS:
-               printf("ADDASS");
+               // printf("ADDASS");
+               emitComment((char*)"TOFF dec:", toffset);
                break;
                  
          }
@@ -359,7 +360,6 @@ void codegenExpression(TreeNode *currentNode)
       switch (currentNode->type)
       {
       case ExpType::Integer:
-         emitComment((char*)"TOFF dec:", toffset);
          emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Load integer constant");
          break;
       case ExpType::Boolean:
