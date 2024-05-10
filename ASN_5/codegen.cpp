@@ -225,10 +225,28 @@ void codegenExpression(TreeNode *currentNode)
                        (char *)"Store variable", var->attr.name);
                break;
             case SUBASS:
+                emitRM((char *)"LD", AC1, 0, AC2,
+                       (char *)"load lhs variable", var->attr.name);
+                emitRO((char *)"SUB", AC, AC1, AC,
+                       (char *)"op -=");
+                emitRM((char *)"ST", AC, 0 , AC2,
+                       (char *)"Store variable", var->attr.name);
                 break;
             case MULASS:
+                emitRM((char *)"LD", AC1, 0, AC2,
+                       (char *)"load lhs variable", var->attr.name);
+                emitRO((char *)"MUL", AC, AC1, AC,
+                       (char *)"op *=");
+                emitRM((char *)"ST", AC, 0 , AC2,
+                       (char *)"Store variable", var->attr.name);
                 break;
             case DIVASS:
+                emitRM((char *)"LD", AC1, 0, AC2,
+                       (char *)"load lhs variable", var->attr.name);
+                emitRO((char *)"DIV", AC, AC1, AC,
+                       (char *)"op /=");
+                emitRM((char *)"ST", AC, 0 , AC2,
+                       (char *)"Store variable", var->attr.name);
                 break;
 
                  
