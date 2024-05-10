@@ -161,6 +161,38 @@ void codegenExpression(TreeNode *currentNode)
          TreeNode *var, *lhs;
          lhs = currentNode->child[0];
          var = lhs->child[0];
+         codegenExpression(lhs->child[1]);
+         if (currentNode->child[1])
+         {
+            emitRM((char *)"ST", AC, toffset, FP, (char *)"Push index");
+            toffset--;
+            codegenExpression(currentNode->child[1]);
+            toffset++;  emitComment((char *)"TOFF inc:", toffset);
+            emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop index");  // index -> AC1
+         }
+         switch (var->varKind) 
+         {
+            case Parameter:
+                emitRM((char *)"LD", AC2, var->offset, FP, (char *)"Load address of base of array", var->attr.name);
+                break;
+            case Local:
+                emitRM((char *)"LDA", AC2, var->offset, FP, (char *)"Load address of base of array", var->attr.name);
+                break;
+            case LocalStatic:
+            case Global:
+                emitRM((char *)"LDA", AC2, var->offset, GP, (char *)"Load address of base of array", var->attr.name);
+                break;
+            case None:
+                printf("ERROR(SYSTEM): var->varKind is None for indexed array\n");
+         }
+         if (currentNode->child[1]) 
+         {                        // have rhs?  ++ does not have rhs
+            emitRO((char *)"SUB", AC2, AC2, AC1, (char *)"Compute offset of value");
+         }
+         else 
+         {
+            emitRO((char *)"SUB", AC2, AC2, AC, (char *)"Compute offset of value");
+         }
          // as expected did not enter this case
          switch (currentNode->attr.op)
          {
