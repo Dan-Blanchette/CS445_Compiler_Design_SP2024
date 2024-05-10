@@ -238,49 +238,7 @@ void codegenExpression(TreeNode *currentNode)
                }
             }
          }
-
-         // else
-         // {
-         //    printf("We're in here!====================\n");
-         //    if (currentNode->child[1])
-         //    {
-         //       emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
-         //    }
-
-         //    switch (currentNode->attr.op)
-         //    {
-         //    case ADDASS:
-         //       emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-         //       emitRO((char *)"ADD", 3, 4, 3, (char *)"op +=");
-         //       break;
-
-         //    case DEC:
-         //       emitRM((char *)"LD", AC, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-         //       emitRO((char *)"LDA", AC, -1, 3, (char *)"decrement value of", currentNode->child[0]->attr.name);
-         //       break;
-
-         //    case DIVASS:
-         //       emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-         //       emitRM((char *)"DIV", 3, 4, 3, (char *)"op /=");
-         //       break;
-
-         //    case MULASS:
-         //       emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-         //       emitRO((char *)"MUL", 3, 4, 3, (char *)"op *=");
-         //       break;
-
-         //    case SUBASS:
-         //       emitRM((char *)"LD", AC1, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-         //       emitRO((char *)"SUB", 3, 4, 3, (char *)"op -=");
-         //       break;
-
-         //    case INC:
-         //       emitRM((char *)"LD", AC, int(currentNode->child[0]->offset), 1, (char *)"load lhs variable", currentNode->child[0]->attr.name);
-         //       emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
-         //       break;
-         //    }
-         //    emitRO((char *)"LDA", AC, 1, 3, (char *)"increment value of", currentNode->child[0]->attr.name);
-         // }
+      // Last Known Good Submission 47 Marks need to add more to here ^
       }
       else
       {
