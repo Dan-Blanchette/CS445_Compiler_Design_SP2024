@@ -112,7 +112,7 @@ void codegenStatement(TreeNode *currentNode)
       // emitRM((char *)"LD", AC2,)
       emitGotoAbs(currloc, (char *)"go to beginning of loop");
       // backpatch jump to the end of the loop
-      backPatchAJumpToHere(breakloc, (char *)"Jump past loop[backpatch]");
+      backPatchAJumpToHere(breakloc, (char *)"Jump past loop [backpatch]");
       breakloc = skiploc;
       emitComment((char *)"END LOOP");
       break;
