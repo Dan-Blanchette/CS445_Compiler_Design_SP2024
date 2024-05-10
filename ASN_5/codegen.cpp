@@ -241,6 +241,7 @@ void codegenExpression(TreeNode *currentNode)
 
          else
          {
+            printf("We're in here!====================\n");
             if (currentNode->child[1])
             {
                emitRM((char *)"LDC", AC, currentNode->child[1]->attr.value, 6, (char *)"Load integer constant");
