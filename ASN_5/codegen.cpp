@@ -196,9 +196,14 @@ void codegenExpression(TreeNode *currentNode)
          // as expected did not enter this case
          switch (currentNode->attr.op)
          {
-         case INC:
-            emitRM((char *)"LDC", AC, int(currentNode->child[0]->offset), 6, (char *)"Load integer constant");
-            emitRM((char *)"LDA", 5, var->offset, 0, (char *)"Load address of base of array", var->attr.name);
+            case INC:
+                emitRM((char *)"LD", AC, 0, AC2,
+                       (char *)"load lhs variable", var->attr.name);
+                emitRM((char *)"LDA", AC, 1, AC,
+                       (char *)"increment value of", var->attr.name);
+                emitRM((char *)"ST", AC, 0 , AC2,
+                       (char *)"Store variable", var->attr.name);
+                break;
          }
 
          if (currentNode->attr.op == '=')
