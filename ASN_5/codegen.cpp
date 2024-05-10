@@ -380,7 +380,7 @@ void codegenExpression(TreeNode *currentNode)
       emitComment((char *)"Param end", currentNode->attr.name);
       emitRM((char *)"LDA", FP, ghostFrame, FP, (char *)"Ghost frame becomes new active frame");
       emitRM((char *)"LDA", AC, 1, 7, (char *)"Return address in ac");
-
+      emitRM((char *)"JMP",7,-5,7,(char *)"CALL main");
       emitRM((char *)"LDA", AC, 0, 2, (char *)"Save the result in ac");
       emitComment((char *)"Call end", currentNode->attr.name);
       toffset = ghostFrame;
