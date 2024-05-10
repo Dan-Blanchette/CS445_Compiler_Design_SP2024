@@ -136,14 +136,8 @@ void codegenStatement(TreeNode *currentNode)
       break;
 
    case StmtKind::BreakK:
-      currloc = emitSkip(0);
-      skiploc = breakloc;
-      breakloc = emitSkip(1);
-
       emitComment((char *)"BREAK");
       emitRM((char *)"JMP", 7, -2, 7, (char *)"break");
-      emitGotoAbs(currloc, (char *)"go to beginning of loop");
-      backPatchAJumpToHere(breakloc, (char *)"Jump past loop[backpatch]");
       break;
 
    case StmtKind::RangeK:
