@@ -165,8 +165,8 @@ void codegenExpression(TreeNode *currentNode)
          if (currentNode->child[1])
          {
             emitRM((char *)"ST", AC, toffset, FP, (char *)"Push index");
-            emitComment((char *)"TOFF dec:", toffset);
             toffset--;
+            emitComment((char *)"TOFF dec:", toffset);
             codegenExpression(currentNode->child[1]);
             toffset++;  
             emitComment((char *)"TOFF inc:", toffset);
