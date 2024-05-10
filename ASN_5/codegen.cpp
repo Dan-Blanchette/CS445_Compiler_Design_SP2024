@@ -90,7 +90,7 @@ void codegenStatement(TreeNode *currentNode)
       codegenGeneral(currentNode->child[1]); // do body of loop
       emitGotoAbs(currloc, (char *)"go to beginning of loop");
       // backpatch jump to the end of the loop
-      backPatchAJumpToHere(breakloc, (char *)"Jump past loop[backpatch]");
+      backPatchAJumpToHere(breakloc, (char *)"Jump past loop [backpatch]");
       breakloc = skiploc;
       emitComment((char *)"END WHILE");
       break;
