@@ -204,6 +204,14 @@ void codegenExpression(TreeNode *currentNode)
                 emitRM((char *)"ST", AC, 0 , AC2,
                        (char *)"Store variable", var->attr.name);
                 break;
+
+            case DEC:
+                emitRM((char *)"LD", AC, 0, AC2,
+                       (char *)"load lhs variable", var->attr.name);
+                emitRM((char *)"LDA", AC, 1, AC,
+                       (char *)"increment value of", var->attr.name);
+                emitRM((char *)"ST", AC, 0 , AC2,
+                       (char *)"Store variable", var->attr.name);
          }
 
          if (currentNode->attr.op == '=')
