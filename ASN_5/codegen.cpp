@@ -167,7 +167,8 @@ void codegenExpression(TreeNode *currentNode)
             emitRM((char *)"ST", AC, toffset, FP, (char *)"Push index");
             toffset--;
             codegenExpression(currentNode->child[1]);
-            toffset++;  emitComment((char *)"TOFF inc:", toffset);
+            toffset++;  
+            emitComment((char *)"TOFF inc:", toffset);
             emitRM((char *)"LD", AC1, toffset, FP, (char *)"Pop index");  // index -> AC1
          }
          switch (var->varKind) 
@@ -358,6 +359,7 @@ void codegenExpression(TreeNode *currentNode)
       switch (currentNode->type)
       {
       case ExpType::Integer:
+         emitRM((char*)"TOFF dec:", toffset);
          emitRM((char *)"LDC", AC, currentNode->attr.value, 6, (char *)"Load integer constant");
          break;
       case ExpType::Boolean:
