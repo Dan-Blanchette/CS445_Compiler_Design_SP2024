@@ -141,7 +141,7 @@ void codegenStatement(TreeNode *currentNode)
       breakloc = emitSkip(1);
 
       emitComment((char *)"BREAK");
-      emitRM("JMP", 7, -2, 7, (char *)"break");
+      emitRM((char *)"JMP", 7, -2, 7, (char *)"break");
       emitGotoAbs(currloc, (char *)"go to beginning of loop");
       backPatchAJumpToHere(breakloc, (char *)"Jump past loop[backpatch]");
       break;
