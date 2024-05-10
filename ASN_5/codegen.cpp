@@ -216,10 +216,10 @@ void codegenExpression(TreeNode *currentNode)
                break;
 
             case ADDASS:
-                emitRM((char *)"LD", AC, 0, AC2,
+                emitRM((char *)"LD", AC1, 0, AC2,
                        (char *)"load lhs variable", var->attr.name);
                 emitRM((char *)"ADD", AC, AC1, AC,
-                       (char *)"op +=", var->attr.name);
+                       (char *)"op +=");
                 emitRM((char *)"ST", AC, 0 , AC2,
                        (char *)"Store variable", var->attr.name);
                break;
