@@ -158,7 +158,7 @@ void codegenExpression(TreeNode *currentNode)
       // emitComment((char *)"ASSIGN");
       if (currentNode->child[0]->attr.op == '[')
       {
-         TreeNode *var, lhs;
+         TreeNode *var, *lhs;
          lhs = currentNode->child[0];
          var = lhs->child[0];
          // as expected did not enter this case
