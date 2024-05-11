@@ -12,6 +12,8 @@
    emitRM((char *)"ST", AC, RETURNOFFSET, FP, (char *)"Store return address");
 
    4-21: All Slides code has been added. I've been working on the OpK in codegenExpression()
+   5-10: cases work up to CallK and ParamK with an odd diff comparison flag that wont clear even
+   though the differences are the same.
 */
 
 // Globals
